@@ -1,0 +1,10 @@
+.idea/
+vendor/
+runtime/
+web/assets/
+web/out/
+web/img/
+web/page/
+composer.lock
+config/local.php
+web/info.php

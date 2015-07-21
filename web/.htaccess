@@ -1,0 +1,9 @@
+RewriteEngine On
+
+#WordPress fake
+RewriteRule "wp-(.*)" "https://wordpress.com/wp-$1"
+RewriteRule "xmlrpc.php" "https://wordpress.com/xmlrpc.php"
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . index.php

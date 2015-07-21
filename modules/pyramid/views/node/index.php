@@ -1,0 +1,118 @@
+<?php
+/**
+ * @link http://zenothing.com/
+ */
+
+use app\modules\pyramid\models\Node;
+use app\widgets\Ext;
+use yii\helpers\Html;
+use yii\grid\GridView;
+
+/* @var $this yii\web\View
+ * @var $parent Node
+ * @var $dataProvider yii\data\ActiveDataProvider
+ */
+
+$user = isset($_GET['user']) ? $_GET['user'] : null;
+$mine = !Yii::$app->user->isGuest && (Yii::$app->user->identity->isManager() || Yii::$app->user->identity->name == $user);
+$title = $this->title = Yii::t('app', 'Investments');
+$columns = [
+    'id',
+    [
+        'attribute' => 'user_name',
+        'format' => 'html',
+        'value' => function($model) {
+            return Html::a($model->user_name, ['user/view', 'name' => $model->user_name]);
+        }
+    ],
+    'time:datetime',
+    [
+        'label' => Yii::t('app', 'Action'),
+        'format' => 'html',
+        'value' => function($model) {
+            return Html::a(Yii::t('app', 'View'), ['index', 'id' => $model->id],
+                ['class' => 'btn btn-primary btn-xs']);
+        }
+    ]
+];
+
+
+if (isset($parent)) {
+    $title = $parent->type->name . " #$parent->id ";
+    $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Investments'), 'url' => ['index']];
+    $this->params['breadcrumbs'][] = $title;
+    $this->title = $title;
+    $title .= $mine ? Html::a($parent->user_name, ['user/view', 'name' => $parent->user_name]) : $parent->user_name;
+
+}
+else {
+    $additional = [$columns[0],
+        [
+            'attribute' => 'type_id',
+            'label' => Yii::t('app', 'Plan'),
+            'format' => 'html',
+            'value' => function($model) {
+                return Html::a($model->type->name, ['type/view', 'id' => $model->type_id]);
+            }
+        ]
+    ];
+    if ($user) {
+        $this->title = Yii::t('app', 'Investments of user') . ' ' . $user;
+        if ($mine) {
+            $title = Yii::t('app', 'Investments of user') . ' ' . Html::a($user, ['user/view', 'name' => $user]);
+        }
+        else {
+            $title = $this->title;
+        }
+        $additional[] = [
+            'attribute' => 'time',
+            'label' => Yii::t('app', 'Remains to exit'),
+            'value' => function(Node $model) {
+                return $model->countQueue();
+            }
+
+        ];
+    }
+    $columns = array_merge($additional, array_slice($columns, 1));
+}
+
+?>
+<div class="invest">
+    <?= Ext::stamp() ?>
+    <div>
+        <h1><?= $title ?></h1>
+
+        <div class="form-group">
+            <?php
+            if (empty($parent)) {
+                echo Html::a(Yii::t('app', 'Open'), ['plan'], ['class' => 'btn btn-success']);
+            }
+            else {
+                if (!Yii::$app->user->isGuest && Yii::$app->user->identity->isManager()) {
+                    echo implode(' ', [
+                        Html::a(Yii::t('app', 'Update'), ['update', 'id' => $parent->id], ['class' => 'btn btn-primary']),
+                        Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $parent->id], ['class' => 'btn btn-danger']),
+                        Html::a(Yii::t('app', 'Up'), ['up', 'id' => $parent->id], ['class' => 'btn btn-warning'])
+                    ]);
+                }
+            }
+            ?>
+        </div>
+
+        <?php
+        if (isset($parent)) {
+            echo Html::tag('p', Yii::t('app', 'Remains to exit') . ': ' . $parent->countQueue());
+        }
+        ?>
+    </div>
+
+    <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        'summary' => '',
+        'emptyText' => '',
+        'showOnEmpty' => false,
+        'columns' => $columns,
+    ])
+    ?>
+
+</div>
