@@ -24,6 +24,7 @@ use yii\web\User as WebUser;
  * @property string hash
  * @property string wallet
  * @property string perfect
+ * @property string timezone
  * @property integer status
  * @property number account
  * @property integer duration
@@ -79,20 +80,21 @@ class User extends ActiveRecord implements IdentityInterface {
             ['perfect', 'match', 'pattern' => '/^U\d{7}$/', 'message' =>
                 Yii::t('app', 'The wallet should looks like U1234567')],
             ['skype', 'match', 'pattern' => '/^[a-zA-Z][a-zA-Z0-9\.,\-_]{5,31}$/'],
-            ['skype', 'default', 'value' => null],
+            [['skype', 'timezone'], 'default', 'value' => null],
             [['name'], 'filter', 'filter' => 'trim'],
             [['name'], 'unique',
                 'targetClass' => 'app\models\User',
                 'message' => Yii::t('app', 'This value has already been taken')],
-            ['duration', 'integer', 'min' => 0, 'max' => 60 * 24 * 7]
+            ['duration', 'integer', 'min' => 0, 'max' => 60 * 24 * 7],
+            ['timezone', 'in', 'range' => timezone_identifiers_list()]
         ];
     }
 
     public function scenarios() {
         return [
-            'default' => ['email', 'skype', 'duration'],
+            'default' => ['email', 'skype', 'duration', 'timezone'],
             'signup'  => ['name', 'email', 'skype', 'perfect', 'password'],
-            'admin'   => ['name', 'email', 'skype', 'perfect', 'account', 'status', 'duration'],
+            'admin'   => ['name', 'email', 'skype', 'perfect', 'account', 'status', 'duration', 'timezone'],
         ];
     }
 
@@ -110,7 +112,7 @@ class User extends ActiveRecord implements IdentityInterface {
 
     public function behaviors() {
         return [
-            Journal::className()
+            Journal::class
         ];
     }
 
@@ -226,6 +228,6 @@ class User extends ActiveRecord implements IdentityInterface {
     }
 
     public function getNodes() {
-        return $this->hasMany(Node::className(), ['user_name' => 'name']);
+        return $this->hasMany(Node::class, ['user_name' => 'name']);
     }
 }

@@ -56,7 +56,7 @@ class Node extends ActiveRecord
      * @return User
      */
     public function getUser() {
-        return $this->hasOne(User::className(), ['name' => 'user_name']);
+        return $this->hasOne(User::class, ['name' => 'user_name']);
     }
 
     public function setUser(User $value) {
@@ -67,7 +67,7 @@ class Node extends ActiveRecord
      * @return Type
      */
     public function getType() {
-        return $this->hasOne(Type::className(), ['id' => 'type_id']);
+        return $this->hasOne(Type::class, ['id' => 'type_id']);
     }
 
     public function setType(Type $value) {

@@ -26,7 +26,7 @@ class InvoiceController extends Controller
     {
         return [
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'success' => ['post'],
                     'delete' => ['post'],
@@ -34,13 +34,13 @@ class InvoiceController extends Controller
             ],
 
             'access' => [
-                'class' => Access::className(),
+                'class' => Access::class,
                 'plain' => ['success', 'fail', 'index', 'view', 'create'],
                 'manager' => ['withdraw', 'update', 'delete']
             ],
 
             'no_csrf' => [
-                'class' => NoTokenValidation::className(),
+                'class' => NoTokenValidation::class,
                 'only' => ['success', 'fail'],
             ]
         ];

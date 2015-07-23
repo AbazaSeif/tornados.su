@@ -68,7 +68,8 @@ CREATE TABLE "user" (
   hash CHAR(60),
   auth CHAR(64) UNIQUE,
   code CHAR(64),
-  duration INT  NOT NULL DEFAULT 60,
+  duration INT NOT NULL DEFAULT 60,
+  "timezone" VARCHAR(32),
   status SMALLINT NOT NULL DEFAULT 2,
   perfect CHAR(8),
   skype VARCHAR(32),
@@ -87,7 +88,7 @@ CREATE TABLE "journal" (
   object_id INT,
   data TEXT,
   user_name VARCHAR(24),
-  time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
   ip INET,
   CONSTRAINT journal_user FOREIGN KEY (user_name)
   REFERENCES "user"(name)

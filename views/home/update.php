@@ -17,7 +17,7 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin(); ?>
 
     <?= Html::activeHiddenInput($model, 'name') ?>
-    <?= $form->field($model, 'content')->widget(CKEditor::className(), [
+    <?= $form->field($model, 'content')->widget(CKEditor::class, [
         'preset' => 'full'
     ]) ?>
 

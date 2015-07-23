@@ -22,14 +22,14 @@ class LangController extends Controller
     public function behaviors() {
         return [
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'delete' => ['post'],
                 ],
             ],
 
             'access' => [
-                'class' => Access::className(),
+                'class' => Access::class,
                 'manager' => ['index', 'view', 'create', 'update', 'delete'],
             ],
         ];

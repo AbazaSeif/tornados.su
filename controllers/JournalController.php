@@ -23,14 +23,14 @@ class JournalController extends Controller
     public function behaviors() {
         return [
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'delete' => ['post'],
                 ],
             ],
 
             'access' => [
-                'class' => Access::className(),
+                'class' => Access::class,
                 'plain' => ['index', 'view']
             ]
         ];

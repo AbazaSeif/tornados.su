@@ -51,7 +51,7 @@ class Invoice extends ActiveRecord
 
     public function behaviors() {
         return [
-            Journal::className()
+            Journal::class
         ];
     }
 
@@ -89,7 +89,7 @@ class Invoice extends ActiveRecord
     }
 
     public function getUser() {
-        return $this->hasOne(User::className(), ['name' => 'user_name']);
+        return $this->hasOne(User::class, ['name' => 'user_name']);
     }
 
     public function saveStatus($status) {

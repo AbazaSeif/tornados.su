@@ -31,14 +31,14 @@ class UserController extends Controller
     public function behaviors() {
         return [
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'delete' => ['post'],
                 ],
             ],
 
             'access' => [
-                'class' => Access::className(),
+                'class' => Access::class,
                 'plain' => ['view', 'update'],
                 'manager' => ['index', 'complete', 'account'],
                 'admin' => ['delete']
@@ -109,6 +109,14 @@ class UserController extends Controller
                     $model->perfect = $model->getOldAttribute('perfect');
                     Yii::$app->session->setFlash('error', Yii::t('app', 'Wallet can change admin only'));
                 }
+            }
+
+            if ('Europe/Moscow' == $model->timezone) {
+                $model->timezone = null;
+            }
+
+            if (Yii::$app->user->identity->name == $model->name && $model->isAttributeChanged('timezone', false)) {
+                $_SESSION['timezone'] = $model->timezone;
             }
 
             if ($model->save()) {

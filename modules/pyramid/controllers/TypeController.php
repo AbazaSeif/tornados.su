@@ -22,7 +22,7 @@ class TypeController extends Controller {
     public function behaviors() {
         return [
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'open' => ['post'],
                 ]

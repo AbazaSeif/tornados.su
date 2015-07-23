@@ -29,6 +29,28 @@ if ('signup' == $model->scenario) {
 echo $form->field($model, 'skype');
 if (!$model->isNewRecord) {
     echo $form->field($model, 'duration');
+
+    $regions = [];
+    foreach(timezone_identifiers_list() as $region) {
+        $region = explode('/', $region);
+        if (2 == count($region)) {
+            $regions[$region[0]][] = $region[1];
+        }
+    }
+    echo Html::script('var regions = ' . json_encode($regions), ['class' => 'regions']);
+
+    ?>
+    <div class="form-group" id="timezone">
+        <label>Timezone</label>
+        <?php
+        $continents = array_keys($regions);
+        $continents = array_combine($continents, $continents);
+        echo Html::dropDownList('continent', null, $continents);
+        echo Html::dropDownList('region', null, null);
+        echo Html::activeHiddenInput($model, 'timezone');
+        ?>
+    </div>
+<?php
 }
 if ($model->isNewRecord || Yii::$app->user->identity->isAdmin()) {
     echo $form->field($model, 'perfect');

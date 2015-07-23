@@ -21,7 +21,7 @@ class NodeController extends Controller
     public function behaviors() {
         return [
             'access' => [
-                'class' => Access::className(),
+                'class' => Access::class,
                 'manager' => ['create', 'update', 'delete']
             ]
         ];

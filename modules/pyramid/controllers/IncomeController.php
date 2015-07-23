@@ -17,7 +17,7 @@ class IncomeController extends Controller {
     public function behaviors() {
         return [
             'verbs' => [
-                'class' => VerbFilter::className(),
+                'class' => VerbFilter::class,
                 'actions' => [
                     'delete' => ['post'],
                 ]

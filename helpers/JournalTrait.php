@@ -16,7 +16,7 @@ use app\models\Record;
  */
 trait JournalTrait {
     public function getRecord() {
-        return $this->hasOne(Record::className(), ['object_id' => 'id']);
+        return $this->hasOne(Record::class, ['object_id' => 'id']);
     }
 
     public function getTime() {

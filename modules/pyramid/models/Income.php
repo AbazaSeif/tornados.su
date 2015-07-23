@@ -55,6 +55,6 @@ class Income extends ActiveRecord
      * @return ActiveQuery
      */
     public function getNode() {
-        return $this->hasOne(Node::className(), ['id' => 'node_id']);
+        return $this->hasOne(Node::class, ['id' => 'node_id']);
     }
 }

@@ -3,6 +3,8 @@
  * @link http://zenothing.com/
 */
 
+//$timezone = empty($_SESSION['timezone']) ? 'Europe/Moscow' : $_SESSION['timezone'];
+//date_default_timezone_set($timezone);
 $config = [
     'id' => 'marafon-invest',
     'name' => 'Marafon Invest',
@@ -10,6 +12,7 @@ $config = [
     'bootstrap' => ['log'],
     'defaultRoute' => 'home/index',
     'language' => empty($_COOKIE['lang']) ? 'ru' : 'en',
+//    'timeZone' => $timezone,
     'charset' => 'utf-8',
     'components' => [
         'cache' => [

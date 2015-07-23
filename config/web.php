@@ -10,9 +10,14 @@ $config['components']['user'] = [
     'enableAutoLogin' => true,
     'loginUrl' => ['user/login'],
     'on afterLogin' => function($event) {
+        /* @var $user \app\models\User */
+        $user = Yii::$app->user->identity;
         $event->name = 'login';
-        $event->sender = Yii::$app->user->identity;
+        $event->sender = $user;
         Journal::writeEvent($event);
+        if ($user->timezone) {
+            $_SESSION['timezone'] = $user->timezone;
+        }
     },
     'on beforeLogout' => function($event) {
         $event->name = 'logout';

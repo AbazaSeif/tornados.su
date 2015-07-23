@@ -5,6 +5,7 @@
 
 namespace app\models;
 
+use app\modules\invoice\models\Invoice;
 use Yii;
 use yii\db\ActiveRecord;
 
@@ -44,21 +45,6 @@ class Record extends ActiveRecord
         return Invoice::findOne($this->object_id);
     }
 
-    public function article() {
-        return Article::findOne($this->object_id);
-    }
-
-    public function feedback() {
-        return Feedback::findOne($this->object_id);
-    }
-
-    public function review() {
-        return Review::findOne($this->object_id);
-    }
-
-    /**
-     * @inheritdoc
-     */
     public static function tableName()
     {
         return 'journal';

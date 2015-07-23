@@ -19,7 +19,7 @@ $types = Type::getItems();
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'user_name')->widget(AjaxComplete::className(), [
+    <?= $form->field($model, 'user_name')->widget(AjaxComplete::class, [
         'route' => ['user/complete']
     ]) ?>
     <?= $form->field($model, 'type_id')->dropDownList($types) ?>

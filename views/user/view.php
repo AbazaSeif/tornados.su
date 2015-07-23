@@ -5,7 +5,6 @@
 
 use app\models\User;
 use yii\helpers\Html;
-use yii\helpers\Url;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
@@ -24,6 +23,10 @@ $columns = [
     'account',
     'skype',
     'perfect',
+    [
+        'attribute' => 'timezone',
+        'value' => $model->timezone ?: 'Europe/Moscow'
+    ],
     'duration'
 ];
 
@@ -37,6 +40,10 @@ if (!Yii::$app->user->isGuest && Yii::$app->user->identity->isAdmin()) {
 <div class="user-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
+
+    <?php
+    echo $_SESSION['timezone'];
+    ?>
 
     <div class="form-group">
         <?= Html::a(Yii::t('app', 'Journal'),

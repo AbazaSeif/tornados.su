@@ -35,6 +35,36 @@ each('.matrix td[data-id]', function(td) {
     }
 });
 
+function choice_continent(continent) {
+    if ('string' == typeof continent) {
+        $continent.value = continent;
+    }
+    $region.innerHTML = '';
+    regions[$continent.value].forEach(function(region) {
+        var option = document.createElement('option');
+        option.innerHTML = region.replace(/_/g, ' ');
+        option.value = region;
+        $region.appendChild(option);
+    });
+    assign_timezone();
+}
+
+function assign_timezone() {
+    $timezone.value = $continent.value + '/' + $region.value;
+
+}
+
+var $continent = $$('[name=continent]');
+var $region = $$('[name=region]');
+var $timezone = $$('[name="User[timezone]"]');
+if ($continent && $region && $timezone) {
+    $continent.onchange = choice_continent;
+    var zone = ($timezone.value || 'Europe/Moscow').split('/');
+    choice_continent(zone[0]);
+    $region.value = zone[1];
+    $region.onchange = assign_timezone;
+}
+
 var start = Date.now();
 
 // Google Analytics
