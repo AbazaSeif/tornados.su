@@ -3,10 +3,15 @@
  * @link http://zenothing.com/
  */
 
+var start = Date.now();
+
 function $$(selector) { return document.querySelector(selector) }
 function $all(selector) { return document.querySelectorAll(selector) }
 function each(selector, call) {
-    return Array.prototype.forEach.call($all(selector), call);
+    if ('string' == typeof selector) {
+        selector = $all(selector);
+    }
+    return Array.prototype.forEach.call(selector, call);
 }
 
 function script(source) {
@@ -42,7 +47,12 @@ function choice_continent(continent) {
     $region.innerHTML = '';
     regions[$continent.value].forEach(function(region) {
         var option = document.createElement('option');
-        option.innerHTML = region.replace(/_/g, ' ');
+        var city = region.replace(/_/g, ' ');
+        if (russian && city in cities) {
+            city = cities[city];
+            option.style.color = 'white';
+        }
+        option.innerHTML = city;
         option.value = region;
         $region.appendChild(option);
     });
@@ -51,21 +61,64 @@ function choice_continent(continent) {
 
 function assign_timezone() {
     $timezone.value = $continent.value + '/' + $region.value;
-
 }
 
 var $continent = $$('[name=continent]');
 var $region = $$('[name=region]');
-var $timezone = $$('[name="User[timezone]"]');
-if ($continent && $region && $timezone) {
-    $continent.onchange = choice_continent;
-    var zone = ($timezone.value || 'Europe/Moscow').split('/');
-    choice_continent(zone[0]);
-    $region.value = zone[1];
-    $region.onchange = assign_timezone;
+var $timezone = $$('[name="User[timezone]"]') || $$('.timezone');
+var $country = $$('[name="User[country]"]') || $$('.country');
+var russian = !/lang=en/.test(document.cookie);
+
+function geo_translate() {
+    var zone;
+    if ($continent && $region) {
+        if (russian) {
+            each('[name=continent] option', function(option) {
+                option.innerHTML = continents[option.innerHTML];
+            });
+        }
+
+        $continent.onchange = choice_continent;
+        zone = ($timezone.value || 'Europe/Moscow').split('/');
+        choice_continent(zone[0]);
+        $region.value = zone[1];
+        $region.onchange = assign_timezone;
+    }
+    else if ($timezone) {
+        zone = $timezone.innerHTML.split('/');
+        $timezone.setAttribute('title', $timezone.innerHTML);
+        zone[0] = continents[zone[0]];
+        if (zone[1] in cities) {
+            zone[1] = cities[zone[1]];
+        }
+        $timezone.innerHTML = zone.join('/');
+    }
+
+    if ($country) {
+        var index = russian ? 1 : 0;
+        if ('INPUT' == $country.tagName) {
+            var select = document.createElement('select');
+            select.appendChild(document.createElement('option'));
+            for (var code in countries) {
+                var option = document.createElement('option');
+                option.value = code;
+                option.innerHTML = countries[code][index];
+                select.appendChild(option);
+            }
+            select.name = $country.name;
+            if ($country.value) {
+                select.value = $country.value;
+            }
+            select.setAttribute('class', $country.getAttribute('class'));
+            $country.parentNode.insertBefore(select, $country);
+            $country.remove();
+        }
+        else {
+            $country.innerHTML = countries[$country.innerHTML][index];
+        }
+    }
 }
 
-var start = Date.now();
 
 // Google Analytics
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -117,3 +170,272 @@ addEventListener('beforeunload', function() {
         + Math.round((Date.now() - start) / 1000), false);
     request.send(null);
 });
+
+var countries = {
+"AD":["Andorra","Андорра"],
+"AE":["United Arab Emirates","Объединенные Арабские Эмираты"],
+"AF":["Afghanistan","Афганистан"],
+"AG":["Antigua and Barbuda","Антигуа и Барбуда"],
+"AI":["Anguilla","Ангилья"],
+"AL":["Albania","Албания"],
+"AM":["Armenia","Армения"],
+"AO":["Angola","Ангола"],
+"AR":["Argentina","Аргентина"],
+"AS":["American Samoa","Американское Самоа"],
+"AT":["Austria","Австрия"],
+"AU":["Australia","Австралия"],
+"AW":["Aruba","Аруба"],
+"AZ":["Azerbaijan","Азербайджан"],
+"BA":["Bosnia and Herzegovina","Босния и Герцеговина"],
+"BB":["Barbados","Барбадос"],
+"BD":["Bangladesh","Бангладеш"],
+"BE":["Belgium","Бельгия"],
+"BF":["Burkina Faso","Буркина-Фасо"],
+"BG":["Bulgaria","Болгария"],
+"BH":["Bahrain","Бахрейн"],
+"BI":["Burundi","Бурунди"],
+"BJ":["Benin","Бенин"],
+"BM":["Bermuda","Бермуды"],
+"BO":["Bolivia","Боливия"],
+"BR":["Brazil","Бразилия"],
+"BS":["Bahamas","Багамы"],
+"BT":["Bhutan","Бутан"],
+"BW":["Botswana","Ботсвана"],
+"BY":["Belarus","Беларусь"],
+"BZ":["Belize","Белиз"],
+"CA":["Canada","Канада"],
+"CF":["Central African Republic","Центрально-Африканская Республика"],
+"CH":["Switzerland","Швейцария"],
+"CK":["Cook Islands","Острова Кука"],
+"CL":["Chile","Чили"],
+"CM":["Cameroon","Камерун"],
+"CN":["China","Китай"],
+"CO":["Colombia","Колумбия"],
+"CR":["Costa Rica","Коста-Рика"],
+"CU":["Cuba","Куба"],
+"CV":["Cape Verde","Кабо-Верде"],
+"CY":["Cyprus","Кипр"],
+"CZ":["Czech Republic","Чехия"],
+"DE":["Germany","Германия"],
+"DJ":["Djibouti","Джибути"],
+"DK":["Denmark","Дания"],
+"DM":["Dominica","Доминика"],
+"DO":["Dominican Republic","Доминиканская Республика"],
+"DZ":["Algeria","Алжир"],
+"EC":["Ecuador","Эквадор"],
+"EE":["Estonia","Эстония"],
+"EG":["Egypt","Египет"],
+"EH":["Western Sahara","Западная Сахара"],
+"ER":["Eritrea","Эритрея"],
+"ES":["Spain","Испания"],
+"ET":["Ethiopia","Эфиопия"],
+"FI":["Finland","Финляндия"],
+"FJ":["Fiji","Фиджи"],
+"FK":["Falkland Islands","Фолклендские острова"],
+"FM":["Micronesia","Микронезия"],
+"FO":["Faroe Islands","Фарерские острова"],
+"FR":["France","Франция"],
+"GA":["Gabon","Габон"],
+"GB":["United Kingdom","Великобритания"],
+"GD":["Grenada","Гренада"],
+"GE":["Georgia","Грузия"],
+"GF":["French Guiana","Французская Гвиана"],
+"GH":["Ghana","Гана"],
+"GI":["Gibraltar","Гибралтар"],
+"GL":["Greenland","Гренландия"],
+"GM":["Gambia","Гамбия"],
+"GN":["Guinea","Гвинея"],
+"GP":["Guadeloupe","Гваделупа"],
+"GQ":["Equatorial Guinea","Экваториальная Гвинея"],
+"GR":["Greece","Греция"],
+"GT":["Guatemala","Гватемала"],
+"GU":["Guam","Гуам"],
+"GW":["Guinea-Bissau","Гвинея-Бисау"],
+"GY":["Guyana","Гайана"],
+"HK":["Hong Kong","Гонконг"],
+"HN":["Honduras","Гондурас"],
+"HR":["Croatia","Хорватия"],
+"HT":["Haiti","Гаити"],
+"HU":["Hungary","Венгрия"],
+"ID":["Indonesia","Индонезия"],
+"IE":["Ireland","Ирландия"],
+"IL":["Israel","Израиль"],
+"IM":["Isle of Man","Остров Мэн"],
+"IN":["India","Индия"],
+"IQ":["Iraq","Ирак"],
+"IR":["Iran","Иран"],
+"IS":["Iceland","Исландия"],
+"IT":["Italy","Италия"],
+"JM":["Jamaica","Ямайка"],
+"JO":["Jordan","Иордания"],
+"JP":["Japan","Япония"],
+"KE":["Kenya","Кения"],
+"KG":["Kyrgyzstan","Кыргызстан"],
+"KH":["Cambodia","Камбоджа"],
+"KI":["Kiribati","Кирибати"],
+"KM":["Comoros","Коморы"],
+"KN":["Saint Kitts and Nevis","Сент-Китс и Невис"],
+"KP":["North Korea","Северная Корея"],
+"KR":["South Korea","Южная Корея"],
+"KW":["Kuwait","Кувейт"],
+"KY":["Cayman Islands","Острова Кайман"],
+"KZ":["Kazakhstan","Казахстан"],
+"LA":["Laos","Лаос"],
+"LB":["Lebanon","Ливан"],
+"LC":["Saint Lucia","Сент-Люсия"],
+"LI":["Liechtenstein","Лихтенштейн"],
+"LK":["Sri Lanka","Шри-Ланка"],
+"LR":["Liberia","Либерия"],
+"LS":["Lesotho","Лесото"],
+"LT":["Lithuania","Литва"],
+"LU":["Luxembourg","Люксембург"],
+"LV":["Latvia","Латвия"],
+"LY":["Libya","Ливия"],
+"MA":["Morocco","Марокко"],
+"MC":["Monaco","Монако"],
+"MD":["Moldova","Молдова"],
+"ME":["Montenegro","Черногория"],
+"MG":["Madagascar","Мадагаскар"],
+"MH":["Marshall Islands","Маршалловы Острова"],
+"MK":["Macedonia","Македония"],
+"ML":["Mali","Мали"],
+"MN":["Mongolia","Монголия"],
+"MP":["Northern Mariana Islands","Северные Марианские острова"],
+"MQ":["Martinique","Мартиника"],
+"MR":["Mauritania","Мавритания"],
+"MS":["Montserrat","Монтсеррат"],
+"MT":["Malta","Мальта"],
+"MU":["Mauritius","Маврикий"],
+"MV":["Maldives","Мальдивы"],
+"MW":["Malawi","Малави"],
+"MX":["Mexico","Мексика"],
+"MY":["Malaysia","Малайзия"],
+"MZ":["Mozambique","Мозамбик"],
+"NA":["Namibia","Намибия"],
+"NC":["New Caledonia","Новая Каледония"],
+"NE":["Niger","Нигер"],
+"NF":["Norfolk Island","Остров Норфолк"],
+"NG":["Nigeria","Нигерия"],
+"NI":["Nicaragua","Никарагуа"],
+"NL":["Netherlands","Нидерланды"],
+"NO":["Norway","Норвегия"],
+"NP":["Nepal","Непал"],
+"NR":["Nauru","Науру"],
+"NU":["Niue","Ниуэ"],
+"NZ":["New Zealand","Новая Зеландия"],
+"OM":["Oman","Оман"],
+"PA":["Panama","Панама"],
+"PE":["Peru","Перу"],
+"PF":["French Polynesia","Французская Полинезия"],
+"PG":["Papua New Guinea","Папуа - Новая Гвинея"],
+"PH":["Philippines","Филиппины"],
+"PK":["Pakistan","Пакистан"],
+"PL":["Poland","Польша"],
+"PM":["Saint Pierre and Miquelon","Сент-Пьер и Микелон"],
+"PN":["Pitcairn Islands","Питкерн"],
+"PR":["Puerto Rico","Пуэрто-Рико"],
+"PS":["Palestine","Палестинская автономия"],
+"PT":["Portugal","Португалия"],
+"PW":["Palau","Палау"],
+"PY":["Paraguay","Парагвай"],
+"QA":["Qatar","Катар"],
+"RE":["Réunion","Реюньон"],
+"RO":["Romania","Румыния"],
+"RS":["Serbia","Сербия"],
+"RU":["Russia","Россия"],
+"RW":["Rwanda","Руанда"],
+"SA":["Saudi Arabia","Саудовская Аравия"],
+"SB":["Solomon Islands","Соломоновы Острова"],
+"SC":["Seychelles","Сейшелы"],
+"SD":["Sudan","Судан"],
+"SE":["Sweden","Швеция"],
+"SG":["Singapore","Сингапур"],
+"SH":["Saint Helena","Святая Елена"],
+"SI":["Slovenia","Словения"],
+"SJ":["Svalbard and Jan Mayen","Шпицберген и Ян Майен"],
+"SK":["Slovakia","Словакия"],
+"SL":["Sierra Leone","Сьерра-Леоне"],
+"SM":["San Marino","Сан-Марино"],
+"SN":["Senegal","Сенегал"],
+"SO":["Somalia","Сомали"],
+"SR":["Suriname","Суринам"],
+"SS":["South Sudan","Южный Судан"],
+"ST":["São Tomé and Príncipe","Сан-Томе и Принсипи"],
+"SV":["El Salvador","Сальвадор"],
+"SX":["Sint Maarten","Синт-Мартен"],
+"SY":["Syria","Сирийская Арабская Республика"],
+"SZ":["Swaziland","Свазиленд"],
+"TC":["Turks and Caicos Islands","Острова Теркс и Кайкос"],
+"TD":["Chad","Чад"],
+"TG":["Togo","Того"],
+"TH":["Thailand","Таиланд"],
+"TJ":["Tajikistan","Таджикистан"],
+"TK":["Tokelau","Токелау"],
+"TL":["East Timor","Восточный Тимор"],
+"TM":["Turkmenistan","Туркменистан"],
+"TN":["Tunisia","Тунис"],
+"TO":["Tonga","Тонга"],
+"TR":["Turkey","Турция"],
+"TT":["Trinidad and Tobago","Тринидад и Тобаго"],
+"TV":["Tuvalu","Тувалу"],
+"TW":["Taiwan","Тайвань"],
+"TZ":["Tanzania","Танзания"],
+"UA":["Ukraine","Украина"],
+"UG":["Uganda","Уганда"],
+"UY":["Uruguay","Уругвай"],
+"UZ":["Uzbekistan","Узбекистан"],
+"VC":["Saint Vincent and the Grenadines","Сент-Винсент"],
+"VE":["Venezuela","Венесуэла"],
+"VG":["British Virgin Islands","Британские Виргинские острова"],
+"VN":["Vietnam","Вьетнам"],
+"VU":["Vanuatu","Вануату"],
+"WF":["Wallis and Futuna","Уоллис и Футуна"],
+"WS":["Samoa","Самоа"],
+"YE":["Yemen","Йемен"],
+"ZA":["South Africa","Южно-Африканская Республика"],
+"ZM":["Zambia","Замбия"],
+"ZW":["Zimbabwe","Зимбабве"]
+};
+
+var cities = {
+"Almaty": "Алматы",
+"Kamchatka": "Камчатка",
+"Krasnoyarsk": "Красноярськ",
+"Magadan": "Магадан",
+"Novokuznetsk": "Новокузнецк",
+"Novosibirsk": "Новосибирськ",
+"Omsk": "Омськ",
+"Oral": "Орал",
+"Sakhalin": "Сахалин",
+"Srednekolymsk": "Среднеколымск",
+"Tashkent": "Ташкент",
+"Tbilisi": "Тбилиси",
+"Vladivostok": "Владивосток",
+"Yakutsk": "Якутск",
+"Yekaterinburg": "Екатеринбург",
+
+"Kaliningrad": "Калининград",
+"Kiev": "Киев",
+"Minsk": "Минск",
+"Moscow": "Москва",
+"Simferopol": "Симферополь",
+"Uzhgorod": "Ужгород",
+"Volgograd": "Ужгород",
+"Zaporozhye": "Ужгород"
+};
+
+
+var continents = {
+"Africa": "Африка",
+"America": "Америка",
+"Antarctica": "Антарктида",
+"Arctic": "Арктика",
+"Asia": "Азия",
+"Atlantic": "Антлантический",
+"Australia": "Австралия",
+"Europe": "Европа",
+"Indian": "Индийский",
+"Pacific": "Тихоокенский"
+};
+
+geo_translate();

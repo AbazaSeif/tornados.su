@@ -25,9 +25,15 @@ $columns = [
     'perfect',
     [
         'attribute' => 'timezone',
-        'value' => $model->timezone ?: 'Europe/Moscow'
+        'format' => 'html',
+        'value' => Html::tag('span', $model->timezone ?: 'Europe/Moscow', ['class' => 'timezone'])
     ],
-    'duration'
+    'duration',
+    [
+        'attribute' => 'country',
+        'format' => 'html',
+        'value' => $model->country ? Html::tag('span', $model->country, ['class' => 'country']) : null
+    ],
 ];
 
 if (!Yii::$app->user->isGuest && Yii::$app->user->identity->isAdmin()) {
@@ -40,10 +46,6 @@ if (!Yii::$app->user->isGuest && Yii::$app->user->identity->isAdmin()) {
 <div class="user-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
-
-    <?php
-    echo $_SESSION['timezone'];
-    ?>
 
     <div class="form-group">
         <?= Html::a(Yii::t('app', 'Journal'),

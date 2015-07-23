@@ -70,6 +70,7 @@ CREATE TABLE "user" (
   code CHAR(64),
   duration INT NOT NULL DEFAULT 60,
   "timezone" VARCHAR(32),
+  country CHAR(2),
   status SMALLINT NOT NULL DEFAULT 2,
   perfect CHAR(8),
   skype VARCHAR(32),
@@ -146,7 +147,7 @@ CREATE TABLE "node" (
   user_name VARCHAR(24) NOT NULL,
   type_id SMALLINT NOT NULL,
   count SMALLINT NOT NULL,
-  time INT  NOT NULL,
+  time INT NOT NULL,
   CONSTRAINT node_user FOREIGN KEY (user_name)
   REFERENCES "user"(name)
   ON DELETE CASCADE ON UPDATE CASCADE,

@@ -29,6 +29,7 @@ if ('signup' == $model->scenario) {
 echo $form->field($model, 'skype');
 if (!$model->isNewRecord) {
     echo $form->field($model, 'duration');
+    echo $form->field($model, 'country');
 
     $regions = [];
     foreach(timezone_identifiers_list() as $region) {
@@ -46,7 +47,7 @@ if (!$model->isNewRecord) {
         $continents = array_keys($regions);
         $continents = array_combine($continents, $continents);
         echo Html::dropDownList('continent', null, $continents);
-        echo Html::dropDownList('region', null, null);
+        echo Html::dropDownList('region');
         echo Html::activeHiddenInput($model, 'timezone');
         ?>
     </div>

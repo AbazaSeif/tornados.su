@@ -25,6 +25,7 @@ use yii\web\User as WebUser;
  * @property string wallet
  * @property string perfect
  * @property string timezone
+ * @property string country
  * @property integer status
  * @property number account
  * @property integer duration
@@ -80,7 +81,7 @@ class User extends ActiveRecord implements IdentityInterface {
             ['perfect', 'match', 'pattern' => '/^U\d{7}$/', 'message' =>
                 Yii::t('app', 'The wallet should looks like U1234567')],
             ['skype', 'match', 'pattern' => '/^[a-zA-Z][a-zA-Z0-9\.,\-_]{5,31}$/'],
-            [['skype', 'timezone'], 'default', 'value' => null],
+            [['skype', 'timezone', 'country'], 'default', 'value' => null],
             [['name'], 'filter', 'filter' => 'trim'],
             [['name'], 'unique',
                 'targetClass' => 'app\models\User',
@@ -92,9 +93,9 @@ class User extends ActiveRecord implements IdentityInterface {
 
     public function scenarios() {
         return [
-            'default' => ['email', 'skype', 'duration', 'timezone'],
+            'default' => ['email', 'skype', 'duration', 'country', 'timezone'],
             'signup'  => ['name', 'email', 'skype', 'perfect', 'password'],
-            'admin'   => ['name', 'email', 'skype', 'perfect', 'account', 'status', 'duration', 'timezone'],
+            'admin'   => ['name', 'email', 'skype', 'perfect', 'account', 'status', 'duration', 'country', 'timezone'],
         ];
     }
 
