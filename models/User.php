@@ -26,6 +26,7 @@ use yii\web\User as WebUser;
  * @property string perfect
  * @property string timezone
  * @property string country
+ * @property string repeat
  * @property integer status
  * @property number account
  * @property integer duration
@@ -42,6 +43,7 @@ class User extends ActiveRecord implements IdentityInterface {
 
     private $_password;
     private $_info;
+    public $repeat;
 
     public static function primaryKey() {
         return ['id'];
@@ -77,25 +79,30 @@ class User extends ActiveRecord implements IdentityInterface {
             ['password', 'required', 'on' => 'signup'],
             ['name', 'string', 'min' => 4, 'max' => 24],
             ['name', 'match', 'pattern' => '/^[a-z][a-z0-9_\-]+$/i', 'on' => 'signup'],
+            [['name'], 'unique',
+                'targetClass' => 'app\models\User',
+                'message' => Yii::t('app', 'This value has already been taken')],
             ['email', 'email'],
             ['perfect', 'match', 'pattern' => '/^U\d{7}$/', 'message' =>
                 Yii::t('app', 'The wallet should looks like U1234567')],
             ['skype', 'match', 'pattern' => '/^[a-zA-Z][a-zA-Z0-9\.,\-_]{5,31}$/'],
-            [['skype', 'timezone', 'country'], 'default', 'value' => null],
-            [['name'], 'filter', 'filter' => 'trim'],
-            [['name'], 'unique',
-                'targetClass' => 'app\models\User',
-                'message' => Yii::t('app', 'This value has already been taken')],
+            [['skype', 'timezone', 'country', 'phone', 'forename', 'surname'], 'default', 'value' => null],
+            [['skype', 'timezone', 'country', 'phone', 'forename', 'surname', 'name', 'email', 'perfect'],
+                'filter', 'filter' => 'trim'],
             ['duration', 'integer', 'min' => 0, 'max' => 60 * 24 * 7],
-            ['timezone', 'in', 'range' => timezone_identifiers_list()]
+            ['timezone', 'in', 'range' => timezone_identifiers_list()],
+            ['repeat', 'compare', 'compareAttribute' => 'password'],
+            [['forename', 'surname'], 'string', 'min' => 2, 'max' => 24],
+            ['phone', 'match', 'pattern' => '/^\d{9,16}$/']
         ];
     }
 
     public function scenarios() {
         return [
-            'default' => ['email', 'skype', 'duration', 'country', 'timezone'],
-            'signup'  => ['name', 'email', 'skype', 'perfect', 'password'],
-            'admin'   => ['name', 'email', 'skype', 'perfect', 'account', 'status', 'duration', 'country', 'timezone'],
+            'default' => ['email', 'skype', 'duration', 'country', 'timezone', 'phone', 'forename', 'surname'],
+            'signup'  => ['name', 'email', 'skype', 'perfect', 'password', 'repeat'],
+            'admin'   => ['name', 'email', 'skype', 'perfect', 'account', 'status',
+                'duration', 'country', 'timezone', 'phone', 'forename', 'surname'],
         ];
     }
 

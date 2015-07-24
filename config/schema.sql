@@ -74,6 +74,9 @@ CREATE TABLE "user" (
   status SMALLINT NOT NULL DEFAULT 2,
   perfect CHAR(8),
   skype VARCHAR(32),
+  forename VARCHAR(24),
+  surname VARCHAR(24),
+  phone VARCHAR(16),
   data BYTEA
 );
 CREATE UNIQUE INDEX user_id ON "user" USING btree ("id");

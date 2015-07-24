@@ -12,9 +12,7 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 
 function submit($label) {
-    echo '<div class="form-group">';
-    echo Html::submitButton($label, ['class' => 'btn btn-success']);
-    echo '</div>';
+    return Html::tag('div', Html::submitButton($label, ['class' => 'btn btn-success']), ['class' => 'form-group']);
 }
 
 $form = ActiveForm::begin();
@@ -25,33 +23,15 @@ if ($model->isNewRecord) {
 echo $form->field($model, 'email');
 if ('signup' == $model->scenario) {
     echo $form->field($model, 'password')->passwordInput();
+    echo $form->field($model, 'repeat')->passwordInput();
 }
 echo $form->field($model, 'skype');
 if (!$model->isNewRecord) {
-    echo $form->field($model, 'duration');
+    echo $form->field($model, 'duration')->textInput(['title' => Yii::t('app', 'Session duration')]);
     echo $form->field($model, 'country');
 
-    $regions = [];
-    foreach(timezone_identifiers_list() as $region) {
-        $region = explode('/', $region);
-        if (2 == count($region)) {
-            $regions[$region[0]][] = $region[1];
-        }
-    }
-    echo Html::script('var regions = ' . json_encode($regions), ['class' => 'regions']);
-
-    ?>
-    <div class="form-group" id="timezone">
-        <label>Timezone</label>
-        <?php
-        $continents = array_keys($regions);
-        $continents = array_combine($continents, $continents);
-        echo Html::dropDownList('continent', null, $continents);
-        echo Html::dropDownList('region');
-        echo Html::activeHiddenInput($model, 'timezone');
-        ?>
-    </div>
-<?php
+    $zones = timezone_identifiers_list();
+    echo $form->field($model, 'timezone')->dropDownList(array_combine($zones, $zones));
 }
 if ($model->isNewRecord || Yii::$app->user->identity->isAdmin()) {
     echo $form->field($model, 'perfect');
@@ -65,18 +45,22 @@ if (!Yii::$app->user->isGuest && Yii::$app->user->identity->isAdmin()) {
     echo $form->field($model, 'status')->dropDownList(User::statuses());
 }
 
+echo $form->field($model, 'phone');
+echo $form->field($model, 'forename');
+echo $form->field($model, 'surname');
+
+echo Html::tag('div', '* ' . Yii::t('app', 'Required fields'), ['class' => 'form-group']);
+
 if (Yii::$app->user->isGuest) {
-    submit(Yii::t('app', 'Signup'));
+    echo submit(Yii::t('app', 'Signup'));
 }
 else {
     if ($model->isNewRecord) {
-        submit(Yii::t('app', 'Create'));
+        echo submit(Yii::t('app', 'Create'));
     }
     else {
-        submit(Yii::t('app', 'Update'));
+        echo submit(Yii::t('app', 'Update'));
     }
 }
 
 ActiveForm::end();
-
-echo '</div>';

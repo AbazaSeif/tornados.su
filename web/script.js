@@ -1,17 +1,29 @@
 /**
- * @author Taras Labiak <kissarat@gmail.com>
  * @link http://zenothing.com/
+ * @author Taras Labiak <kissarat@gmail.com>
  */
 
 var start = Date.now();
 
 function $$(selector) { return document.querySelector(selector) }
 function $all(selector) { return document.querySelectorAll(selector) }
+function $new(name) { return document.createElement(name) }
+function $option(value, text) {
+    var option = $new('option');
+    option.value = value;
+    option.innerHTML = text;
+    return option;
+}
+
 function each(selector, call) {
     if ('string' == typeof selector) {
         selector = $all(selector);
     }
     return Array.prototype.forEach.call(selector, call);
+}
+
+function options(select, call) {
+    each(select.querySelectorAll('option'), call);
 }
 
 function script(source) {
@@ -27,12 +39,6 @@ if (document.body.dataset) {
         source.remove();
     })
 }
-
-each('.matrix th', function(th, i) {
-    if (i > 0) {
-        th.innerHTML = '<img src="/img/' + i + '.jpg" /> ' + th.innerHTML;
-    }
-});
 
 each('.matrix td[data-id]', function(td) {
     td.onclick = function() {
@@ -59,32 +65,50 @@ function choice_continent(continent) {
     assign_timezone();
 }
 
-function assign_timezone() {
+function assign_timezone(region) {
+    if ('string' == typeof region) {
+        $region.value = region;
+    }
     $timezone.value = $continent.value + '/' + $region.value;
 }
 
-var $continent = $$('[name=continent]');
-var $region = $$('[name=region]');
+var regions = {};
+var $continent;
+var $region;
 var $timezone = $$('[name="User[timezone]"]') || $$('.timezone');
 var $country = $$('[name="User[country]"]') || $$('.country');
-var russian = !/lang=en/.test(document.cookie);
+var $duration = $$('[name="User[duration]"]');
+var russian = /lang=en/.test(document.cookie) ? 0 : 1;
 
-function geo_translate() {
-    var zone;
-    if ($continent && $region) {
-        if (russian) {
-            each('[name=continent] option', function(option) {
-                option.innerHTML = continents[option.innerHTML];
-            });
-        }
+function translate_cabinet() {
+    var zone, parent, option;
+    if ('INPUT' == $country.tagName) {
+        $continent = $new('select');
+        $region = $new('select');
+        options($timezone, function(option) {
+            var timezone = option.value.split('/');
+            var continent = timezone[0];
+            if (2 == timezone.length) {
+                zone = regions[continent];
+                if (!zone) {
+                    regions[continent] = zone = [];
+                    $continent.appendChild($option(continent, russian ? continents[continent] : continent));
+                }
+                zone.push(timezone[1]);
+            }
+        });
 
         $continent.onchange = choice_continent;
-        zone = ($timezone.value || 'Europe/Moscow').split('/');
-        choice_continent(zone[0]);
-        $region.value = zone[1];
         $region.onchange = assign_timezone;
+        var old_zone = ($timezone.value || 'Europe/Moscow').split('/');
+        choice_continent(old_zone[0]);
+        $region.value = old_zone[1];
+        parent = $timezone.parentNode;
+        parent.appendChild($continent);
+        parent.appendChild($region);
+        $timezone.style.display = 'none';
     }
-    else if ($timezone) {
+    else {
         zone = $timezone.innerHTML.split('/');
         $timezone.setAttribute('title', $timezone.innerHTML);
         zone[0] = continents[zone[0]];
@@ -94,75 +118,51 @@ function geo_translate() {
         $timezone.innerHTML = zone.join('/');
     }
 
-    if ($country) {
-        var index = russian ? 1 : 0;
-        if ('INPUT' == $country.tagName) {
-            var select = document.createElement('select');
-            select.appendChild(document.createElement('option'));
-            for (var code in countries) {
-                var option = document.createElement('option');
-                option.value = code;
-                option.innerHTML = countries[code][index];
-                select.appendChild(option);
-            }
-            select.name = $country.name;
-            if ($country.value) {
-                select.value = $country.value;
-            }
-            select.setAttribute('class', $country.getAttribute('class'));
-            $country.parentNode.insertBefore(select, $country);
-            $country.remove();
+    if ('INPUT' == $country.tagName) {
+        var select = document.createElement('select');
+        select.appendChild(document.createElement('option'));
+        for (var code in countries) {
+            option = document.createElement('option');
+            option.value = code;
+            option.innerHTML = countries[code][russian];
+            select.appendChild(option);
         }
-        else {
-            $country.innerHTML = countries[$country.innerHTML][index];
+        select.name = $country.name;
+        if ($country.value) {
+            select.value = $country.value;
         }
+        select.setAttribute('class', $country.getAttribute('class'));
+        $country.parentNode.insertBefore(select, $country);
+        $country.remove();
+    }
+    else {
+        $country.innerHTML = countries[$country.innerHTML][russian];
+    }
+
+    if ($duration) {
+        var $interval = $new('input');
+        var $unit = $new('select');
+        var interval;
+        for(var unit in units) {
+            option = $option(unit, units[unit][russian]);
+            interval = $duration.value / unit;
+            if (!$interval.value && (0 != interval % 1 || interval < 1)) {
+                $unit.lastChild.selected = true;
+                $interval.value = $duration.value / $unit.lastChild.value;
+            }
+            $unit.appendChild(option);
+        }
+        parent = $duration.parentNode;
+        $interval.onchange = $unit.onchange = function() {
+            $duration.value = $interval.value * $unit.value;
+        };
+        $interval.type = 'number';
+        parent.appendChild($interval);
+        parent.appendChild($unit);
+        parent.querySelector('label').innerHTML = $duration.getAttribute('title');
+        $duration.type = 'hidden';
     }
 }
-
-
-// Google Analytics
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-ga('create', 'UA-58031952-5', 'auto');
-ga('send', 'pageview');
-
-// Yandex.Metrika
-(function (d, w, c) {
-    (w[c] = w[c] || []).push(function() {
-        try {
-            w.yaCounter31493068 = new Ya.Metrika({
-                id:31493068,
-                clickmap:true,
-                trackLinks:true,
-                accurateTrackBounce:true
-            });
-        } catch(e) { }
-    });
-
-    var n = d.getElementsByTagName("script")[0],
-        s = d.createElement("script"),
-        f = function () { n.parentNode.insertBefore(s, n); };
-    s.type = "text/javascript";
-    s.async = true;
-    s.src = "https://mc.yandex.ru/metrika/watch.js";
-
-    if (w.opera == "[object Opera]") {
-        d.addEventListener("DOMContentLoaded", f, false);
-    } else { f(); }
-})(document, window, "yandex_metrika_callbacks");
-
-var metrika = $$('#metrika img');
-metrika.onclick = function() {
-    Ya.Metrika.informer({
-        id:31493068,
-        lang:'ru',
-        i:this
-    });
-    return false
-};
 
 addEventListener('beforeunload', function() {
     var request = new XMLHttpRequest();
@@ -170,6 +170,11 @@ addEventListener('beforeunload', function() {
         + Math.round((Date.now() - start) / 1000), false);
     request.send(null);
 });
+
+var $footer = $$('.footer');
+if ($footer && navigator.userAgent.indexOf('Windows') >= 0) {
+    $footer.remove();
+}
 
 var countries = {
 "AD":["Andorra","Андорра"],
@@ -438,4 +443,59 @@ var continents = {
 "Pacific": "Тихоокенский"
 };
 
-geo_translate();
+var units = {
+    1: ['minutes', 'минут'],
+    60: ['hours', 'часов'],
+    1440: ['days', 'суток'],
+    10080: ['weeks', 'недель'],
+    43200: ['months', 'месяцев']
+};
+
+if ($timezone) {
+    translate_cabinet();
+}
+
+
+// Google Analytics
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-58031952-6', 'auto');
+ga('send', 'pageview');
+
+// Yandex.Metrika
+(function (d, w, c) {
+    (w[c] = w[c] || []).push(function() {
+        try {
+            w.yaCounter31611918 = new Ya.Metrika({
+                id:31611918,
+                clickmap:true,
+                trackLinks:true,
+                accurateTrackBounce:true
+            });
+        } catch(e) { }
+    });
+
+    var n = d.getElementsByTagName("script")[0],
+        s = d.createElement("script"),
+        f = function () { n.parentNode.insertBefore(s, n); };
+    s.type = "text/javascript";
+    s.async = true;
+    s.src = "https://mc.yandex.ru/metrika/watch.js";
+
+    if (w.opera == "[object Opera]") {
+        d.addEventListener("DOMContentLoaded", f, false);
+    } else { f(); }
+})(document, window, "yandex_metrika_callbacks");
+
+var metrika = $$('#metrika img');
+metrika.onclick = function() {
+    Ya.Metrika.informer({
+        id:31611918,
+        lang:'ru',
+        i:this
+    });
+    return false
+};

@@ -87,18 +87,17 @@ $manager = !Yii::$app->user->isGuest && Yii::$app->user->identity->isManager();
 
 <div id="metrika">
     <!-- Yandex.Metrika informer -->
-    <a href="https://metrika.yandex.ru/stat/?id=31493068&amp;from=informer"
+    <a href="https://metrika.yandex.ru/stat/?id=31611918&amp;from=informer"
        target="_blank" rel="nofollow">
-        <img src="https://mc.yandex.ru/informer/31493068/3_1_FFFFFFFF_FFFFFFFF_0_pageviews"
-             title="Яндекс.Метрика: данные за сегодня (просмотры, визиты и уникальные посетители)"
-             alt="Яндекс.Метрика" />
+        <img src="https://mc.yandex.ru/informer/31611918/3_0_209FFFFF_007FFFFF_0_pageviews"
+             alt="Яндекс.Метрика"
+             title="Яндекс.Метрика: данные за сегодня (просмотры, визиты и уникальные посетители)" />
     </a>
     <!-- /Yandex.Metrika informer -->
 </div>
-<!--<footer class="footer">-->
-<!--    <div class="container">-->
-<!--    </div>-->
-<!--</footer>-->
+<footer class="footer">
+    <?= Yii::t('app', 'Developed by') ?> <a href="http://zenothing.com">zenothing.com</a>
+</footer>
 
 <script src="/script.js"></script>
 <?php $this->endBody() ?>

@@ -21,19 +21,22 @@ $columns = [
     'name',
     'email:email',
     'account',
+    'phone',
     'skype',
+    'forename',
+    'surname',
     'perfect',
+    [
+        'attribute' => 'country',
+        'format' => 'html',
+        'value' => $model->country ? Html::tag('span', $model->country, ['class' => 'country']) : null
+    ],
     [
         'attribute' => 'timezone',
         'format' => 'html',
         'value' => Html::tag('span', $model->timezone ?: 'Europe/Moscow', ['class' => 'timezone'])
     ],
     'duration',
-    [
-        'attribute' => 'country',
-        'format' => 'html',
-        'value' => $model->country ? Html::tag('span', $model->country, ['class' => 'country']) : null
-    ],
 ];
 
 if (!Yii::$app->user->isGuest && Yii::$app->user->identity->isAdmin()) {
