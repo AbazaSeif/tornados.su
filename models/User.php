@@ -115,6 +115,11 @@ class User extends ActiveRecord implements IdentityInterface {
             'skype' => Yii::t('app', 'Skype'),
             'perfect' => Yii::t('app', 'Perfect Money wallet'),
             'duration' => Yii::t('app', 'Session duration (in minutes)'),
+            'timezone' => Yii::t('app', 'Timezone'),
+            'country' => Yii::t('app', 'Country'),
+            'phone' => Yii::t('app', 'Phone'),
+            'forename' => Yii::t('app', 'Forename'),
+            'surname' => Yii::t('app', 'Surname'),
         ];
     }
 
