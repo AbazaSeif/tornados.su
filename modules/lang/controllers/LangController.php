@@ -54,8 +54,17 @@ class LangController extends Controller
     public function actionCreate() {
         $model = new Translation();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            $command = Yii::$app->db->createCommand('INSERT INTO source_message("message") VALUES (:message) RETURNING id', [
+                ':message' => $model->message
+            ]);
+            $command->execute();
+            $id = (int) $command->pdoStatement->fetchColumn();
+            Yii::$app->db->createCommand('INSERT INTO message(id, translation) VALUES (:id, :translation)', [
+                ':id' => $id,
+                ':translation' => $model->translation
+            ])->execute();
+            return $this->redirect(['view', 'id' => $id]);
         }
 
         return $this->render('create', [
@@ -66,7 +75,15 @@ class LangController extends Controller
     public function actionUpdate($id)  {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model->validate()  ) {
+            Yii::$app->db->createCommand('UPDATE source_message SET "message" = :message WHERE id = :id', [
+                ':id' => $model->id,
+                ':message' => $model->message
+            ])->execute();
+            Yii::$app->db->createCommand('UPDATE "message" SET translation = :translation WHERE id = :id', [
+                ':id' => $model->id,
+                ':translation' => $model->translation
+            ])->execute();
             return $this->redirect(['index']);
         }
 
@@ -76,7 +93,9 @@ class LangController extends Controller
     }
 
     public function actionDelete($id) {
-        $this->findModel($id)->delete();
+        Yii::$app->db->createCommand('DELETE FROM source_message WHERE id = :id', [
+            ':id' => $id
+        ])->execute();
         return $this->redirect(['index']);
     }
 

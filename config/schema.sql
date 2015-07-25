@@ -46,16 +46,16 @@ CREATE VIEW "translation" AS
 
 CREATE OR REPLACE RULE translation_insert AS ON INSERT TO translation DO INSTEAD (
   INSERT INTO source_message(message) VALUES (new.message);
-  INSERT INTO "message"(id, translation) VALUES (lastval(), new.translation)
+  INSERT INTO "message"(id, translation) VALUES (lastval(), new.translation);
 );
 
 CREATE OR REPLACE RULE translation_update AS ON UPDATE TO translation DO INSTEAD (
-  UPDATE source_message SET id = new.id, "message" = new."message";
+  UPDATE source_message SET id = new.id, "message" = new."message" WHERE id = old.id;
   UPDATE "message" SET id = new.id, "translation" = new."translation" WHERE id = old.id
 );
 
 CREATE OR REPLACE RULE translation_delete AS ON DELETE TO translation DO INSTEAD (
-  DELETE FROM source_message;
+  DELETE FROM source_message WHERE id = old.id;
   DELETE FROM "message" WHERE id = old.id
 );
 
