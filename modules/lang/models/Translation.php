@@ -18,6 +18,10 @@ use yii\db\ActiveRecord;
  */
 class Translation extends ActiveRecord
 {
+    public static function primaryKey() {
+        return ['id'];
+    }
+
     public function rules() {
         return [
             [['id'], 'integer'],

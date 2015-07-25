@@ -28,11 +28,11 @@ $this->title = Yii::$app->name
         <img src="/img/asian.png" />
     </div>
     <dl>
-        <dt>Платежные системы</dt>
+        <dt><?= Yii::t('app', 'Payment systems') ?></dt>
         <dd>
             <img src="/img/perfectmoney.png" />
         </dd>
-        <dt>Посещения</dt>
+        <dt><?= Yii::t('app', 'Visits') ?></dt>
         <dd><?= $statistics ?></dd>
     </dl>
 </div>
