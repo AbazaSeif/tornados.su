@@ -1,7 +1,7 @@
 <?php
 use yii\console\Application;
 
-require_once __DIR__ . '/../boot.php';
+require_once __DIR__ . '/../config/boot.php';
 
 $app = new Application($config);
 
