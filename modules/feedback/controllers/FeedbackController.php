@@ -59,7 +59,8 @@ class FeedbackController extends Controller
                 $model->username = Yii::$app->user->identity->name;
             }
             if ($model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+                Yii::t('app', 'Your feedback will be reviewed soon');
+                return $this->redirect(['/home/index']);
             }
         }
         elseif (!Yii::$app->user->isGuest && $template) {

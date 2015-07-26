@@ -61,6 +61,7 @@ $config = [
                 'investments' => 'pyramid/node/index',
                 'income' => 'pyramid/income/index',
                 'translations' => 'lang/lang/index',
+                'contact-us' => 'feedback/feedback/create',
                 '/' => 'home/index',
             ],
         ],

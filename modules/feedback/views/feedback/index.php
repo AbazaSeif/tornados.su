@@ -64,7 +64,7 @@ $this->title = Yii::t('app', 'Feedbacks');
                 }
             ],
 
-            'time',
+            'time:datetime',
 
             [
                 'class' => 'yii\grid\ActionColumn',

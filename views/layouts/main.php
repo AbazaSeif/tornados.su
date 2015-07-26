@@ -42,7 +42,8 @@ $manager = !Yii::$app->user->isGuest && Yii::$app->user->identity->isManager();
 
     $items = [
         ['label' => Yii::t('app', 'Home'), 'url' => ['/home/index'], 'options' => ['class' => 'hideable']],
-        ['label' => Yii::t('app', 'Marketing'), 'url' => ['/pyramid/type/index']]
+        ['label' => Yii::t('app', 'Marketing'), 'url' => ['/pyramid/type/index']],
+        ['label' => Yii::t('app', 'Feedback'), 'url' => ['/feedback/feedback/' . ($manager ? 'index' : 'create')]]
     ];
 
     if (Yii::$app->user->isGuest) {

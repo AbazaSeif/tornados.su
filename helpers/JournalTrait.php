@@ -24,6 +24,6 @@ trait JournalTrait {
     }
 
     public function getIp() {
-        return long2ip($this->record->ip);
+        return $this->record->ip;
     }
 }

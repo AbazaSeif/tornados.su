@@ -27,6 +27,7 @@ class Record extends ActiveRecord
     private static $_classes = [
         'user' => 'app\models\User',
         'invoice' => 'app\modules\invoice\models\Invoice',
+        'feedback' => 'app\modules\feedback\models\Feedback',
     ];
 
     private static $_cache = [];
