@@ -83,7 +83,7 @@ class Journal extends Behavior {
             ':event' => $event,
             ':object_id' => $object_id,
             ':data' => $data,
-            ':user_name' => $user->isGuest ? null : $user->identity->name,
+            ':user_name' => $user->getIsGuest() ? null : $user->identity->name,
             ':ip' => $_SERVER['REMOTE_ADDR']
         ])->execute();
     }

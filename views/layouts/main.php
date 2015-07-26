@@ -2,6 +2,7 @@
 /**
  * @link http://zenothing.com/
 */
+
 use app\widgets\Alert;
 use app\helpers\AppAsset;
 use yii\helpers\Html;
@@ -29,13 +30,12 @@ $manager = !Yii::$app->user->isGuest && Yii::$app->user->identity->isManager();
 </head>
 <body>
 <div class="background"></div>
-<div class="navbar-border"></div>
 <?php $this->beginBody() ?>
 <div class="wrap <?= $login ?>">
     <header>
         <div class="brand">
-            <?= Html::img('/img/runner.png') ?>
-            <div>Marafon Invest</div>
+            <?= Html::img('/img/tornado.png') ?>
+            <div>Tornado Club</div>
         </div>
     </header>
     <?php
@@ -99,7 +99,6 @@ $manager = !Yii::$app->user->isGuest && Yii::$app->user->identity->isManager();
     <?= Yii::t('app', 'Developed by') ?> <a href="http://zenothing.com">zenothing.com</a>
 </footer>
 
-<script src="/script.js"></script>
 <?php $this->endBody() ?>
 </body>
 </html>

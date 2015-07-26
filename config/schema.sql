@@ -44,21 +44,6 @@ CREATE VIEW "translation" AS
   SELECT s.id, message, translation
   FROM source_message s JOIN message t ON s.id = t.id;
 
-CREATE OR REPLACE RULE translation_insert AS ON INSERT TO translation DO INSTEAD (
-  INSERT INTO source_message(message) VALUES (new.message);
-  INSERT INTO "message"(id, translation) VALUES (lastval(), new.translation);
-);
-
-CREATE OR REPLACE RULE translation_update AS ON UPDATE TO translation DO INSTEAD (
-  UPDATE source_message SET id = new.id, "message" = new."message" WHERE id = old.id;
-  UPDATE "message" SET id = new.id, "translation" = new."translation" WHERE id = old.id
-);
-
-CREATE OR REPLACE RULE translation_delete AS ON DELETE TO translation DO INSTEAD (
-  DELETE FROM source_message WHERE id = old.id;
-  DELETE FROM "message" WHERE id = old.id
-);
-
 
 CREATE TABLE "user" (
   id SERIAL PRIMARY KEY NOT NULL,
@@ -122,21 +107,9 @@ CREATE TABLE "type" (
 
 INSERT INTO "type"
   (id, stake, income) VALUES
-  (1,  10,    18),
-  (2,  20,    38),
-  (3,  50,    90),
-  (4,  100,   190),
-  (5,  150,   285),
-  (6,  200,   380),
-  (7,  300,   580),
-  (8,  500,   980),
-  (9,  700,   1375),
-  (10, 1000,  1950),
-  (11, 1200,  2330),
-  (12, 1300,  2520),
-  (13, 1500,  2900),
-  (14, 1700,  3300),
-  (15, 2000,  3900);
+  (1,  20,    38),
+  (2,  100,   190),
+  (3,  300,   580);
 
 
 CREATE TABLE "account" (
@@ -173,6 +146,16 @@ CREATE TABLE "income" (
   ON DELETE CASCADE ON UPDATE CASCADE
 );
 CREATE UNIQUE INDEX income_id ON "income" USING btree ("id");
+
+
+CREATE TABLE "feedback" (
+  id SERIAL PRIMARY KEY NOT NULL,
+  username VARCHAR(24) NOT NULL,
+  email VARCHAR(48),
+  subject VARCHAR(256) NOT NULL,
+  content TEXT NOT NULL
+);
+CREATE UNIQUE INDEX feedback_id ON "feedback" USING btree ("id");
 
 
 CREATE TABLE "visit_agent" (

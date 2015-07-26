@@ -76,7 +76,7 @@ class User extends ActiveRecord implements IdentityInterface {
         return [
             ['id', 'integer'],
             [['name', 'email', 'perfect', 'account'], 'required'],
-            ['password', 'required', 'on' => 'signup'],
+            [['password', 'repeat'], 'required', 'on' => 'signup'],
             ['name', 'string', 'min' => 4, 'max' => 24],
             ['name', 'match', 'pattern' => '/^[a-z][a-z0-9_\-]+$/i', 'on' => 'signup'],
             [['name'], 'unique',
@@ -111,6 +111,7 @@ class User extends ActiveRecord implements IdentityInterface {
             'name' => Yii::t('app', 'Username'),
             'email' => Yii::t('app', 'Email'),
             'password' => Yii::t('app', 'Password'),
+            'repeat' => Yii::t('app', 'Repeat'),
             'status' => Yii::t('app', 'Status'),
             'account' => Yii::t('app', 'Account'),
             'skype' => Yii::t('app', 'Skype'),

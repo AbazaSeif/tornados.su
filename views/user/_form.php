@@ -5,6 +5,7 @@
 
 use app\models\User;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
@@ -12,7 +13,7 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 
 function submit($label) {
-    return Html::tag('div', Html::submitButton($label, ['class' => 'btn btn-success']), ['class' => 'form-group']);
+    return Html::submitButton($label, ['class' => 'btn btn-success']);
 }
 
 $form = ActiveForm::begin();
@@ -29,18 +30,14 @@ if ('signup' == $model->scenario) {
     echo $form->field($model, 'repeat')->passwordInput();
 }
 
-if ($model->isNewRecord || Yii::$app->user->identity->isAdmin()) {
-    echo $form->field($model, 'perfect');
-}
-else {
-    $a = Html::a('обратитесь к адмнинистратору', ['feedback/create', 'template' => 'wallet']);
-    echo "<div class='form-group'>Для изменения кошелька $a</div>";
-}
-
 if (!Yii::$app->user->isGuest && Yii::$app->user->identity->isAdmin()) {
     echo $form->field($model, 'account');
     echo $form->field($model, 'status')->dropDownList(User::statuses());
 }
+
+echo $form->field($model, 'phone');
+echo $form->field($model, 'forename');
+echo $form->field($model, 'surname');
 
 if (!$model->isNewRecord) {
     echo $form->field($model, 'duration')->textInput(['title' => Yii::t('app', 'Session duration')]);
@@ -48,9 +45,16 @@ if (!$model->isNewRecord) {
 
     $zones = timezone_identifiers_list();
     echo $form->field($model, 'timezone')->dropDownList(array_combine($zones, $zones));
-    echo $form->field($model, 'phone');
-    echo $form->field($model, 'forename');
-    echo $form->field($model, 'surname');
+}
+
+if ($model->isNewRecord || Yii::$app->user->identity->isAdmin()) {
+    echo $form->field($model, 'perfect');
+}
+else {
+    echo Html::tag('div', Yii::t('app', 'To change a wallet you need <a href="{url}">write to admin</a>', [
+        'url' => Url::to(['feedback/feedback/create', 'template' => 'wallet'])
+    ]),
+        ['class' => 'form-group']);
 }
 
 echo Html::tag('div', '* ' . Yii::t('app', 'Required fields'), ['class' => 'form-group']);
