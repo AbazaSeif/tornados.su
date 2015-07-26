@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /investments
+Disallow: /income
+Disallow: /info.php
+Disallow: /administrator/
+
+sitemap: http://tornado-club-invest.ru/sitemap.xml
