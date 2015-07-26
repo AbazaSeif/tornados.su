@@ -53,9 +53,15 @@ if (!Yii::$app->user->isGuest) {
 <div class="type-index">
     <h1 class="bagatelle"><?= Html::encode($this->title) ?></h1>
 
+    <div class="form-group">Для удобства работы в нашем проекте, администрация проекта решила создать
+        три тарифных плана для  потенциальных клиентов нашего проекта.
+        Маркетинг план состоит из 3 активных планов для заработка в нашем проекте</div>
+
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'summary' => '',
         'columns' => $columns
     ]); ?>
+
+    <?= Yii::t('app', "After two users signup and open a plan you'll receive reward") ?>
 </div>
