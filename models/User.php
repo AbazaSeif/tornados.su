@@ -86,7 +86,6 @@ class User extends ActiveRecord implements IdentityInterface {
             ['perfect', 'match', 'pattern' => '/^U\d{7}$/', 'message' =>
                 Yii::t('app', 'The wallet should looks like U1234567')],
             ['skype', 'match', 'pattern' => '/^[a-zA-Z][a-zA-Z0-9\.,\-_]{5,31}$/'],
-            [['skype', 'timezone', 'country', 'phone', 'forename', 'surname'], 'default', 'value' => null],
             [['skype', 'timezone', 'country', 'phone', 'forename', 'surname', 'name', 'email', 'perfect'],
                 'filter', 'filter' => 'trim'],
             ['duration', 'integer', 'min' => 0, 'max' => 60 * 24 * 7],

@@ -115,6 +115,12 @@ class UserController extends Controller
                 $model->timezone = null;
             }
 
+            foreach(['skype', 'country', 'phone', 'forename', 'surname'] as $name) {
+                if (empty($model->$name)) {
+                    $model->$name = null;
+                }
+            }
+
             if (Yii::$app->user->identity->name == $model->name && $model->isAttributeChanged('timezone', false)) {
                 $_SESSION['timezone'] = $model->timezone;
             }
@@ -123,6 +129,11 @@ class UserController extends Controller
                 return $this->redirect(['view', 'name' => $model->name]);
             }
         }
+
+        if (!$model->timezone) {
+            $model->timezone = 'Europe/Moscow';
+        }
+
         return $this->render('update', [
             'model' => $model,
         ]);
