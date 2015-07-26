@@ -12,6 +12,7 @@ use app\modules\invoice\models\Invoice;
 use app\modules\invoice\models\search\Invoice as InvoiceSearch;
 use Exception;
 use Yii;
+use yii\db\Transaction;
 use yii\web\Controller;
 use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
@@ -200,14 +201,14 @@ class InvoiceController extends Controller
 
 
     public function actionWithdraw($id) {
+        $transaction = Yii::$app->db->beginTransaction();
         if (!Yii::$app->perfect->id) {
             $invoice = $this->findModel($id);
-            $invoice->saveStatus('success');
+            static::withdrawSuccessful($invoice, $transaction);
             return $this->render('view', [
                 'model' => $invoice
             ]);
         }
-        $transaction = Yii::$app->db->beginTransaction();
         $invoice = $this->findModel($id);
         $invoice->scenario = 'withdraw';
         try {
@@ -244,19 +245,7 @@ class InvoiceController extends Controller
                     }
                     else {
                         $invoice->batch = $info['PAYMENT_BATCH_NUM'];
-                        $invoice->status = 'success';
-                        $invoice->user->account -= abs($invoice->amount);
-                        if ($invoice->user->save() && $invoice->save()) {
-                            $transaction->commit();
-                            Yii::$app->session->setFlash('success', Yii::t('app', 'Payment #{id} completed', [
-                                'id' => $invoice->id,
-                            ]));
-                        }
-                        else {
-                            Yii::$app->session->setFlash('error', json_encode(
-                                array_merge($invoice->user->errors, $invoice->errors),
-                                JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
-                        }
+                        static::withdrawSuccessful($invoice, $transaction);
                     }
                 }
             }
@@ -270,6 +259,21 @@ class InvoiceController extends Controller
         ]);
     }
 
+    protected static function withdrawSuccessful(Invoice $invoice, Transaction $transaction) {
+        $invoice->status = 'success';
+        $invoice->user->account -= abs($invoice->amount);
+        if ($invoice->user->save() && $invoice->save()) {
+            $transaction->commit();
+            Yii::$app->session->setFlash('success', Yii::t('app', 'Payment #{id} completed', [
+                'id' => $invoice->id,
+            ]));
+        }
+        else {
+            Yii::$app->session->setFlash('error', json_encode(
+                array_merge($invoice->user->errors, $invoice->errors),
+                JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+        }
+    }
 
     /**
      * Finds the Invoice model based on its primary key value.

@@ -18,18 +18,6 @@ use yii\web\ForbiddenHttpException;
  * @author Taras Labiak <kissarat@gmail.com>
  */
 class HomeController extends Controller {
-    public function behaviors() {
-        return [
-            'cache' => [
-                'class' => 'yii\filters\PageCache',
-                'only' => ['index'],
-                'duration' => 300,
-                'enabled' => true,
-                'variations' => [Yii::$app->user->getIsGuest(), Yii::$app->language]
-            ],
-        ];
-    }
-
     public function actionIndex() {
         return $this->render('index', [
             'statistics' => $this->renderPartial('statistics', ['statistics' => static::statistics()]),
@@ -51,8 +39,8 @@ class HomeController extends Controller {
     }
 
     public static function statistics() {
-        $started = strtotime(Record::find()->min('time'));
-        $invested = SQL::queryCell('SELECT count(*) FROM "node"');
+        $started = strtotime(SQL::queryCell('SELECT "time" FROM "journal" WHERE id = 1'));
+        $invested = (int) SQL::queryCell('SELECT count(*) FROM "node"');
         return [
             'Started' => date('d-m-Y', $started),
             'Running days' => floor((time() - $started)/(3600 * 24)),
