@@ -18,6 +18,18 @@ use yii\web\ForbiddenHttpException;
  * @author Taras Labiak <kissarat@gmail.com>
  */
 class HomeController extends Controller {
+
+    public function behaviors() {
+        return [
+            'cache' => [
+                'class' => 'yii\filters\PageCache',
+                'only' => ['index'],
+                'duration' => 300,
+                'enabled' => true
+            ],
+        ];
+    }
+
     public function actionIndex() {
         return $this->render('index', [
             'statistics' => $this->renderPartial('statistics', ['statistics' => static::statistics()]),

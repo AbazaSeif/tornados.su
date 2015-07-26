@@ -85,10 +85,8 @@ table .action {
 
 .bagatelle {
     display: inline-block;
-    padding-left: 70px;
-    line-height: 50px;
-    background: url("/img/bagatelle.svg") no-repeat -10px;
-    background-size: 60%;
+    padding-left: 60px;
+    background: url("/img/bagatelle.png") no-repeat left;
 }
 
 .navbar-default .navbar-nav {

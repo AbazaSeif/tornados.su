@@ -85,7 +85,7 @@ else {
         <div class="form-group">
             <?php
             if (empty($parent)) {
-                echo Html::a(Yii::t('app', 'Open'), ['plan'], ['class' => 'btn btn-success']);
+                echo Html::a(Yii::t('app', 'Open'), ['/pyramid/type/index'], ['class' => 'btn btn-success']);
             }
             else {
                 if (!Yii::$app->user->isGuest && Yii::$app->user->identity->isManager()) {

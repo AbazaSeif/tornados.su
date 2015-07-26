@@ -3,14 +3,21 @@
  * @link http://zenothing.com/
 */
 
+if (empty($_COOKIE['lang'])) {
+    $language = empty($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? '' : $_SERVER['HTTP_ACCEPT_LANGUAGE'];
+    $language = preg_match('/(ru|uk|be|ky|ab|mo|et|lv)/i', $language) ? 'ru' : 'en';
+}
+else {
+    $language = 'en';
+}
+
 $config = [
     'id' => 'tornado-club',
     'name' => 'Tornado Club',
     'basePath' => __DIR__ . '/..',
     'bootstrap' => ['log'],
     'defaultRoute' => 'home/index',
-    'language' => empty($_COOKIE['lang']) ? 'ru' : 'en',
-//    'timeZone' => $timezone,
+    'language' => $language,
     'charset' => 'utf-8',
     'components' => [
         'cache' => [
