@@ -3,11 +3,9 @@
  * @link http://zenothing.com/
 */
 
-//$timezone = empty($_SESSION['timezone']) ? 'Europe/Moscow' : $_SESSION['timezone'];
-//date_default_timezone_set($timezone);
 $config = [
-    'id' => 'marafon-invest',
-    'name' => 'Marafon Invest',
+    'id' => 'tornado-club',
+    'name' => 'Tornado Club',
     'basePath' => __DIR__ . '/..',
     'bootstrap' => ['log'],
     'defaultRoute' => 'home/index',
@@ -35,7 +33,17 @@ $config = [
             'rules' => [
                 'plan<id:\d+>/open' => 'pyramid/type/open',
                 'plan<id:\d+>' => 'pyramid/type/view',
+                'invoices/user/<user:[\w_\-\.]+>' => 'invoice/invoice/index',
+                'investments/user/<user:[\w_\-\.]+>' => 'pyramid/node/invest',
                 'investment/<id:\d+>' => 'pyramid/node/index',
+                'journal/<id:\d+>' => 'journal/view',
+                'feedback/template/<template:\w+>' => 'feedback/create',
+                '<scenario:(withdraw|payment)>/user/<user:[\w_\-\.]+>' => 'invoice/index',
+                '<scenario:(withdraw|payment)>/create' => 'invoice/create',
+                '<scenario:(withdraw|payment)>' => 'invoice/index',
+                'settings/<name:[\w_\-\.]+>' => 'user/update',
+                'password/<name:[\w_\-\.]+>' => 'user/password',
+                'reset/<code:[\w_\-]+>' => 'user/password',
                 'login' => 'user/login',
                 'register' => 'user/signup',
                 'cabinet' => 'user/view',
