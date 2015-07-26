@@ -4,6 +4,7 @@
  */
 
 namespace app\modules\pyramid\controllers;
+use app\modules\pyramid\models\Income;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
@@ -21,7 +22,20 @@ class IncomeController extends Controller {
                 'actions' => [
                     'delete' => ['post'],
                 ]
-            ]
+            ],
+
+            'cache' => [
+                'class' => 'yii\filters\HttpCache',
+                'cacheControlHeader' => 'must-revalidate, private',
+                'only' => ['index'],
+                'lastModified' => function ($action, $params) {
+                    $query = Income::find();
+                    if (isset($params['user'])) {
+                        $query->where(['user_name' => $params['user']]);
+                    }
+                    return (int) $query->max('time');
+                },
+            ],
         ];
     }
 

@@ -67,7 +67,8 @@ $config = [
         'i18n' => [
             'translations' => [
                 'app*' => [
-                    'class' => 'yii\i18n\DbMessageSource'
+                    'class' => 'yii\i18n\DbMessageSource',
+                    'enableCaching' => true
                 ]
             ]
         ],

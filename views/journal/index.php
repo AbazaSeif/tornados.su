@@ -3,6 +3,7 @@
  * @link http://zenothing.com/
 */
 
+use app\models\Record;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
@@ -26,22 +27,22 @@ $this->title = Yii::t('app', 'Journal');
             [
                 'attribute' => 'type',
                 'format' => 'html',
-                'value' => function($record) {
+                'value' => function(Record $record) {
                     return Yii::t('app', $record->type);
                 }
             ],
             [
                 'attribute' => 'event',
                 'format' => 'html',
-                'value' => function($record) {
+                'value' => function(Record $record) {
                     return Html::a(Yii::t('app', $record->event), ['journal/view', 'id' => $record->id]);
                 }
             ],
             [
                 'attribute' => 'object_id',
                 'format' => 'html',
-                'value' => function($record) {
-                    $object = $record->object;
+                'value' => function(Record $record) {
+                    $object = $record->getObject();
                     if ($object) {
                         return Html::a($object, method_exists($object, 'url')
                             ? $object->url()

@@ -79,9 +79,6 @@ if (!Yii::$app->user->isGuest && Yii::$app->user->identity->isAdmin()) {
                     ],
                 ]);
             }
-            if ($model->isManager()) {
-                echo ' ' . Html::a(Yii::t('app', 'Accounts'), ['account'], ['class' => 'btn btn-primary']);
-            }
         }
         ?>
     </div>

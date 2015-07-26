@@ -1,13 +1,12 @@
 <?php
 /**
  * @link http://zenothing.com/
-*/
+ */
 
 namespace app\models\search;
 
 use app\models\User;
 use Yii;
-use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\models\Record as RecordModel;
 
@@ -17,24 +16,11 @@ use app\models\Record as RecordModel;
  */
 class Record extends RecordModel
 {
-    /**
-     * @inheritdoc
-     */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['id', 'object_id', 'ip'], 'integer'],
             [['type', 'event', 'data', 'user_name', 'time'], 'safe'],
         ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function scenarios()
-    {
-        // bypass scenarios() implementation in the parent class
-        return Model::scenarios();
     }
 
     /**
@@ -44,8 +30,7 @@ class Record extends RecordModel
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
-    {
+    public function search($params) {
         $query = RecordModel::find();
 
         $dataProvider = new ActiveDataProvider([

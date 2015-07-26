@@ -482,6 +482,7 @@ if ($timezone) {
 })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
 ga('create', 'UA-58031952-6', 'auto');
+ga('require', 'linkid', 'linkid.js');
 ga('send', 'pageview');
 
 // Yandex.Metrika

@@ -23,7 +23,20 @@ class NodeController extends Controller
             'access' => [
                 'class' => Access::class,
                 'manager' => ['create', 'update', 'delete']
-            ]
+            ],
+
+            'cache' => [
+                'class' => 'yii\filters\HttpCache',
+                'cacheControlHeader' => 'must-revalidate, private',
+                'only' => ['index'],
+                'lastModified' => function ($action, $params) {
+                    $query = Node::find();
+                    if (isset($params['user'])) {
+                        $query->where(['user_name' => $params['user']]);
+                    }
+                    return (int) $query->max('time');
+                },
+            ],
         ];
     }
 

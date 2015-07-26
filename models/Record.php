@@ -5,7 +5,6 @@
 
 namespace app\models;
 
-use app\modules\invoice\models\Invoice;
 use Yii;
 use yii\db\ActiveRecord;
 
@@ -25,10 +24,22 @@ use yii\db\ActiveRecord;
 class Record extends ActiveRecord
 {
     private $_object;
+    private static $_classes = [
+        'user' => 'app\models\User',
+        'invoice' => 'app\modules\invoice\models\Invoice',
+    ];
+
+    private static $_cache = [];
 
     public function getObject() {
-        if (is_null($this->_object)) {
-            $this->_object = call_user_func([$this, $this->type]);
+        if ($this->object_id && !$this->_object) {
+            if (isset(static::$_cache[$this->object_id])) {
+                $this->_object = static::$_cache[$this->object_id];
+            }
+            else {
+                $this->_object = forward_static_call([static::$_classes[$this->type], 'findOne'], [$this->object_id]);
+                static::$_cache[$this->object_id] = $this->_object;
+            }
         }
         return $this->_object;
     }
@@ -37,24 +48,11 @@ class Record extends ActiveRecord
         return unserialize($this->data);
     }
 
-    public function user() {
-        return User::findOne($this->object_id);
-    }
-
-    public function invoice() {
-        return Invoice::findOne($this->object_id);
-    }
-
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'journal';
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['type', 'event'], 'required'],
             [['object_id', 'ip'], 'integer'],
@@ -65,11 +63,7 @@ class Record extends ActiveRecord
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => Yii::t('app', 'ID'),
             'type' => Yii::t('app', 'Type'),

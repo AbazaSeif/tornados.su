@@ -1,20 +1,13 @@
 <?php
 /**
  * @link http://zenothing.com/
- */
-
-use app\widgets\Ext;
-
-/**
  * @var string $statistics
  */
 
 $this->title = Yii::$app->name
 ?>
 <div class="home-index">
-    <?= Ext::stamp() ?>
-    <div class="top">
-    </div>
+    <div class="top"></div>
     <div class="bottom">
         <div>
             <h2>Наши преимущества</h2>

@@ -18,14 +18,14 @@ use yii\web\ForbiddenHttpException;
  * @author Taras Labiak <kissarat@gmail.com>
  */
 class HomeController extends Controller {
-
     public function behaviors() {
         return [
             'cache' => [
                 'class' => 'yii\filters\PageCache',
                 'only' => ['index'],
                 'duration' => 300,
-                'enabled' => true
+                'enabled' => true,
+                'variations' => [Yii::$app->user->getIsGuest(), Yii::$app->language]
             ],
         ];
     }

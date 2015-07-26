@@ -32,7 +32,20 @@ class JournalController extends Controller
             'access' => [
                 'class' => Access::class,
                 'plain' => ['index', 'view']
-            ]
+            ],
+
+            'cache' => [
+                'class' => 'yii\filters\HttpCache',
+                'cacheControlHeader' => 'must-revalidate, private',
+                'only' => ['index'],
+                'lastModified' => function ($action, $params) {
+                    $query = Record::find();
+                    if (isset($params['user'])) {
+                        $query->where(['user_name' => $params['user']]);
+                    }
+                    return strtotime($query->max('time'));
+                },
+            ],
         ];
     }
 
