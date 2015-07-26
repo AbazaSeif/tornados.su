@@ -4,6 +4,7 @@
  */
 
 use app\models\User;
+use app\widgets\Ext;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
@@ -15,6 +16,8 @@ use yii\widgets\ActiveForm;
 function submit($label) {
     return Html::submitButton($label, ['class' => 'btn btn-success']);
 }
+
+echo Ext::stamp();
 
 $form = ActiveForm::begin();
 
@@ -35,11 +38,10 @@ if (!Yii::$app->user->isGuest && Yii::$app->user->identity->isAdmin()) {
     echo $form->field($model, 'status')->dropDownList(User::statuses());
 }
 
-echo $form->field($model, 'phone');
-echo $form->field($model, 'forename');
-echo $form->field($model, 'surname');
-
 if (!$model->isNewRecord) {
+    echo $form->field($model, 'phone');
+    echo $form->field($model, 'forename');
+    echo $form->field($model, 'surname');
     echo $form->field($model, 'duration')->textInput(['title' => Yii::t('app', 'Session duration')]);
     echo $form->field($model, 'country');
 

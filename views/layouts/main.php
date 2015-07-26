@@ -29,7 +29,6 @@ $manager = !Yii::$app->user->isGuest && Yii::$app->user->identity->isManager();
     <?php $this->head() ?>
 </head>
 <body>
-<div class="background"></div>
 <?php $this->beginBody() ?>
 <div class="wrap <?= $login ?>">
     <header>
@@ -84,6 +83,17 @@ $manager = !Yii::$app->user->isGuest && Yii::$app->user->identity->isManager();
         <?= Alert::widget() ?>
         <?= $content ?>
     </div>
+</div>
+
+<div class="background"></div>
+<div id="linux">
+    <div>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Tux.svg/150px-Tux.svg.png" />
+    </div>
+    <?= Html::tag('div', Yii::t('app', 'Welcome, Linux user. We are glad you use open source software!'), [
+        'class' => 'welcome'
+    ]) ?>
+    <div class="glyphicon glyphicon-remove"></div>
 </div>
 
 <div id="metrika">

@@ -3,7 +3,7 @@
  * @link http://zenothing.com/
 */
 
-use yii\authclient\widgets\AuthChoice;
+use app\widgets\Ext;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
@@ -15,6 +15,7 @@ use yii\widgets\ActiveForm;
 $this->title = Yii::t('app', 'Login');
 ?>
 <div class="user-login">
+    <?= Ext::stamp() ?>
     <h1 class="bagatelle"><?= $this->title ?></h1>
     <?php $form = ActiveForm::begin(); ?>
 

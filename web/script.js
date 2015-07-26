@@ -171,9 +171,28 @@ addEventListener('beforeunload', function() {
     request.send(null);
 });
 
+function browser(string) {
+    return navigator.userAgent.indexOf(string) >= 0;
+}
+
 var $footer = $$('.footer');
-if ($footer && navigator.userAgent.indexOf('Windows') >= 0) {
+if ($footer && browser('Windows')) {
     $footer.remove();
+}
+
+if (window.localStorage) {
+    if (!localStorage.getItem('first')) {
+        localStorage.setItem('first', new Date().toISOString());
+    }
+
+    var $linux = $$('#linux');
+    if ($linux && !localStorage.getItem('linux') && browser('Linux') && !browser('Android')) {
+        $linux.onclick = function () {
+            localStorage.setItem('linux', true);
+            this.remove();
+        };
+        $linux.style.display = 'table-row';
+    }
 }
 
 var countries = {

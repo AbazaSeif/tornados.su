@@ -272,7 +272,8 @@ p {
 
 .bottom dt {
     font-size: 1.6em;
-    line-height: 9mm;
+    margin-top: 3mm;
+    margin-bottom: 1mm;
 }
 
 .bottom dt:after {
@@ -300,6 +301,41 @@ button, input, optgroup, select, textarea {
 
 .breadcrumb {
     background-color: #003147;
+}
+
+#linux {
+    position: fixed;
+    display: none;
+    vertical-align: top;
+    top: 33%;
+    background-color: #000000;
+    width: 100vw;
+    z-index: 1;
+    border-top: 1mm solid blue;
+    border-bottom: 1mm solid blue;
+    text-align: center;
+    margin: auto;
+    cursor: pointer;
+}
+
+#linux > * {
+    width: 30%;
+    display: table-cell;
+    vertical-align: top;
+    padding: 1em;
+}
+
+#linux > *:first-child {
+    text-align: right;
+}
+
+#linux > *:last-child {
+    text-align: left;
+}
+
+#linux .welcome {
+    font-size: 1.5em;
+    vertical-align: middle;
 }
 
 .has-success
@@ -344,5 +380,9 @@ button, input, optgroup, select, textarea {
     .top {
         border-radius: 0;
         border: none;
+    }
+
+    #linux > * {
+        width: auto;
     }
 }

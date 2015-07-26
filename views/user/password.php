@@ -3,7 +3,7 @@
  * @link http://zenothing.com/
 */
 
-use yii\authclient\widgets\AuthChoice;
+use app\widgets\Ext;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -29,6 +29,7 @@ if ($message):
 else:
     ?>
     <div class="user-password">
+        <?= Ext::stamp() ?>
         <h1><?= $this->title ?></h1>
         <?php $form = ActiveForm::begin(); ?>
 
