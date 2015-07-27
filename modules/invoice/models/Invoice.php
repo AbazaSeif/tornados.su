@@ -107,4 +107,8 @@ class Invoice extends ActiveRecord
     public function throwJournalException($message) {
         throw new JournalException(static::tableName(), $this->id, 'fail', $message);
     }
+
+    public function journalView() {
+        return __DIR__ . '/../views/invoice/journal.php';
+    }
 }

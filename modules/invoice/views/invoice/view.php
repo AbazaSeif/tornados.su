@@ -22,7 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <div class="form-group">
         <?php if (Yii::$app->user->identity->isManager()): ?>
             <?php
-            if ('success' != $model->status) {
+            if ('success' != $model->status && $model->amount < 0) {
                 echo Html::a(Yii::t('app', 'Withdraw'), ['withdraw', 'id' => $model->id], ['class' => 'btn btn-warning']);
             }
             ?>

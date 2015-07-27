@@ -241,7 +241,7 @@ class User extends ActiveRecord implements IdentityInterface {
         $this->setBundle($bundle);
     }
 
-    public function getNodes() {
-        return $this->hasMany(Node::class, ['user_name' => 'name']);
+    public function journalView() {
+        return __DIR__ . '/../views/user/journal.php';
     }
 }

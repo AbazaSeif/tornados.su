@@ -6,7 +6,9 @@
 namespace app\behaviors;
 
 
+use app\models\search\Record;
 use Exception;
+use ReflectionClass;
 use Yii;
 use yii\base\Behavior;
 use yii\base\Event;
@@ -15,8 +17,16 @@ use yii\db\ActiveRecord;
 
 /**
  * @author Taras Labiak <kissarat@gmail.com>
+ * @property ActiveRecord $owner
  */
 class Journal extends Behavior {
+//    public function init() {
+//        parent::init();
+//        $reflection = new ReflectionClass($this->object);
+//        $class = $reflection->getName();
+//        Record::addClass(forward_static_call([$class, 'tableName']) , $class);
+//    }
+
     public function events() {
         return [
             ActiveRecord::EVENT_AFTER_INSERT => 'writeEvent',

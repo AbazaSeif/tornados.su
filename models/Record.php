@@ -32,17 +32,33 @@ class Record extends ActiveRecord
 
     private static $_cache = [];
 
+    public static function addClass($table, $name) {
+        $_classes[$table] = $name;
+    }
+
     public function getObject() {
         if ($this->object_id && !$this->_object) {
-            if (isset(static::$_cache[$this->object_id])) {
-                $this->_object = static::$_cache[$this->object_id];
+            if (isset(static::$_cache[$this->type . $this->object_id])) {
+                $this->_object = static::$_cache[$this->type . $this->object_id];
             }
             else {
                 $this->_object = forward_static_call([static::$_classes[$this->type], 'findOne'], [$this->object_id]);
-                static::$_cache[$this->object_id] = $this->_object;
+                static::$_cache[$this->type . $this->object_id] = $this->_object;
             }
         }
         return $this->_object;
+    }
+
+    public function getView() {
+        $object = $this->getObject();
+        if ($object) {
+            if (method_exists($object, 'journalView')) {
+                return Yii::$app->view->renderFile(call_user_func([$object, 'journalView']), [
+                    'record' => $this
+                ]);
+            }
+        }
+        return false;
     }
 
     public function getInfo() {

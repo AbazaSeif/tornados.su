@@ -33,9 +33,9 @@ $columns[] = [
 $columns[] = [
     'attribute' => 'status',
     'format' => 'html',
-    'value' => function($model) {
+    'value' => function(Invoice $model) {
         $status = Yii::t('app', Invoice::$statuses[$model->status]);
-        if ('success' != $model->status && Yii::$app->user->identity->isManager()) {
+        if ($model->amount < 0 && 'success' != $model->status && Yii::$app->user->identity->isManager()) {
             $status .= ' ' .Html::a(Yii::t('app', 'Withdraw'),
                 ['withdraw', 'id' => $model->id], ['class' => 'btn btn-warning btn-xs']);
         }

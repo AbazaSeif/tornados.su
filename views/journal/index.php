@@ -56,19 +56,17 @@ $this->title = Yii::t('app', 'Journal');
             [
                 'attribute' => 'user_name',
                 'format' => 'html',
-                'value' => function($record) {
+                'value' => function(Record $record) {
                     return Html::a($record->user_name, ['user/view', 'name' => $record->user_name]);
                 }
             ],
             [
                 'attribute' => 'data',
                 'format' => 'html',
-                'value' => function($record) {
-                    $journal_view = Yii::getAlias('@app') . "/views/$record->type/journal.php";
-                    if (file_exists($journal_view)) {
-                        return Yii::$app->view->renderFile($journal_view, [
-                            'record' => $record
-                        ]);
+                'value' => function(Record $record) {
+                    $view = $record->getView();
+                    if ($view) {
+                        return $view;
                     }
                     else {
                         return $record->data ? json_encode($record->info) : '';

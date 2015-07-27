@@ -41,6 +41,7 @@ $config = [
                 'plan<id:\d+>/open' => 'pyramid/type/open',
                 'plan<id:\d+>' => 'pyramid/type/view',
                 'invoices/user/<user:[\w_\-\.]+>' => 'invoice/invoice/index',
+                'invoice/<id:\d+>' => 'invoice/invoice/view',
                 'investments/user/<user:[\w_\-\.]+>' => 'pyramid/node/index',
                 'investment/<id:\d+>' => 'pyramid/node/index',
                 'income/user/<user:[\w_\-\.]+>' => 'pyramid/income/index',
