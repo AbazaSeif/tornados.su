@@ -115,16 +115,17 @@ CREATE UNIQUE INDEX invoice_id ON "invoice" USING btree ("id");
   see app\modules\pyramid\models\Type */
 CREATE TABLE "type" (
   id     SMALLINT NOT NULL PRIMARY KEY,
+  "name" VARCHAR(4) NOT NULL,
   stake  SMALLINT NOT NULL,
   income SMALLINT NOT NULL
 );
 
 INSERT INTO "type"
-  (id, stake, income) VALUES
-  (1,  20,    38),
-  (2,  100,   190),
-  (3,  100,   280),
-  (4,  300,   580);
+  (id, "name",    stake, income) VALUES
+  (1,  'Calm',    20,    38),
+  (2,  'Breeze',  100,   190),
+  (3,  'Vortex',  100,   280),
+  (4,  'Tornado', 300,   580);
 
 
 /* Site balance */

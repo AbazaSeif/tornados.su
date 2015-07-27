@@ -35,7 +35,7 @@ $manager = !Yii::$app->user->isGuest && Yii::$app->user->identity->isManager();
     <header>
         <div class="brand">
             <?= Html::img('/img/tornado.png') ?>
-            <div>Tornado Club</div>
+            <div>Tornados</div>
         </div>
     </header>
     <?php

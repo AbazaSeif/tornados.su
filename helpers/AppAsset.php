@@ -12,7 +12,8 @@ class AppAsset extends AssetBundle
         'style.css'
     ];
     public $js = [
-        'script.js'
+        'script.js',
+        '//code.jivosite.com/script/widget/UfISoraQy5'
     ];
     public $depends = [
         'yii\web\YiiAsset',
