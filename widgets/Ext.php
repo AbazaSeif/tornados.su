@@ -11,6 +11,10 @@ use yii\helpers\Html;
 
 class Ext {
     public static function stamp() {
+        if (isset($_SERVER['HTTP_USER_AGENT']) && strpos($_SERVER['HTTP_USER_AGENT'], 'bot') !== false) {
+            return '';
+        }
+
         return Html::tag('div', implode('', [
             Html::a('Developed by zenothing.com', 'http://zenothing.com/'),
             "\n\n :: zenothing.com :: \n\n ---------------------- user agent info ---------------------- \n\n  ",

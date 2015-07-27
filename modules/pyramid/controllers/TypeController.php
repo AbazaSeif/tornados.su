@@ -53,7 +53,10 @@ class TypeController extends Controller {
             'user' => Yii::$app->user->identity
         ]);
 
-        if ($node->user->account >= $node->type->stake) {
+        if ($node->type->isSpecial() && !$node->user->isTeam()) {
+            Yii::$app->session->setFlash('error', Yii::t('app', 'You are not in team to open this plan'));
+        }
+        elseif ($node->user->account >= $node->type->stake) {
             $node->user->account -= $node->type->stake;
             $transaction = Yii::$app->db->beginTransaction();
             try {

@@ -40,6 +40,7 @@ class User extends ActiveRecord implements IdentityInterface {
     const ADMIN = 1;
     const PLAIN = 2;
     const MANAGER = 3;
+    const TEAM = 4;
 
     private $_password;
     private $_info;
@@ -54,7 +55,8 @@ class User extends ActiveRecord implements IdentityInterface {
             User::BLOCKED => Yii::t('app', 'Blocked'),
             User::ADMIN => Yii::t('app', 'Admin'),
             User::PLAIN => Yii::t('app', 'Registered'),
-            User::MANAGER => Yii::t('app', 'Manager')
+            User::MANAGER => Yii::t('app', 'Manager'),
+            User::TEAM => Yii::t('app', 'Team')
         ];
     }
 
@@ -183,6 +185,10 @@ class User extends ActiveRecord implements IdentityInterface {
 
     public function generateCode() {
         $this->code = Yii::$app->security->generateRandomString(64);
+    }
+
+    public function isTeam() {
+        return static::TEAM == $this->status || static::ADMIN == $this->status || static::MANAGER == $this->status;
     }
 
     public function isManager() {

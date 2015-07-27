@@ -123,7 +123,8 @@ INSERT INTO "type"
   (id, stake, income) VALUES
   (1,  20,    38),
   (2,  100,   190),
-  (3,  300,   580);
+  (3,  100,   280),
+  (4,  300,   580);
 
 
 /* Site balance */

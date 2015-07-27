@@ -48,14 +48,6 @@ class Type extends ActiveRecord
     }
 
     /**
-     * @return Type
-     */
-    public function getNext() {
-        $types = static::all();
-        return isset($types[$this->next_id]) ? $types[$this->next_id] : null;
-    }
-
-    /**
      * @return Type[]
      */
     public static function all() {
@@ -103,5 +95,9 @@ class Type extends ActiveRecord
      */
     public function getProfit() {
         return $this->stake * 2 - $this->income;
+    }
+
+    public function isSpecial() {
+        return 4 == $this->id;
     }
 }

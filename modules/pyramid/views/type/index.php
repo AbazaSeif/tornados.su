@@ -11,14 +11,22 @@ use yii\grid\GridView;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = Yii::t('app', 'Plans');
+$description = 'Для удобства работы в нашем проекте, администрация проекта решила создать
+        три тарифных плана для потенциальных клиентов нашего проекта.
+        Маркетинг план состоит из 3 активных планов для заработка в нашем проекте';
+
+$this->registerMetaTag([
+    'name' => 'description',
+    'content' => $description
+]);
 
 $columns = [
     [
         'attribute' => 'id',
         'label' => Yii::t('app', 'Name'),
         'format' => 'html',
-        'value' => function($model) {
-            return $model->name;
+        'value' => function(Type $model) {
+            return $model->getName();
         }
     ],
     [
@@ -39,8 +47,13 @@ if (!Yii::$app->user->isGuest) {
     $columns[] = [
         'label' => Yii::t('app', 'Action'),
         'format' => 'html',
-        'value' => function($model) {
-            if(Yii::$app->user->identity->account >= $model->stake) {
+        'value' => function(Type $model) {
+            /** @var \app\models\User $user */
+            $user = Yii::$app->user->identity;
+            if ($model->isSpecial() && !$user->isTeam()) {
+                return Yii::t('app', 'Team plan');
+            }
+            elseif ($user->account >= $model->stake) {
                 return Html::a('Open', ['view', 'id' => $model->id], ['class' => 'btn btn-success btn-sm']);
             }
             else {
@@ -53,9 +66,7 @@ if (!Yii::$app->user->isGuest) {
 <div class="type-index">
     <h1 class="bagatelle"><?= Html::encode($this->title) ?></h1>
 
-    <div class="form-group">Для удобства работы в нашем проекте, администрация проекта решила создать
-        три тарифных плана для  потенциальных клиентов нашего проекта.
-        Маркетинг план состоит из 3 активных планов для заработка в нашем проекте</div>
+    <?= Html::tag('div', $description, ['class' => 'form-group']) ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
