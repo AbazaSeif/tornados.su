@@ -202,16 +202,9 @@ class InvoiceController extends Controller
 
     public function actionWithdraw($id) {
         $transaction = Yii::$app->db->beginTransaction();
-        if (!Yii::$app->perfect->id) {
-            $invoice = $this->findModel($id);
-            static::withdrawSuccessful($invoice, $transaction);
-            return $this->render('view', [
-                'model' => $invoice
-            ]);
-        }
         $invoice = $this->findModel($id);
-        $invoice->scenario = 'withdraw';
         try {
+            $invoice->scenario = 'withdraw';
             if ('success' == $invoice->status) {
                 $transaction->rollBack();
                 Yii::$app->session->setFlash('info', Yii::t('app', 'Payment has already done previously'));
@@ -220,32 +213,36 @@ class InvoiceController extends Controller
                 $invoice->throwJournalException(Yii::t('app', Invoice::$statuses['insufficient_funds']));
             }
             else {
-                $withdrawal = Withdrawal::fromInvoice($invoice);
-                $response = file_get_contents('https://perfectmoney.is/acct/confirm.asp?' . $withdrawal);
-                if (!preg_match('/<h1>(.*)<\/h1>/', $response, $result)) {
-                    $invoice->throwJournalException($response);
-                }
-                elseif ('Spend' != $result[1]) {
-                    $invoice->throwJournalException($result[1]);
-                }
-                elseif (!preg_match_all("/<input name='(.*)' type='hidden' value='(.*)'>/",
-                    $response, $result, PREG_SET_ORDER)) {
-                    $invoice->throwJournalException($response);
+                if (!Yii::$app->perfect->id) {
+                    static::withdrawSuccessful($invoice, $transaction);
+                    return $this->render('view', [
+                        'model' => $invoice
+                    ]);
                 }
                 else {
-                    $info = [];
-                    foreach ($result as $row) {
-                        $info[$row[1]] = $row[2];
-                    }
-                    if (isset($info["ERROR"])) {
-                        $invoice->throwJournalException($info["ERROR"]);
-                    }
-                    elseif ($info['PAYMENT_AMOUNT'] != abs($invoice->amount)) {
-                        $invoice->throwJournalException(Yii::t('app', 'Invalid amount') . ' ' . $info['PAYMENT_AMOUNT']);
-                    }
-                    else {
-                        $invoice->batch = $info['PAYMENT_BATCH_NUM'];
-                        static::withdrawSuccessful($invoice, $transaction);
+                    $withdrawal = Withdrawal::fromInvoice($invoice);
+                    $response = file_get_contents('https://perfectmoney.is/acct/confirm.asp?' . $withdrawal);
+                    if (!preg_match('/<h1>(.*)<\/h1>/', $response, $result)) {
+                        $invoice->throwJournalException($response);
+                    } elseif ('Spend' != $result[1]) {
+                        $invoice->throwJournalException($result[1]);
+                    } elseif (!preg_match_all("/<input name='(.*)' type='hidden' value='(.*)'>/",
+                        $response, $result, PREG_SET_ORDER)
+                    ) {
+                        $invoice->throwJournalException($response);
+                    } else {
+                        $info = [];
+                        foreach ($result as $row) {
+                            $info[$row[1]] = $row[2];
+                        }
+                        if (isset($info["ERROR"])) {
+                            $invoice->throwJournalException($info["ERROR"]);
+                        } elseif ($info['PAYMENT_AMOUNT'] != abs($invoice->amount)) {
+                            $invoice->throwJournalException(Yii::t('app', 'Invalid amount') . ' ' . $info['PAYMENT_AMOUNT']);
+                        } else {
+                            $invoice->batch = $info['PAYMENT_BATCH_NUM'];
+                            static::withdrawSuccessful($invoice, $transaction);
+                        }
                     }
                 }
             }

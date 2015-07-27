@@ -1,3 +1,4 @@
+/* Yii log table using for debug only */
 CREATE TABLE "log" (
   "id"          SERIAL NOT NULL PRIMARY KEY,
   "level"       INT,
@@ -8,6 +9,7 @@ CREATE TABLE "log" (
 );
 
 
+/* Yii session table (not in use) */
 CREATE TABLE "session" (
   id CHAR(40) NOT NULL PRIMARY KEY,
   expire INT ,
@@ -15,6 +17,7 @@ CREATE TABLE "session" (
 );
 
 
+/* Yii cache storage table (not in use) */
 CREATE TABLE "cache" (
   id CHAR(128) NOT NULL PRIMARY KEY,
   expire INT,
@@ -22,6 +25,8 @@ CREATE TABLE "cache" (
 );
 
 
+/* Yii English source translation table */
+/* app\modules\lang\controllers\TranslationController uses this table */
 CREATE TABLE "source_message" (
   id SERIAL PRIMARY KEY,
   category VARCHAR(32) DEFAULT 'app',
@@ -30,6 +35,8 @@ CREATE TABLE "source_message" (
 CREATE UNIQUE INDEX message_id ON "source_message" USING btree ("id");
 
 
+/* Yii Russian target translation table */
+/* app\modules\lang\controllers\TranslationController uses this table */
 CREATE TABLE "message" (
   "id" INT,
   "language" VARCHAR(16) DEFAULT 'ru',
@@ -40,11 +47,14 @@ CREATE TABLE "message" (
 );
 
 
+/* English-Russian translation view */
 CREATE VIEW "translation" AS
   SELECT s.id, message, translation
-  FROM source_message s JOIN message t ON s.id = t.id;
+  FROM source_message s JOIN message t ON s.id = t.id
+  WHERE "language" = 'ru';
 
 
+/* User account, , see app\models\User */
 CREATE TABLE "user" (
   id SERIAL PRIMARY KEY NOT NULL,
   name VARCHAR(24) NOT NULL,
@@ -70,6 +80,7 @@ CREATE UNIQUE INDEX user_name ON "user" USING btree ("name");
 INSERT INTO "user"(name, email, status) VALUES ('admin', 'lab_tas@ukr.net', 1);
 
 
+/* User action log, see app\models\Record */
 CREATE TABLE "journal" (
   id SERIAL PRIMARY KEY NOT NULL,
   type VARCHAR(16) NOT NULL,
@@ -85,6 +96,7 @@ CREATE TABLE "journal" (
 );
 
 
+/* Payment (if amount > 0) and withdrawal (if amount < 0) table, see app\invoice\models\Invoice */
 CREATE TABLE "invoice" (
   id SERIAL PRIMARY KEY NOT NULL,
   user_name VARCHAR(24) NOT NULL,
@@ -99,6 +111,8 @@ CREATE TABLE "invoice" (
 CREATE UNIQUE INDEX invoice_id ON "invoice" USING btree ("id");
 
 
+/* Payment (if amount > 0) and withdrawal (if amount < 0) table,
+  see app\modules\pyramid\models\Type */
 CREATE TABLE "type" (
   id     SMALLINT NOT NULL PRIMARY KEY,
   stake  SMALLINT NOT NULL,
@@ -112,12 +126,14 @@ INSERT INTO "type"
   (3,  300,   580);
 
 
+/* Site balance */
 CREATE TABLE "account" (
   "profit" NUMERIC(8,2) NOT NULL DEFAULT 0
 );
 INSERT INTO "account" VALUES (0);
 
 
+/* Investments table, see app\modules\pyramid\models\Node */
 CREATE TABLE "node" (
   id SERIAL PRIMARY KEY NOT NULL,
   user_name VARCHAR(24) NOT NULL,
@@ -135,6 +151,7 @@ CREATE TABLE "node" (
 CREATE UNIQUE INDEX node_id ON "node" USING btree ("id");
 
 
+/* Income from investments log, see app\modules\pyramid\models\Income */
 CREATE TABLE "income" (
   id SERIAL PRIMARY KEY NOT NULL,
   node_id INT  NOT NULL,
@@ -148,6 +165,7 @@ CREATE TABLE "income" (
 CREATE UNIQUE INDEX income_id ON "income" USING btree ("id");
 
 
+/* User and guest feedback table for app\modules\feedback\models\Feedback */
 CREATE TABLE "feedback" (
   id SERIAL PRIMARY KEY NOT NULL,
   username VARCHAR(24) NOT NULL,
@@ -157,7 +175,8 @@ CREATE TABLE "feedback" (
 );
 CREATE UNIQUE INDEX feedback_id ON "feedback" USING btree ("id");
 
-
+/* see web/visit.php */
+/* Visitors list */
 CREATE TABLE "visit_agent" (
   "id" SERIAL PRIMARY KEY,
   "agent" VARCHAR(200),
@@ -167,6 +186,7 @@ CREATE INDEX visit_agent_agent ON "visit_agent" USING btree ("agent");
 CREATE INDEX visit_agent_ip ON "visit_agent" USING btree ("ip");
 
 
+/* Visitors log */
 CREATE TABLE "visit_path" (
   "id" SERIAL PRIMARY KEY,
   "agent_id" INT NOT NULL,
@@ -179,6 +199,7 @@ CREATE TABLE "visit_path" (
 );
 
 
+/* Visitors with user agent log view */
 CREATE VIEW "visit" AS
   SELECT p.id as id, agent_id, spend, "path", "time", ip, agent FROM visit_path p
     JOIN visit_agent a ON agent_id = a.id;
