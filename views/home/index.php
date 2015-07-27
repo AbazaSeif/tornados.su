@@ -4,18 +4,26 @@
  * @var string $statistics
  */
 
-$this->title = Yii::$app->name
+use yii\helpers\Html;
+
+$this->title = Yii::$app->name;
+$benefits = [
+    'Доступный вход',
+    'Никаких приглашений',
+    'Моментальные выплаты'
+];
+
+$this->registerMetaTag([
+    'name' => 'description',
+    'content' => implode(' ⬤ ', $benefits)
+]);
 ?>
 <div class="home-index">
     <div class="top"></div>
     <div class="bottom">
         <div>
             <h2>Наши преимущества</h2>
-            <ol>
-                <li>Доступный вход</li>
-                <li>Никаких приглашений</li>
-                <li>Моментальные выплаты</li>
-            </ol>
+            <?= Html::ol($benefits) ?>
             <blockquote>
                 Любое действие имеет свой риск и цену этого риска,
                 точно также как и любое бездействие

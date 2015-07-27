@@ -25,6 +25,7 @@ $manager = !Yii::$app->user->isGuest && Yii::$app->user->identity->isManager();
     <title><?= Html::encode($this->title) ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
+    <link rel="image_src" href="/img/cover.png" />
     <?= Html::csrfMetaTags() ?>
     <?php $this->head() ?>
 </head>
@@ -90,7 +91,7 @@ $manager = !Yii::$app->user->isGuest && Yii::$app->user->identity->isManager();
 <div class="background"></div>
 <div id="linux">
     <div>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Tux.svg/150px-Tux.svg.png" />
+        <img src="/img/linux.png" />
     </div>
     <?= Html::tag('div', Yii::t('app', 'Welcome, Linux user. We are glad you use open source software!'), [
         'class' => 'welcome'

@@ -191,6 +191,11 @@ if (window.localStorage) {
             localStorage.setItem('linux', true);
             this.remove();
         };
+        if (browser('Ubuntu')) {
+            $linux.querySelector('img').setAttribute('src', '/img/ubuntu.png');
+            var $welcome = $linux.querySelector('.welcome');
+            $welcome.innerHTML = $welcome.innerHTML.replace('Linux', 'Ubuntu');
+        }
         $linux.style.display = 'table-row';
     }
 }
