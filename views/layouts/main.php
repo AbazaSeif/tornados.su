@@ -65,7 +65,7 @@ $manager = !Yii::$app->user->isGuest && Yii::$app->user->identity->isManager();
     }
 
     if (Yii::$app->user->isGuest || !Yii::$app->user->identity->isManager()) {
-        $items[] = empty($_COOKIE['lang'])
+        $items[] = 'ru' == Yii::$app->language
             ? ['label' => 'EN', 'url' => ['/lang/lang/choice', 'code' => 'en'], 'options' => ['title' => 'English']]
             : ['label' => 'RU', 'url' => ['/lang/lang/choice', 'code' => 'ru'], 'options' => ['title' => 'Русский']];
     }
