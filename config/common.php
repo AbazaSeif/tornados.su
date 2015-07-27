@@ -8,7 +8,7 @@ if (empty($_COOKIE['lang'])) {
     $language = preg_match('/(ru|uk|be|ky|ab|mo|et|lv)/i', $language) ? 'ru' : 'en';
 }
 else {
-    $language = 'en';
+    $language = $_COOKIE['lang'];
 }
 
 $config = [

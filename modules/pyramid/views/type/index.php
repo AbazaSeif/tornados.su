@@ -26,7 +26,7 @@ $columns = [
         'label' => Yii::t('app', 'Name'),
         'format' => 'html',
         'value' => function(Type $model) {
-            return $model->getName();
+            return $model->isSpecial() ? Yii::t('app', 'Team plan') : $model->getName();
         }
     ],
     [

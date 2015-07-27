@@ -116,16 +116,11 @@ class LangController extends Controller
 
     public function actionChoice($code = 'en') {
         $cookies = Yii::$app->response->cookies;
-        if ('en' == $code) {
-            $cookies->add(new Cookie([
-                'name' => 'lang',
-                'value' => 'en',
-                'expire' => time() + 3600 * 24 * 30
-            ]));
-        }
-        else {
-            $cookies->remove('lang');
-        }
+        $cookies->add(new Cookie([
+            'name' => 'lang',
+            'value' => $code,
+            'expire' => time() + 3600 * 24 * 30
+        ]));
         return $this->goBack();
     }
 }
