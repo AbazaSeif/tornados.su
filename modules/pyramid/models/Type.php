@@ -6,37 +6,27 @@
 namespace app\modules\pyramid\models;
 
 use Yii;
-use yii\db\ActiveRecord;
+use yii\base\Model;
 
 /**
  * @author Taras Labiak <kissarat@gmail.com>
- * This is the model class for table "type".
  *
  * @property integer $id
+ * @property string $name
  * @property number $stake
  * @property number $income
  * @property number $profit
  * @property integer $degree
- *
- * @property Type $next
  */
-class Type extends ActiveRecord
+class Type extends Model
 {
-    private static $_all;
-    public $degree = 2;
-
-    public static function tableName() {
-        return 'type';
-    }
-
-    public function rules() {
-        return [
-            [['name'], 'string'],
-            [['stake', 'income'], 'required'],
-            [['stake', 'income'], 'number', 'min' => 0],
-            [['next_id', 'degree'], 'integer', 'min' => 0]
-        ];
-    }
+    private static $_all = [];
+    public $id;
+    public $name;
+    public $stake;
+    public $income;
+    public $profit;
+    public $degree = 3;
 
     public function attributeLabels() {
         return [
@@ -51,14 +41,6 @@ class Type extends ActiveRecord
      * @return Type[]
      */
     public static function all() {
-        /* @var $type Type */
-        if (!static::$_all) {
-            $types = static::find()->orderBy(['id' => SORT_ASC])->all();
-            static::$_all = [];
-            foreach($types as $type) {
-                static::$_all[$type->id] = $type;
-            }
-        }
         return static::$_all;
     }
 
@@ -86,10 +68,6 @@ class Type extends ActiveRecord
         return $items;
     }
 
-    public function getName() {
-        return Yii::t('app', 'Plan') . ' ' . $this->id;
-    }
-
     /**
      * @return integer
      */
@@ -97,7 +75,21 @@ class Type extends ActiveRecord
         return $this->stake * 2 - $this->income;
     }
 
-    public function isSpecial() {
-        return 4 == $this->id;
+    public function getReinvest() {
+        return $this->stake;
+    }
+
+    public static function create($id, $name, $stake, $income) {
+        static::$_all[] = new Type([
+            'id' => $id,
+            'name' => Yii::t('app', $name),
+            'stake' => $stake,
+            'income' => $income
+        ]);
     }
 }
+
+Type::create(1, 'Calm', 10, 17);
+Type::create(2, 'Breeze', 30, 50);
+Type::create(3, 'Vortex', 60, 100);
+Type::create(4, 'Tornado', 100, 250);

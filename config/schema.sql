@@ -111,23 +111,6 @@ CREATE TABLE "invoice" (
 CREATE UNIQUE INDEX invoice_id ON "invoice" USING btree ("id");
 
 
-/* Payment (if amount > 0) and withdrawal (if amount < 0) table,
-  see app\modules\pyramid\models\Type */
-CREATE TABLE "type" (
-  id     SMALLINT NOT NULL PRIMARY KEY,
-  "name" VARCHAR(4) NOT NULL,
-  stake  SMALLINT NOT NULL,
-  income SMALLINT NOT NULL
-);
-
-INSERT INTO "type"
-  (id, "name",    stake, income) VALUES
-  (1,  'Calm',    20,    38),
-  (2,  'Breeze',  100,   190),
-  (3,  'Vortex',  100,   280),
-  (4,  'Tornado', 300,   580);
-
-
 /* Site balance */
 CREATE TABLE "account" (
   "profit" NUMERIC(8,2) NOT NULL DEFAULT 0

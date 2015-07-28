@@ -74,7 +74,7 @@ class NodeController extends Controller
 
         $is_post = $model->load(Yii::$app->request->post());
         if ($is_post) {
-            $model->count = $model->type->degree;
+            $model->count = $model->getType()->degree;
             if ($is_post && $model->validate()) {
                 if ($model->save(false)) {
                     return $this->redirect(['invest', 'id' => $model->id]);

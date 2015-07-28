@@ -27,8 +27,6 @@ use yii\db\ActiveRecord;
  */
 class Node extends ActiveRecord
 {
-    private $_children;
-
     public static function tableName() {
         return 'node';
     }
@@ -67,18 +65,11 @@ class Node extends ActiveRecord
      * @return Type
      */
     public function getType() {
-        return $this->hasOne(Type::class, ['id' => 'type_id']);
+        return Type::get($this->type_id);
     }
 
     public function setType(Type $value) {
         $this->type_id = $value->id;
-    }
-
-    public function getChildren() {
-        if (!$this->_children) {
-            $this->_children = Node::find()->where(['>', 'id', $this->id])->limit(40)->all();
-        }
-        return $this->_children;
     }
 
     public function countQueue() {
@@ -94,7 +85,7 @@ class Node extends ActiveRecord
     }
 
     public function invest() {
-        $this->count = $this->type->degree;
+        $this->count = $this->getType()->degree;
         $this->time = $_SERVER['REQUEST_TIME'];
         if ($expectant = $this->getExpectant($this->type_id)) {
             if ($expectant->count > 1) {
@@ -113,14 +104,14 @@ class Node extends ActiveRecord
                 ])
                     ->execute();
 
-                $user->account += (float)$this->type->income;
+                $user->account += (float)$this->getType()->income;
                 if (!$user->update(false, ['account'])) {
                     throw new Exception($this->dump());
                 }
             }
         }
         if ($this->save()) {
-            Account::set('profit', $this->type->profit);
+            Account::set('profit', $this->getType()->getProfit());
             return true;
         }
         return false;

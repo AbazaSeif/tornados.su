@@ -8,9 +8,9 @@ namespace app\modules\pyramid\controllers;
 
 use app\modules\pyramid\models\Node;
 use Yii;
+use yii\data\ArrayDataProvider;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
-use yii\data\ActiveDataProvider;
 use app\modules\pyramid\models\Type;
 use yii\web\NotFoundHttpException;
 
@@ -32,8 +32,8 @@ class TypeController extends Controller {
 
     public function actionIndex() {
         return $this->render('index', [
-            'dataProvider' => new ActiveDataProvider([
-                'query' => Type::find(),
+            'dataProvider' => new ArrayDataProvider([
+                'allModels' => Type::all(),
                 'sort' => [
                     'defaultOrder' => ['id' => SORT_ASC]
                 ]
@@ -53,11 +53,8 @@ class TypeController extends Controller {
             'user' => Yii::$app->user->identity
         ]);
 
-        if ($node->type->isSpecial() && !$node->user->isTeam()) {
-            Yii::$app->session->setFlash('error', Yii::t('app', 'You are not in team to open this plan'));
-        }
-        elseif ($node->user->account >= $node->type->stake) {
-            $node->user->account -= $node->type->stake;
+        if ($node->user->account >= $node->getType()->stake) {
+            $node->user->account -= $node->getType()->stake;
             $transaction = Yii::$app->db->beginTransaction();
             try {
                 if ($node->user->update(true, ['account']) && $node->invest()) {
@@ -86,7 +83,7 @@ class TypeController extends Controller {
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id) {
-        if (($model = Type::get($id)) !== null) {
+        if ($model = Type::get($id)) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

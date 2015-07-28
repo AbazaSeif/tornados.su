@@ -21,26 +21,10 @@ $this->registerMetaTag([
 ]);
 
 $columns = [
-    [
-        'attribute' => 'id',
-        'label' => Yii::t('app', 'Name'),
-        'format' => 'html',
-        'value' => function(Type $model) {
-            return $model->isSpecial() ? Yii::t('app', 'Team plan') : $model->getName();
-        }
-    ],
-    [
-        'attribute' => 'stake',
-        'value' => function(Type $model) {
-            return $model->stake ? '$' . ((int) $model->stake) : '';
-        }
-    ],
-    [
-        'attribute' => 'income',
-        'value' => function(Type $model) {
-            return $model->income ? '$' . ((int) $model->income) : '';
-        }
-    ]
+    'name',
+    'stake',
+    'income',
+    'reinvest'
 ];
 
 if (!Yii::$app->user->isGuest) {
@@ -50,10 +34,7 @@ if (!Yii::$app->user->isGuest) {
         'value' => function(Type $model) {
             /** @var \app\models\User $user */
             $user = Yii::$app->user->identity;
-            if ($model->isSpecial() && !$user->isTeam()) {
-                return Yii::t('app', 'Team plan');
-            }
-            elseif ($user->account >= $model->stake) {
+            if ($user->account >= $model->stake) {
                 return Html::a('Open', ['view', 'id' => $model->id], ['class' => 'btn btn-success btn-sm']);
             }
             else {

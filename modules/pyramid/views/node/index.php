@@ -38,7 +38,7 @@ $columns = [
 
 
 if (isset($parent)) {
-    $title = $parent->type->name . " #$parent->id ";
+    $title = $parent->getType()->name . " #$parent->id ";
     $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Investments'), 'url' => ['index']];
     $this->params['breadcrumbs'][] = $title;
     $this->title = $title;
@@ -64,14 +64,6 @@ else {
         else {
             $title = $this->title;
         }
-        $additional[] = [
-            'attribute' => 'time',
-            'label' => Yii::t('app', 'Remains to exit'),
-            'value' => function(Node $model) {
-                return $model->countQueue();
-            }
-
-        ];
     }
     $columns = array_merge($additional, array_slice($columns, 1));
 }
