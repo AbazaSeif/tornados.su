@@ -1,7 +1,7 @@
 <?php
 /**
  * @link http://zenothing.com/
-*/
+ */
 
 namespace app\modules\pyramid\models;
 
@@ -10,6 +10,7 @@ use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
 /**
+ * @author Taras Labiak <kissarat@gmail.com>
  * This is the model class for table "income".
  *
  * @property integer $id
@@ -17,7 +18,9 @@ use yii\db\ActiveRecord;
  * @property string $user_name
  * @property integer $type_id
  * @property integer $time
- * @author Taras Labiak <kissarat@gmail.com>
+ *
+ * @property Type $type
+ * @property Node $node
  */
 class Income extends ActiveRecord
 {
@@ -39,7 +42,6 @@ class Income extends ActiveRecord
             'node_id' => Yii::t('app', 'Investment ID'),
             'user_name' => Yii::t('app', 'Username'),
             'type_id' => Yii::t('app', 'Plan'),
-            'reinvest_from' => Yii::t('app', 'Reinvest From'),
             'time' => Yii::t('app', 'Time'),
         ];
     }

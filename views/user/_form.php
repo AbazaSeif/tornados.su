@@ -11,6 +11,7 @@ use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\User */
+/* @var $bundle array */
 /* @var $form yii\widgets\ActiveForm */
 
 function submit($label) {
@@ -22,6 +23,9 @@ echo Ext::stamp();
 $form = ActiveForm::begin();
 
 if ($model->isNewRecord) {
+    foreach($bundle as $key => $value) {
+        echo Html::hiddenInput("bundle[$key]", $value);
+    }
     echo $form->field($model, 'name');
 }
 

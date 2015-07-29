@@ -12,6 +12,8 @@ use app\models\Password;
 use app\models\Record;
 use app\models\ResetRequest;
 use app\helpers\SQL;
+use app\modules\pyramid\models\Node;
+use app\modules\pyramid\models\Type;
 use Yii;
 use app\models\User;
 use app\models\search\User as UserSearch;
@@ -161,31 +163,48 @@ class UserController extends Controller
         $model = new User([
             'scenario' => 'signup'
         ]);
-        if (preg_match('|U\w{7}|', $model->name)) {
-            $model->addError('name', Yii::t('app', Yii::t('app', 'Username cannot be in the format of Perfect Money wallet')));
+
+        $bundle = [];
+        if (!empty($_GET)) {
+            $attributes = $model->activeAttributes();
+            foreach ($_GET as $key => $value) {
+                if (in_array($key, $attributes)) {
+                    $model->$key = $value;
+                } else {
+                    $bundle[$key] = $value;
+                }
+            }
         }
-        elseif ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            $model->generateCode();
-            $model->status = User::PLAIN;
-            $model->setBundleFromAttributes(['hash'], true);
-            $model->save(false);
-            $url = Url::to(['email', 'code' => $model->code], true);
-            if ($model->sendEmail([
-                'subject' => Yii::$app->params['site']['name'] . ' ' . Yii::t('app', 'Signup'),
-                'content' => Yii::t('app', 'To confirm your registration click on the <a href="{url}">link</a>', [
-                    'url' => $url,
+
+        if ($model->load(Yii::$app->request->post())) {
+            $bundle = array_merge(Yii::$app->request->post('bundle'), $bundle);
+
+            if (preg_match('|U\w{7}|', $model->name)) {
+                $model->addError('name', Yii::t('app', Yii::t('app', 'Username cannot be in the format of Perfect Money wallet')));
+            } elseif ($model->validate()) {
+                $model->generateCode();
+                $model->status = User::PLAIN;
+                $model->setBundleFromAttributes(['hash'], true, $bundle);
+                $model->save(false);
+                $url = Url::to(['email', 'code' => $model->code], true);
+                if ($model->sendEmail([
+                    'subject' => Yii::$app->params['site']['name'] . ' ' . Yii::t('app', 'Signup'),
+                    'content' => Yii::t('app', 'To confirm your registration click on the <a href="{url}">link</a>', [
+                        'url' => $url,
+                    ])
                 ])
-            ])) {
-                Yii::$app->session->setFlash('info', Yii::t('app', 'Check your email'));
+                ) {
+                    Yii::$app->session->setFlash('info', Yii::t('app', 'Check your email'));
+                } else {
+                    Yii::$app->session->setFlash('error', Yii::t('app', 'Email send error'));
+                }
+                return $this->redirect(['home/index']);
             }
-            else {
-                Yii::$app->session->setFlash('error', Yii::t('app', 'Email send error'));
-            }
-            return $this->redirect(['home/index']);
         }
 
         return $this->render('create', [
             'model' => $model,
+            'bundle' => $bundle
         ]);
     }
 
@@ -208,7 +227,18 @@ class UserController extends Controller
                                 $user->save();
                             }
                             if (Yii::$app->user->login($user, $model->remember ? $user->duration * 60 : 0)) {
+                                $bundle = $user->getBundle();
+                                if ($bundle && isset($bundle['node_id'])) {
+                                    $node_id = (int) $bundle['node_id'];
+                                    $user->setBundle(null);
+                                    $user->save();
+                                    if (Node::find()->where(['id' => $node_id])->count() > 0) {
+                                        Yii::$app->session->addFlash('success', Yii::t('app', 'Congratulation! You receive a gift'));
+                                        return $this->redirect(['/pyramid/node/index', 'id' => $node_id]);
+                                    }
+                                }
                                 return $this->redirect(['view']);
+
                             }
                             else {
                                 Yii::$app->session->addFlash('error', Yii::t('app', 'Something wrong happened'));
@@ -258,16 +288,27 @@ class UserController extends Controller
         }
         if ($user) {
             $bundle = $user->getBundle();
-            $message = empty($user->hash) ? 'Congratulations. You have successfully activated!' : 'Your email changed!';
+            $message = empty($user->hash)
+                ? 'Congratulations. You have successfully activated!'
+                : 'Your email changed!';
+            $attributes = $user->activeAttributes();
+            $redirect = ['user/view'];
             foreach($bundle as $name => $value) {
-                $user->$name = $value;
+                if (in_array($name, $attributes)) {
+                    $user->$name = $value;
+                }
+                elseif (isset($bundle['type_id'])) {
+                    $type = Type::get($bundle['type_id']);
+                    $redirect = ['/invoice/invoice/create', 'amount' => $type->stake];
+                    $_SESSION['type_id'] = $type->id;
+                }
             }
             $user->code = null;
             $user->setBundle(null);
             if ($user->save()) {
                 Yii::$app->session->addFlash('success', Yii::t('app', $message));
                 Yii::$app->user->login($user);
-                return $this->redirect(['user/view']);
+                return $this->redirect($redirect);
             }
             else {
                 Yii::$app->session->addFlash('error', Yii::t('app', 'Something wrong happened'));

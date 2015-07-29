@@ -3,6 +3,7 @@
  * @link http://zenothing.com/
  */
 
+use app\modules\pyramid\models\Income;
 use app\modules\pyramid\models\Type;
 use yii\helpers\Html;
 use yii\grid\GridView;
@@ -28,15 +29,14 @@ $this->title = Yii::t('app', 'Income');
                 'attribute' => 'node_id',
                 'label' => Yii::t('app', 'Investment'),
                 'format' => 'html',
-                'value' => function($model) {
-                    $node = $model->node;
-                    return is_null($node) ? $model->node_id : Html::a($node, ['node', 'id' => $model->node_id]);
+                'value' => function(Income $model) {
+                    return $model->node_id ? Html::a($model->node, ['node', 'id' => $model->node_id]) : $model->node_id;
                 }
             ],
             [
                 'attribute' => 'user_name',
                 'format' => 'html',
-                'value' => function($model) {
+                'value' => function(Income $model) {
                     return Html::a($model->user_name, ['user/view', 'name' => $model->user_name]);
                 }
             ],
@@ -44,14 +44,14 @@ $this->title = Yii::t('app', 'Income');
                 'attribute' => 'type_id',
                 'label' => Yii::t('app', 'Plan'),
                 'format' => 'html',
-                'value' => function($model) {
+                'value' => function(Income $model) {
                     return Html::a($model->type, ['view', 'id' => $model->type_id]);
                 }
             ],
             [
                 'attribute' => 'type_id',
                 'label' => Yii::t('app', 'Income'),
-                'value' => function($model) {
+                'value' => function(Income $model) {
                     return Type::get($model->type_id)->income;
                 }
             ],

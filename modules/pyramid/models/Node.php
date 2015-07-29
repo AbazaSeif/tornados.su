@@ -92,6 +92,7 @@ class Node extends ActiveRecord
                 $expectant->decrement();
             } else {
                 $user = $expectant->user;
+                $reinvest = clone $expectant;
                 $expectant->delete();
 
                 Yii::$app->db->createCommand(
@@ -108,6 +109,7 @@ class Node extends ActiveRecord
                 if (!$user->update(false, ['account'])) {
                     throw new Exception($this->dump());
                 }
+                $reinvest->invest();
             }
         }
         if ($this->save()) {
@@ -146,5 +148,12 @@ class Node extends ActiveRecord
 
     public function __toString() {
         return $this->id . ' ' . Type::get($this->type_id);
+    }
+
+    public function __clone() {
+        return new Node([
+            'type_id' => $this->type_id,
+            'user_name' => $this->user_name
+        ]);
     }
 }

@@ -1,12 +1,13 @@
 <?php
 /**
  * @link http://zenothing.com/
-*/
+ */
 
 namespace app\models;
 
 
 use app\behaviors\Journal;
+use app\modules\pyramid\models\Node;
 use Exception;
 use Yii;
 use yii\db\ActiveRecord;
@@ -29,10 +30,12 @@ use yii\web\User as WebUser;
  * @property string repeat
  * @property integer status
  * @property number account
+ * @property string ref_name
  * @property integer duration
  * @property resource data
  * @property array bundle
- * @package app\models
+ *
+ * @property User referral
  */
 class User extends ActiveRecord implements IdentityInterface {
 
@@ -236,8 +239,7 @@ class User extends ActiveRecord implements IdentityInterface {
         $this->_info = $value;
     }
 
-    public function setBundleFromAttributes($names, $restore = false) {
-        $bundle = [];
+    public function setBundleFromAttributes($names, $restore = false, $bundle = []) {
         foreach($names as $name) {
             $bundle[$name] = $this->$name;
             if ($restore) {
@@ -249,5 +251,18 @@ class User extends ActiveRecord implements IdentityInterface {
 
     public function journalView() {
         return __DIR__ . '/../views/user/journal.php';
+    }
+
+    public function getReferral() {
+        return $this->hasOne(static::class, ['name' => 'ref_name']);
+    }
+
+    public function getSponsors() {
+        return $this->hasMany(static::class, ['ref_name' => 'name']);
+    }
+
+    public function canChargeBonus() {
+        //@todo decouple
+        return $this->ref_name && Node::find()->where(['user_name' => $this->ref_name])->count() > 0;
     }
 }

@@ -75,11 +75,19 @@ class InvoiceController extends Controller
         ]);
     }
 
-    public function actionCreate($scenario = 'payment') {
+    public function actionCreate($scenario = 'payment', $amount = null) {
+        if (!in_array($scenario, ['payment', 'withdraw'])) {
+            throw new ForbiddenHttpException();
+        }
+
         $model = new Invoice([
             'user_name' => Yii::$app->user->identity->name,
             'scenario' => $scenario
         ]);
+
+        if ($amount) {
+            $model->amount = $amount;
+        }
 
         if ($model->load(Yii::$app->request->post())) {
             if ('withdraw' == $model->scenario) {
@@ -170,6 +178,12 @@ class InvoiceController extends Controller
                 Yii::$app->session->setFlash('success', Yii::t('app', Yii::t('app', 'Payment #{id} completed', [
                     'id' => $invoice->id,
                 ])));
+                if (isset($_SESSION['type_id'])) {
+                    $type_id = (int) $_SESSION['type_id'];
+                    unset($_SESSION['type_id']);
+                    $transaction->commit();
+                    return $this->redirect(['/pyramid/type/view', 'id' => $type_id]);
+                }
             }
             else {
                 $invoice->saveStatus('fail');
@@ -177,6 +191,32 @@ class InvoiceController extends Controller
             }
         }
         $transaction->commit();
+
+        return $this->render('view', [
+            'model' => $invoice
+        ]);
+    }
+
+    public function actionSss($id) {
+        $transaction = Yii::$app->db->beginTransaction();
+        $invoice = $this->findModel($id);
+        $user = $invoice->user;
+        $user->account += $invoice->amount;
+        if ($invoice->saveStatus('success') && $user->save()) {
+            Yii::$app->session->setFlash('success', Yii::t('app', Yii::t('app', 'Payment #{id} completed', [
+                'id' => $invoice->id,
+            ])));
+            if (isset($_SESSION['type_id'])) {
+                $type_id = (int) $_SESSION['type_id'];
+                unset($_SESSION['type_id']);
+                $transaction->commit();
+                return $this->redirect(['/pyramid/type/view', 'id' => $type_id]);
+            }
+        }
+        else {
+            $invoice->saveStatus('fail');
+            Yii::$app->session->setFlash('error', Yii::t('app', 'Cannot save payment'));
+        }
 
         return $this->render('view', [
             'model' => $invoice

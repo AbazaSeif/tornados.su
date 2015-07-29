@@ -1,14 +1,14 @@
 <?php
 /**
  * @link http://zenothing.com/
-*/
+ */
 
-use yii\authclient\widgets\AuthChoice;
 use yii\helpers\Html;
 
 
 /* @var $this yii\web\View */
 /* @var $model app\models\User */
+/* @var $bundle array */
 
 $this->title = Yii::$app->user->isGuest ? Yii::t('app', 'Signup') : Yii::t('app', 'Create User');
 ?>
@@ -18,6 +18,7 @@ $this->title = Yii::$app->user->isGuest ? Yii::t('app', 'Signup') : Yii::t('app'
 
     <?= $this->render('_form', [
         'model' => $model,
+        'bundle' => $bundle
     ]) ?>
 
 </div>

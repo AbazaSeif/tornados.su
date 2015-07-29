@@ -16,16 +16,18 @@ use yii\base\Model;
  * @property number $stake
  * @property number $income
  * @property number $profit
+ * @property number $bonus
  * @property integer $degree
  */
 class Type extends Model
 {
-    private static $_all = [];
+    private static $_all;
     public $id;
     public $name;
     public $stake;
     public $income;
     public $profit;
+    public $bonus;
     public $degree = 3;
 
     public function attributeLabels() {
@@ -34,6 +36,7 @@ class Type extends Model
             'name' => Yii::t('app', 'Name'),
             'stake' => Yii::t('app', 'Stake'),
             'income' => Yii::t('app', 'Income'),
+            'bonus' => Yii::t('app', 'Bonus'),
         ];
     }
 
@@ -41,6 +44,12 @@ class Type extends Model
      * @return Type[]
      */
     public static function all() {
+        if (!static::$_all) {
+            Type::create(1, 'Calm', 10, 17, 0);
+            Type::create(2, 'Breeze', 30, 50, 2);
+            Type::create(3, 'Vortex', 60, 100, 3);
+            Type::create(4, 'Tornado', 100, 250, 5);
+        }
         return static::$_all;
     }
 
@@ -79,17 +88,13 @@ class Type extends Model
         return $this->stake;
     }
 
-    public static function create($id, $name, $stake, $income) {
-        static::$_all[] = new Type([
+    public static function create($id, $name, $stake, $income, $bonus) {
+        static::$_all[$id] = new Type([
             'id' => $id,
             'name' => Yii::t('app', $name),
             'stake' => $stake,
-            'income' => $income
+            'income' => $income,
+            'bonus' => $bonus
         ]);
     }
 }
-
-Type::create(1, 'Calm', 10, 17);
-Type::create(2, 'Breeze', 30, 50);
-Type::create(3, 'Vortex', 60, 100);
-Type::create(4, 'Tornado', 100, 250);

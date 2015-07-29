@@ -7,6 +7,7 @@ namespace app\modules\pyramid\controllers;
 
 
 use app\behaviors\Access;
+use app\modules\pyramid\models\Gift;
 use app\modules\pyramid\models\Node;
 use Yii;
 use yii\data\ActiveDataProvider;
@@ -29,6 +30,7 @@ class NodeController extends Controller
                 'class' => 'yii\filters\HttpCache',
                 'cacheControlHeader' => 'must-revalidate, private',
                 'only' => ['index'],
+                'enabled' => false,
                 'lastModified' => function ($action, $params) {
                     $query = Node::find();
                     if (isset($params['user'])) {
@@ -43,7 +45,6 @@ class NodeController extends Controller
     public function actionIndex($user = null, $id = null) {
         $parent = $id ? $this->findModel($id) : null;
         $query = Node::find()
-            ->with('type')
             ->orderBy(['time' => SORT_ASC, 'id' => SORT_ASC]);
         if ($user) {
             $query->andWhere(['user_name' => $user]);
@@ -106,6 +107,28 @@ class NodeController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    public function actionGift() {
+        return $this->render('gift', [
+            'dataProvider' => new ActiveDataProvider([
+                'query' => Gift::find(),
+                'sort' => [
+                    'defaultOrder' => ['id' => SORT_DESC]
+                ]
+            ])
+        ]);
+    }
+
+    public function actionGive($id) {
+        $node = Gift::findOne($id)->give();
+        if ($node) {
+            return $this->redirect(['index', 'id' => $node->id]);
+        }
+        else {
+            Yii::$app->session->addFlash('error', Yii::t('app', 'Something wrong happened'));
+            return $this->redirect(['gift']);
+        }
     }
 
     /**

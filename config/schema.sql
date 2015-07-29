@@ -128,9 +128,6 @@ CREATE TABLE "node" (
   CONSTRAINT node_user FOREIGN KEY (user_name)
   REFERENCES "user"(name)
   ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT node_type FOREIGN KEY (type_id)
-  REFERENCES "type"(id)
-  ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT "count" CHECK (count >= 0)
 );
 CREATE UNIQUE INDEX node_id ON "node" USING btree ("id");
@@ -139,7 +136,7 @@ CREATE UNIQUE INDEX node_id ON "node" USING btree ("id");
 /* Income from investments log, see app\modules\pyramid\models\Income */
 CREATE TABLE "income" (
   id SERIAL PRIMARY KEY NOT NULL,
-  node_id INT  NOT NULL,
+  node_id INT NOT NULL,
   user_name VARCHAR(24) NOT NULL,
   type_id SMALLINT NOT NULL,
   time INT NOT NULL,
@@ -148,6 +145,17 @@ CREATE TABLE "income" (
   ON DELETE CASCADE ON UPDATE CASCADE
 );
 CREATE UNIQUE INDEX income_id ON "income" USING btree ("id");
+
+
+CREATE TABLE "gift" (
+  id SERIAL PRIMARY KEY NOT NULL,
+  node_id INT,
+  user_name VARCHAR(24) NOT NULL,
+  time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT gift_user FOREIGN KEY (user_name)
+  REFERENCES "user"(name)
+  ON DELETE CASCADE ON UPDATE CASCADE
+);
 
 
 /* User and guest feedback table for app\modules\feedback\models\Feedback */

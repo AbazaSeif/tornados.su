@@ -24,25 +24,26 @@ $columns = [
     'name',
     'stake',
     'income',
-    'reinvest'
-];
-
-if (!Yii::$app->user->isGuest) {
-    $columns[] = [
+    'reinvest',
+    [
         'label' => Yii::t('app', 'Action'),
         'format' => 'html',
         'value' => function(Type $model) {
-            /** @var \app\models\User $user */
-            $user = Yii::$app->user->identity;
-            if ($user->account >= $model->stake) {
-                return Html::a('Open', ['view', 'id' => $model->id], ['class' => 'btn btn-success btn-sm']);
+            if (Yii::$app->user->isGuest) {
+                return Html::a('Open', ['/user/signup', 'type_id' => $model->id], ['class' => 'btn btn-success btn-sm']);
             }
             else {
-                return Yii::t('app', 'Insufficient funds');
+                /** @var \app\models\User $user */
+                $user = Yii::$app->user->identity;
+                if ($user->account >= $model->stake) {
+                    return Html::a('Open', ['view', 'id' => $model->id], ['class' => 'btn btn-success btn-sm']);
+                } else {
+                    return Yii::t('app', 'Insufficient funds');
+                }
             }
         }
-    ];
-}
+    ]
+];
 ?>
 <div class="type-index">
     <h1 class="bagatelle"><?= Html::encode($this->title) ?></h1>

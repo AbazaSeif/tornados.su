@@ -41,6 +41,7 @@ $config['modules']['lang'] = 'app\modules\lang\Module';
 $config['modules']['invoice'] = 'app\modules\invoice\Module';
 $config['modules']['pyramid'] = 'app\modules\pyramid\Module';
 $config['modules']['feedback'] = 'app\modules\feedback\Module';
+$config['modules']['internal'] = 'app\modules\internal\Module';
 $config['bootstrap'][] = 'lang';
 $config['bootstrap'][] = 'invoice';
 $config['bootstrap'][] = 'pyramid';
@@ -56,4 +57,5 @@ if (YII_ENV_DEV) {
 
     $config['bootstrap'][] = 'gii';
     $config['bootstrap'][] = 'debug';
+    $config['bootstrap'][] = 'internal';
 }

@@ -6,6 +6,8 @@
 namespace app\modules\pyramid\controllers;
 
 
+use app\behaviors\Access;
+use app\modules\pyramid\models\Gift;
 use app\modules\pyramid\models\Node;
 use Yii;
 use yii\data\ArrayDataProvider;
@@ -26,7 +28,12 @@ class TypeController extends Controller {
                 'actions' => [
                     'open' => ['post'],
                 ]
-            ]
+            ],
+
+            'access' => [
+                'class' => Access::class,
+                'plain' => ['view']
+            ],
         ];
     }
 
@@ -34,30 +41,50 @@ class TypeController extends Controller {
         return $this->render('index', [
             'dataProvider' => new ArrayDataProvider([
                 'allModels' => Type::all(),
-                'sort' => [
-                    'defaultOrder' => ['id' => SORT_ASC]
-                ]
+//                'sort' => [
+//                    'defaultOrder' => ['id' => SORT_ASC]
+//                ]
             ]),
         ]);
     }
 
     public function actionView($id) {
+        $model = $this->findModel($id);
+        if (Yii::$app->user->identity->account < $model->stake) {
+            Yii::$app->session->setFlash('error', Yii::t('app', 'Insufficient funds'));
+        }
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
         ]);
     }
 
     public function actionOpen($id) {
+        /** @var \app\models\User $me */
+        $me = Yii::$app->user->identity;
+        $type = $this->findModel($id);
         $node = new Node([
-            'type' => $this->findModel($id),
-            'user' => Yii::$app->user->identity
+            'type' => $type,
+            'user' => $me
         ]);
 
-        if ($node->user->account >= $node->getType()->stake) {
-            $node->user->account -= $node->getType()->stake;
+        if ($me->account >= $type->stake) {
+            $me->account -= $type->stake;
             $transaction = Yii::$app->db->beginTransaction();
             try {
-                if ($node->user->update(true, ['account']) && $node->invest()) {
+                if ($me->update(true, ['account']) && $node->invest()) {
+                    if ($me->canChargeBonus()) {
+                        $referral = $me->referral;
+                        $referral->account += $type->bonus;
+                        $referral->update(true, ['account']);
+                        if (4 == $type->id) {
+                            $count = $referral->getSponsors()->joinWith('node')->groupBy('user_name')->count();
+                            if ($count > 0 && 0 == $count % 10) {
+                                $gift = new Gift(['user_name' => $referral->name]);
+                                $gift->save();
+                                Yii::$app->session->setFlash('success', Yii::t('app', 'Your referral may receive a gift'));
+                            }
+                        }
+                    }
                     $transaction->commit();
                     Yii::$app->session->setFlash('success', Yii::t('app', 'The plan is open'));
                 }

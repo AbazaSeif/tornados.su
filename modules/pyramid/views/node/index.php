@@ -21,7 +21,7 @@ $columns = [
     [
         'attribute' => 'user_name',
         'format' => 'html',
-        'value' => function($model) {
+        'value' => function(Node $model) {
             return Html::a($model->user_name, ['user/view', 'name' => $model->user_name]);
         }
     ],
@@ -29,7 +29,7 @@ $columns = [
     [
         'label' => Yii::t('app', 'Action'),
         'format' => 'html',
-        'value' => function($model) {
+        'value' => function(Node $model) {
             return Html::a(Yii::t('app', 'View'), ['index', 'id' => $model->id],
                 ['class' => 'btn btn-primary btn-xs']);
         }
@@ -51,8 +51,8 @@ else {
             'attribute' => 'type_id',
             'label' => Yii::t('app', 'Plan'),
             'format' => 'html',
-            'value' => function($model) {
-                return Html::a($model->type->name, ['type/view', 'id' => $model->type_id]);
+            'value' => function(Node $model) {
+                return Html::a($model->getType()->name, ['type/view', 'id' => $model->type_id]);
             }
         ]
     ];
