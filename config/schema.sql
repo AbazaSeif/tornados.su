@@ -165,7 +165,9 @@ CREATE UNIQUE INDEX feedback_id ON "feedback" USING btree ("id");
 CREATE TABLE "visit_agent" (
   "id" SERIAL PRIMARY KEY,
   "agent" VARCHAR(200),
-  "ip" INET
+  "ip" INET,
+  "width" SMALLINT,
+  "height" SMALLINT
 );
 CREATE INDEX visit_agent_agent ON "visit_agent" USING btree ("agent");
 CREATE INDEX visit_agent_ip ON "visit_agent" USING btree ("ip");
@@ -177,6 +179,7 @@ CREATE TABLE "visit_path" (
   "agent_id" INT NOT NULL,
   "path" VARCHAR(80) NOT NULL,
   "spend" SMALLINT,
+  "heap" INT,
   "time" TIMESTAMP DEFAULT current_timestamp,
   CONSTRAINT user_agent FOREIGN KEY (agent_id)
   REFERENCES "visit_agent"("id")

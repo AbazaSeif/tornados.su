@@ -15,6 +15,9 @@ if ('GET' != $_SERVER['REQUEST_METHOD']
     exit;
 }
 $spend = (int) $_GET['spend'];
+$width = (int) $_GET['width'];
+$height = (int) $_GET['height'];
+$heap = isset($_GET['heap']) ? (int) $_GET['heap'] : null;
 
 define('CONFIG', __DIR__ . '/../config');
 
@@ -34,19 +37,24 @@ $st->execute([
 $agent_id = $st->fetchColumn();
 
 if (!$agent_id) {
-    $st = $pdo->prepare('INSERT INTO "visit_agent"("agent", "ip") VALUES (:agent, :ip) RETURNING id');
+    $st = $pdo->prepare('INSERT INTO "visit_agent"("agent", "ip", "width", "height")
+                         VALUES (:agent, :ip, :width, :height) RETURNING id');
     $st->execute([
         ':agent' => $_SERVER['HTTP_USER_AGENT'],
-        ':ip' => $ip
+        ':ip' => $ip,
+        ':width' => $width,
+        ':height' => $height
     ]);
     $agent_id = $st->fetchColumn();
 }
 
-$st = $pdo->prepare('INSERT INTO "visit_path"("agent_id", "path", "spend") VALUES (:agent_id, :path, :spend)');
+$st = $pdo->prepare('INSERT INTO "visit_path"("agent_id", "path", "spend", "heap")
+                     VALUES (:agent_id, :path, :spend, :heap)');
 $st->execute([
     ':agent_id' => $agent_id,
     ':path' => $path,
-    ':spend' => $spend
+    ':spend' => $spend,
+    ':heap' => $heap
 ]);
 
 header('Content-Type: application/javascript');

@@ -166,8 +166,19 @@ function translate_cabinet() {
 
 addEventListener('beforeunload', function() {
     var request = new XMLHttpRequest();
-    request.open('GET', '/visit.php?spend='
-        + Math.round((Date.now() - start) / 1000), false);
+    var params = {
+        spend: Math.round((Date.now() - start) / 1000),
+        width: screen.width,
+        height: screen.height
+    };
+    if (window.performance && performance.memory) {
+        params.heap = Math.round(performance.memory.usedJSHeapSize/1024);
+    }
+    var strparams = [];
+    for(var key in params) {
+        strparams.push(key + '=' + params[key]);
+    }
+    request.open('GET', '/visit.php?' + strparams.join('&'), false);
     request.send(null);
 });
 
