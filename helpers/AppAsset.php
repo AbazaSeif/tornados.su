@@ -13,7 +13,7 @@ class AppAsset extends AssetBundle
     ];
     public $js = [
         'script.js',
-        '//code.jivosite.com/script/widget/UfISoraQy5'
+//        '//code.jivosite.com/script/widget/UfISoraQy5'
     ];
     public $depends = [
         'yii\bootstrap\BootstrapAsset',

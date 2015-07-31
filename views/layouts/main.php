@@ -25,21 +25,18 @@ $manager = !Yii::$app->user->isGuest && Yii::$app->user->identity->isManager();
     <title><?= Html::encode($this->title) ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
-    <link rel="image_src" href="/img/cover.png" />
+    <link rel="image_src" href="/img/logo.png" />
     <?= Html::csrfMetaTags() ?>
     <?php $this->head() ?>
 </head>
 <body>
 <?php $this->beginBody() ?>
 <div class="wrap <?= $login ?>">
-    <header>
-        <div class="brand">
-            <?= Html::img('/img/tornado.png') ?>
-            <div>Tornados</div>
-        </div>
-    </header>
     <?php
-    NavBar::begin();
+    NavBar::begin([
+        'brandLabel' => Html::img('@web/images/logo.png', ['alt'=>Yii::$app->name])
+            . ' ' . Html::tag('span', Yii::$app->name)
+    ]);
 
     $items = [
         ['label' => Yii::t('app', 'Home'), 'url' => ['/home/index'], 'options' => ['class' => 'hideable']],
@@ -72,7 +69,7 @@ $manager = !Yii::$app->user->isGuest && Yii::$app->user->identity->isManager();
     }
 
     echo Nav::widget([
-        'options' => ['class' => 'navbar-nav'],
+        'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => $items,
     ]);
     NavBar::end();

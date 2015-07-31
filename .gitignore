@@ -3,7 +3,7 @@ vendor
 runtime/
 web/assets/
 web/out/
-web/img/
+web/images/
 web/page/
 composer.lock
 config/local.php

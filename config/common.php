@@ -12,8 +12,8 @@ else {
 }
 
 $config = [
-    'id' => 'tornado-club',
-    'name' => 'Tornado Club',
+    'id' => 'tornados',
+    'name' => 'Tornados',
     'basePath' => __DIR__ . '/..',
     'bootstrap' => ['log'],
     'defaultRoute' => 'home/index',
