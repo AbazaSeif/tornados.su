@@ -1,0 +1,159 @@
+//colors
+$white: white
+$black: black
+$mantis: #7bd156
+$green_haze: #009963
+
+//urls
+$cloud: url(/images/cloud.jpg)
+$table: url(/images/tablet.png)
+$pussy: url(/images/pussy.jpg)
+
+body
+  font-family: "Segoe UI", Ubuntu, "Droid Sans", sans-serif
+
+.center
+  text-align: center
+  > div
+    margin-left: auto !important
+    margin-right: auto !important
+    text-align: left
+
+
+.block-table
+  display: table
+  > *
+    display: table-row
+    > *
+      display: table-cell
+
+
+.row
+  display: table-row
+  > *
+    display: table-cell
+
+.button
+  display: inline-block
+  color: $white
+  background-color: $mantis
+  font-weight: 600
+  cursor: pointer
+  border: 1px solid transparent
+  padding: 19px 56px
+  margin-top: 19px
+  margin-bottom: 19px
+  font-size: 19px
+  line-height: 19px
+  border-radius: 38px
+  text-decoration: none
+  &:hover
+    background-color: transparent
+    color: $mantis
+    text-decoration: none
+    border-color: $mantis
+
+
+.green
+  background-color: $green_haze
+  border-color: $green_haze
+  &:hover
+    background-color: transparent
+    color: $green_haze
+    text-decoration: none
+
+
+.navbar-brand
+  padding-top: 0
+  img
+    display: inline-block
+
+  span
+    color: $green_haze
+
+
+.navbar
+  border-radius: 0
+  margin-bottom: 0
+
+.wrap > .container
+  width: inherit
+  padding: 0
+
+.navbar-nav > ul > li > a
+  color: $green_haze
+
+#linux
+  display: none
+
+footer
+  display: none
+
+.home-index
+  width: 100%
+  h2
+    margin-top: 0
+    font-size: 5em
+
+  small
+    margin-top: 5mm
+    display: block
+    color: $black
+
+  > section
+    padding-top: 0
+    > div
+      margin-top: 0
+      padding-top: 3em
+      padding-bottom: 3em
+      margin-left: 3em
+      width: 768px
+      background-size: cover
+
+
+.cloud
+  background: $cloud no-repeat center
+  height: 710px
+  color: $white
+
+.email-marketing
+  height: 665px
+  background: $table right bottom no-repeat
+
+.pussy
+  height: 840px
+  background: $pussy center no-repeat
+
+
+section
+  &.news > div
+    width: 80%
+
+  &.rubbish > div
+    width: 80%
+
+
+.news
+  h3
+    color: $green_haze
+    font-weight: bold
+
+  > div > div:last-child
+    text-align: center
+
+
+.rubbish
+  background: $green_haze
+  color: $white
+  strong
+    display: inline-block
+
+  h2
+    display: block
+
+  .row > div
+    > div:first-child
+      margin-right: 2em
+    > *
+      vertical-align: top
+      margin-right: 1em

@@ -61,7 +61,7 @@ $this->registerMetaTag([
             <?= Html::a(Yii::t('app', 'Signup'), ['/user/signup'], ['class' => 'button']) ?>
         </div>
     </section>
-    <section class="news">
+    <section class="news center">
         <div class="block-table">
             <h2>Resources</h2>
             <div>
@@ -81,14 +81,22 @@ $this->registerMetaTag([
             </div>
         </div>
     </section>
-    <section class="rubbish">
-        <div class="block-table">
+    <section class="rubbish center">
+        <div>
             <h2><strong>What</strong> People Say?</h2>
-            <div>
-                <div><img src="/images/man.png"></div>
-                <div>Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim.</div>
-                <div><img src="/images/woman.png"></div>
-                <div>Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim.</div>
+            <div class="row">
+                <div>
+                    <img src="/images/man.png">
+                </div>
+                <div>
+                    <div>Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim.</div>
+                </div>
+                <div>
+                    <img src="/images/woman.png">
+                </div>
+                <div>
+                    <div>Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim.</div>
+                </div>
             </div>
         </div>
     </section>
