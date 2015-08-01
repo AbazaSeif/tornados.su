@@ -29,6 +29,8 @@ class Type extends Model
     public $profit;
     public $bonus;
     public $degree = 3;
+    public $visibility = true;
+    public $reinvest = null;
 
     public function attributeLabels() {
         return [
@@ -45,10 +47,12 @@ class Type extends Model
      */
     public static function all() {
         if (!static::$_all) {
-            Type::create(1, 'Calm', 10, 17, 0);
-            Type::create(2, 'Breeze', 30, 50, 2);
-            Type::create(3, 'Vortex', 60, 100, 3);
-            Type::create(4, 'Tornado', 100, 250, 5);
+            Type::create(1, 'Calm', 10, 17, 0, 1);
+            Type::create(2, 'Breeze', 30, 50, 2, 2);
+            Type::create(3, 'Vortex', 60, 100, 3, 3);
+            Type::create(4, 'Tornado', 100, 0, 5, null);
+            Type::create(5, 'Tornado', 0, 250, 5, null, false);
+            Type::create(6, 'Tornado', 0, 200, 5, 4, false);
         }
         return static::$_all;
     }
@@ -81,20 +85,22 @@ class Type extends Model
      * @return integer
      */
     public function getProfit() {
-        return $this->stake * 2 - $this->income;
+        return $this->income ? $this->stake * 2 - $this->income : 0;
     }
 
     public function getReinvest() {
         return $this->stake;
     }
 
-    public static function create($id, $name, $stake, $income, $bonus) {
-        static::$_all[$id] = new Type([
+    public static function create($id, $name, $stake, $income, $bonus, $reinvest, $visibility = true) {
+        return static::$_all[$id] = new Type([
             'id' => $id,
             'name' => Yii::t('app', $name),
             'stake' => $stake,
             'income' => $income,
-            'bonus' => $bonus
+            'bonus' => $bonus,
+            'reinvest' => $reinvest,
+            'visibility' => $visibility
         ]);
     }
 }

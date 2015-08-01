@@ -12,7 +12,7 @@ use yii\grid\GridView;
 
 $this->title = Yii::t('app', 'Plans');
 $description = 'Для удобства работы в нашем проекте, администрация проекта решила создать
-        три тарифных плана для потенциальных клиентов нашего проекта.
+        4 тарифных плана для потенциальных клиентов нашего проекта.
         Маркетинг план состоит из 3 активных планов для заработка в нашем проекте';
 
 $this->registerMetaTag([
@@ -55,6 +55,4 @@ $columns = [
         'summary' => '',
         'columns' => $columns
     ]); ?>
-
-    <?= Yii::t('app', "After two users signup and open a plan you'll receive reward") ?>
 </div>

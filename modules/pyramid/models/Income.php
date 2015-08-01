@@ -59,4 +59,13 @@ class Income extends ActiveRecord
     public function getNode() {
         return $this->hasOne(Node::class, ['id' => 'node_id']);
     }
+
+    public static function create($node_id, $user_name, $type_id, $time) {
+        return new static([
+            ':node_id' => $node_id,
+            ':user_name' => $user_name,
+            ':type_id' => $type_id,
+            ':time' => $time
+        ]);
+    }
 }

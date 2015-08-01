@@ -90,26 +90,33 @@ class Node extends ActiveRecord
         if ($expectant = $this->getExpectant($this->type_id)) {
             if ($expectant->count > 1) {
                 $expectant->decrement();
-            } else {
+            } elseif (4 == $expectant->getType()->id) {
+                $last = Node::find()->where('type_id > 4')->orderBy(['time' => SORT_DESC])->limit(2)->all();
+                $bool = 2 == count($last) && 5 == $last[0]->getType()->id && 5 == $last[1]->getType()->id;
+                $expectant->type_id = $bool ? 6 : 5;
+                $expectant->invest();
+            }
+            else {
                 $user = $expectant->user;
-                $reinvest = clone $expectant;
                 $expectant->delete();
 
-                Yii::$app->db->createCommand(
-                    'INSERT INTO "income"(node_id,  user_name,  type_id, "time")
+                if ($this->getType()->income) {
+                    Yii::$app->db->createCommand(
+                        'INSERT INTO "income"(node_id, user_name, type_id, "time")
                           VALUES (:node_id, :user_name, :type_id, :time)', [
-                    ':node_id' => $expectant->id,
-                    ':user_name' => $expectant->user_name,
-                    ':type_id' => $expectant->type_id,
-                    ':time' => $expectant->time
-                ])
-                    ->execute();
+                        ':node_id' => $expectant->id,
+                        ':user_name' => $expectant->user_name,
+                        ':type_id' => $expectant->type_id,
+                        ':time' => $expectant->time
+                    ])
+                        ->execute();
 
-                $user->account += (float)$this->getType()->income;
-                if (!$user->update(false, ['account'])) {
-                    throw new Exception($this->dump());
+                    $user->account += (float)$this->getType()->income;
+                    if (!$user->update(false, ['account'])) {
+                        throw new Exception($this->dump());
+                    }
                 }
-                $reinvest->invest();
+                $expectant->reinvest();
             }
         }
         if ($this->save()) {
@@ -117,6 +124,16 @@ class Node extends ActiveRecord
             return true;
         }
         return false;
+    }
+
+    public function reinvest() {
+        if ($this->getType()->reinvest) {
+            $reinvest = new Node([
+                'user_name' => $this->user_name,
+                'type_id' => $this->getType()->reinvest
+            ]);
+            $reinvest->save();
+        }
     }
 
     /**
@@ -148,12 +165,5 @@ class Node extends ActiveRecord
 
     public function __toString() {
         return $this->id . ' ' . Type::get($this->type_id);
-    }
-
-    public function __clone() {
-        return new Node([
-            'type_id' => $this->type_id,
-            'user_name' => $this->user_name
-        ]);
     }
 }
