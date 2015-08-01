@@ -3,11 +3,18 @@ $white: white
 $black: black
 $mantis: #7bd156
 $green_haze: #009963
+$light_gray: #f2f2f2
 
 //urls
 $cloud: url(/images/cloud.jpg)
 $table: url(/images/tablet.png)
 $pussy: url(/images/pussy.jpg)
+
+@font-face
+  font-family: 'FontAwesome'
+  src: url('/images/fontawesome-webfont.ttf?v=4.4.0') format('truetype')
+  font-weight: normal
+  font-style: normal
 
 body
   font-family: "Segoe UI", Ubuntu, "Droid Sans", sans-serif
@@ -157,3 +164,44 @@ section
     > *
       vertical-align: top
       margin-right: 1em
+
+
+.plans > div
+  width: 92% !important
+
+  .inner
+    margin: 0 10px
+    background-color: $light_gray
+    text-align: center
+
+  div:first-child > div > .inner
+    background-color: $mantis
+    color: $white
+    border-top-left-radius: 1cm
+    border-top-right-radius: 1cm
+    padding-top: 4mm
+    padding-bottom: 2mm
+    font-size: 2.4em
+
+  div:nth-child(2) > div > .inner
+    text-align: left
+    padding: 6mm
+
+  div:last-child > div > .inner
+    border-bottom-left-radius: 1cm
+    border-bottom-right-radius: 1cm
+
+section ul
+  padding: 0
+
+section li
+  list-style: none
+
+section li:before
+  content: '\f00c'
+  color: $green_haze
+  margin-right: 2mm
+  font-family: 'FontAwesome'
+  font-size: 15px
+  left: 0
+  top: 1px

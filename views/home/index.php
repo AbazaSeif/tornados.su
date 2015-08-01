@@ -100,4 +100,93 @@ $this->registerMetaTag([
             </div>
         </div>
     </section>
+    <section class="plans center">
+        <div>
+            <h2><strong>Plans</strong> and pricing</h2>
+            <div class="block-table">
+                <div>
+                    <div>
+                        <div class="inner">
+                            <div>Plan</div>
+                            <div>$30</div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="inner">
+                            <div>Plan</div>
+                            <div>$30</div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="inner">
+                            <div>Plan</div>
+                            <div>$30</div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="inner">
+                            <div>Plan</div>
+                            <div>$30</div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <ul class="inner">
+                            <li>Lorem ipsum dolor sit amet conse ctetur adipisicing</li>
+                            <li>Elit sed do eiusmod tempor incididunt ut</li>
+                            <li>Labore et dolore magna aliqua.</li>
+                            <li>Ut enim ad minim veniam, quis nostrud</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <ul class="inner">
+                            <li>Lorem ipsum dolor sit amet conse ctetur adipisicing</li>
+                            <li>Elit sed do eiusmod tempor incididunt ut</li>
+                            <li>Labore et dolore magna aliqua.</li>
+                            <li>Ut enim ad minim veniam, quis nostrud</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <ul class="inner">
+                            <li>Lorem ipsum dolor sit amet conse ctetur adipisicing</li>
+                            <li>Elit sed do eiusmod tempor incididunt ut</li>
+                            <li>Labore et dolore magna aliqua.</li>
+                            <li>Ut enim ad minim veniam, quis nostrud</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <ul class="inner">
+                            <li>Lorem ipsum dolor sit amet conse ctetur adipisicing</li>
+                            <li>Elit sed do eiusmod tempor incididunt ut</li>
+                            <li>Labore et dolore magna aliqua.</li>
+                            <li>Ut enim ad minim veniam, quis nostrud</li>
+                        </ul>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <div class="inner">
+                            <a href="/" class="button">Read more</a>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="inner">
+                            <a href="/" class="button">Read more</a>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="inner">
+                            <a href="/" class="button">Read more</a>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="inner">
+                            <a href="/" class="button">Read more</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 </article>
