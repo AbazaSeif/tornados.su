@@ -26,6 +26,11 @@ if ($model->isNewRecord) {
     foreach($bundle as $key => $value) {
         echo Html::hiddenInput("bundle[$key]", $value);
     }
+
+    if ($model->ref_name) {
+        echo Html::tag('div', Yii::t('app', 'Referral') . ': ' . $model->ref_name, ['class' => 'form-group']);
+    }
+
     echo $form->field($model, 'name');
 }
 

@@ -72,6 +72,7 @@ CREATE TABLE "user" (
   forename VARCHAR(24),
   surname VARCHAR(24),
   phone VARCHAR(16),
+  ref_name VARCHAR(24),
   data BYTEA
 );
 CREATE UNIQUE INDEX user_id ON "user" USING btree ("id");

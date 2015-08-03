@@ -87,34 +87,28 @@ class Node extends ActiveRecord
     public function invest() {
         $this->count = $this->getType()->degree;
         $this->time = $_SERVER['REQUEST_TIME'];
-        if ($expectant = $this->getExpectant($this->type_id)) {
+        $expectant = static::getExpectant($this->type_id);
+        if ($expectant) {
             if ($expectant->count > 1) {
+                if (Type::LEVEL2 == $expectant->type_id && 1 == $expectant->count) {
+                    Income::makeFromNode($expectant);
+                }
                 $expectant->decrement();
-            } elseif (4 == $expectant->getType()->id) {
-                $last = Node::find()->where('type_id > 4')->orderBy(['time' => SORT_DESC])->limit(2)->all();
-                $bool = 2 == count($last) && 5 == $last[0]->getType()->id && 5 == $last[1]->getType()->id;
-                $expectant->type_id = $bool ? 6 : 5;
-                $expectant->invest();
-            }
-            else {
-                $user = $expectant->user;
-                $expectant->delete();
+            } else {
+                $type = $this->getType();
 
-                if ($this->getType()->income) {
-                    Yii::$app->db->createCommand(
-                        'INSERT INTO "income"(node_id, user_name, type_id, "time")
-                          VALUES (:node_id, :user_name, :type_id, :time)', [
-                        ':node_id' => $expectant->id,
-                        ':user_name' => $expectant->user_name,
-                        ':type_id' => $expectant->type_id,
-                        ':time' => $expectant->time
-                    ])
-                        ->execute();
+                if ($type->income) {
+                    Income::makeFromNode($expectant);
+                }
 
-                    $user->account += (float)$this->getType()->income;
-                    if (!$user->update(false, ['account'])) {
-                        throw new Exception($this->dump());
+                if ($type->next_id) {
+                    $expectant->type_id = $type->next_id;
+                    if (!$expectant->invest()) {
+                        throw new Exception();
                     }
+                }
+                else {
+                    $expectant->delete();
                 }
                 $expectant->reinvest();
             }
@@ -142,6 +136,14 @@ class Node extends ActiveRecord
      */
     public static function getExpectant($type_id) {
         return static::find()->where(['type_id' => $type_id])->andWhere('count > 0')
+            ->orderBy(['time' => SORT_ASC, 'id' => SORT_ASC])->limit(1)->one();
+    }
+
+    /**
+     * @return Node
+     */
+    public static function getTornadoExpectant() {
+        return static::find()->where('type_id = 4 OR type_id = 5 OR type_id = 6')->andWhere('count > 0')
             ->orderBy(['time' => SORT_ASC, 'id' => SORT_ASC])->limit(1)->one();
     }
 

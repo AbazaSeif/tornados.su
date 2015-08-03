@@ -292,6 +292,7 @@ class UserController extends Controller
                 ? 'Congratulations. You have successfully activated!'
                 : 'Your email changed!';
             $attributes = $user->activeAttributes();
+            $attributes[] = 'hash';
             $redirect = ['user/view'];
             foreach($bundle as $name => $value) {
                 if (in_array($name, $attributes)) {

@@ -28,9 +28,13 @@ class Type extends Model
     public $income;
     public $profit;
     public $bonus;
-    public $degree = 3;
-    public $visibility = true;
-    public $reinvest = null;
+    public $degree;
+    public $visibility;
+    public $reinvest;
+    public $next_id;
+    const LEVEL1 = 4;
+    const LEVEL2 = 5;
+    const LEVEL3 = 6;
 
     public function attributeLabels() {
         return [
@@ -50,9 +54,9 @@ class Type extends Model
             Type::create(1, 'Calm', 10, 17, 0, 1);
             Type::create(2, 'Breeze', 30, 50, 2, 2);
             Type::create(3, 'Vortex', 60, 100, 3, 3);
-            Type::create(4, 'Tornado', 100, 0, 5, null);
-            Type::create(5, 'Tornado', 0, 250, 5, null, false);
-            Type::create(6, 'Tornado', 0, 200, 5, 4, false);
+            Type::create(Type::LEVEL1, 'Tornado', 100, 0, 5, null, true, 3, Type::LEVEL2);
+            Type::create(Type::LEVEL2, 'Tornado', 0, 250, 0, null, false, 2, Type::LEVEL3);
+            Type::create(Type::LEVEL3, 'Tornado', 0, 200, 0, 4, false, 1);
         }
         return static::$_all;
     }
@@ -92,7 +96,8 @@ class Type extends Model
         return $this->stake;
     }
 
-    public static function create($id, $name, $stake, $income, $bonus, $reinvest, $visibility = true) {
+    public static function create($id, $name, $stake, $income, $bonus,
+                                  $reinvest, $visibility = true, $degree = 3, $next_id = null) {
         return static::$_all[$id] = new Type([
             'id' => $id,
             'name' => Yii::t('app', $name),
@@ -100,7 +105,13 @@ class Type extends Model
             'income' => $income,
             'bonus' => $bonus,
             'reinvest' => $reinvest,
-            'visibility' => $visibility
+            'visibility' => $visibility,
+            'degree' => $degree,
+            'next_id' => $next_id
         ]);
+    }
+
+    public function isTornado() {
+        return in_array($this->id, [Type::LEVEL1, Type::LEVEL2, Type::LEVEL3]);
     }
 }

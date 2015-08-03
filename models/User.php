@@ -7,6 +7,7 @@ namespace app\models;
 
 
 use app\behaviors\Journal;
+use app\modules\pyramid\models\Income;
 use app\modules\pyramid\models\Node;
 use Exception;
 use Yii;
@@ -104,9 +105,9 @@ class User extends ActiveRecord implements IdentityInterface {
     public function scenarios() {
         return [
             'default' => ['email', 'skype', 'duration', 'country', 'timezone', 'phone', 'forename', 'surname'],
-            'signup'  => ['name', 'email', 'skype', 'perfect', 'password', 'repeat'],
+            'signup'  => ['name', 'email', 'skype', 'perfect', 'password', 'repeat', 'ref_name'],
             'admin'   => ['name', 'email', 'skype', 'perfect', 'account', 'status',
-                'duration', 'country', 'timezone', 'phone', 'forename', 'surname'],
+                'duration', 'country', 'timezone', 'phone', 'forename', 'surname', 'ref_name'],
         ];
     }
 
@@ -257,12 +258,18 @@ class User extends ActiveRecord implements IdentityInterface {
         return $this->hasOne(static::class, ['name' => 'ref_name']);
     }
 
+    public function getNodes() {
+        return $this->hasMany(Node::class, ['user_name' => 'name']);
+    }
+
     public function getSponsors() {
         return $this->hasMany(static::class, ['ref_name' => 'name']);
     }
 
     public function canChargeBonus() {
         //@todo decouple
-        return $this->ref_name && Node::find()->where(['user_name' => $this->ref_name])->count() > 0;
+        return $this->ref_name && (
+            Node::find()->where(['user_name' => $this->ref_name])->count() > 0 ||
+            Income::find()->where(['user_name' => $this->ref_name])->count() > 0);
     }
 }

@@ -5,6 +5,8 @@
 
 namespace app\modules\pyramid\models;
 
+use app\models\User;
+use Exception;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
@@ -60,12 +62,28 @@ class Income extends ActiveRecord
         return $this->hasOne(Node::class, ['id' => 'node_id']);
     }
 
-    public static function create($node_id, $user_name, $type_id, $time) {
-        return new static([
-            ':node_id' => $node_id,
-            ':user_name' => $user_name,
-            ':type_id' => $type_id,
-            ':time' => $time
-        ]);
+    public static function makeFromNode(Node $node) {
+        return static::make($node->id, $node->user, $node->type_id, $node->time, $node->getType()->income);
+    }
+
+    public static function make($node_id, User $user, $type_id, $time, $amount) {
+        $user->account += (float) $amount;
+        if ($user->update(false, ['account'])) {
+            $income = new static([
+                'node_id' => $node_id,
+                'user_name' => $user->name,
+                'type_id' => $type_id,
+                'time' => $time
+            ]);
+            if ($income->save()) {
+                return $income;
+            }
+            else {
+                throw new Exception(json_encode($income->getErrors(), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+            }
+        }
+        else {
+            throw new Exception(json_encode(func_get_args()));
+        }
     }
 }

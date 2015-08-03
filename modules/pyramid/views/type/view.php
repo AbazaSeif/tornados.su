@@ -11,7 +11,7 @@ use yii\widgets\DetailView;
 /* @var $model \app\modules\pyramid\models\Type */
 
 $this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Marketing'), 'url' => ['plan']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Marketing'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 $user = Yii::$app->user->identity;
 ?>
