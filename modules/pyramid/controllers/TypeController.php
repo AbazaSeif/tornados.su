@@ -25,12 +25,12 @@ class TypeController extends Controller {
 
     public function behaviors() {
         return [
-            'verbs' => [
-                'class' => VerbFilter::class,
-                'actions' => [
-                    'open' => ['post'],
-                ]
-            ],
+//            'verbs' => [
+//                'class' => VerbFilter::class,
+//                'actions' => [
+//                    'open' => ['post'],
+//                ]
+//            ],
 
             'access' => [
                 'class' => Access::class,

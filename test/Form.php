@@ -10,6 +10,7 @@ use DOMXPath;
 
 /**
  * @property \DOMDocument $dom
+ * @property \DOMXPath $xpath
  */
 class Form {
     public $name;
@@ -30,15 +31,15 @@ class Form {
 
     public function __construct($url, $name = null) {
         $this->name = $name;
-        $this->init($url);
+        $this->go($url);
     }
 
     public function init($url, $headers = null, $raw = null) {
-        if (!$headers) {
-            $raw = file_get_contents($this->origin() . $url);
-            $headers = $http_response_header;
-        }
-        echo "$url\n";
+        echo $url . "\n";
+//        if (is_null($headers)) {
+//            $raw = file_get_contents($this->origin() . $url);
+//            $headers = $http_response_header;
+//        }
         $this->url = $url;
         $this->raw = $raw;
         foreach($headers as $header) {
@@ -56,15 +57,14 @@ class Form {
             }
         }
 
-        if ($this->headers['set-cookie']) {
-            $cookies = $this->headers['set-cookie'];
-            if (!is_array($cookies)) {
-                $cookies = [$cookies];
-            }
-            foreach($cookies as $cookie) {
-                if (preg_match('|^([^=]+)=([^;]+)|', $cookie, $kv)) {
-                    $this->cookies[$kv[1]] = $kv[2];
-                }
+
+        if (is_string($this->headers['set-cookie'])) {
+            $this->headers['set-cookie'] = [$this->headers['set-cookie']];
+        }
+
+        foreach($this->headers['set-cookie'] as $cookie) {
+            if (preg_match('|^([^=]+)=([^;]+)|', $cookie, $kv)) {
+                $this->cookies[$kv[1]] = $kv[2];
             }
         }
 
@@ -122,7 +122,9 @@ class Form {
     public function fill($attributes) {
         foreach($attributes as $name => $value) {
             $field = $this->field($name);
-            $field->setAttribute('value', $value);
+            if ($field) {
+                $field->setAttribute('value', $value);
+            }
         }
     }
 
@@ -130,20 +132,44 @@ class Form {
         $content = http_build_query($this->fields());
         $headers = $this->headers([
             'Content-Type' => 'application/x-www-form-urlencoded',
-//            'Content-Length' => strlen($content),
+            'Content-Length' => strlen($content),
         ]);
         $form = $this->form();
-        $url = $form->getAttribute('action');
-        print($headers);
-        $raw = file_get_contents($this->origin() . $url, false, stream_context_create([
+        if ($form) {
+            $url = $form->hasAttribute('action') ? $form->getAttribute('action') : $this->url;
+            $isPOST = $form->hasAttribute('method') && 'GET' != strtoupper($form->getAttribute('method'));
+        }
+        else {
+            $url = $this->url;
+            $isPOST = false;
+        }
+        if (!$isPOST && !empty($content)) {
+            $url .= '?' . $content;
+        }
+        $curl = curl_init($this->origin() . $url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($curl, CURLOPT_HEADER, true);
+        $response_headers = [];
+        curl_setopt($curl, CURLOPT_HEADERFUNCTION, function($curl, $line) use ($response_headers) {
+            $response_headers[] = $line;
+        });
+        if ($isPOST) {
+            curl_setopt($curl, CURLOPT_POST, true);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $content);
+        }
+        $raw = curl_exec($curl);
+        curl_close($curl);
+        /*
+        $raw = file_get_contents($url, false, stream_context_create([
             'http' => [
                 'method' => strtoupper($form->getAttribute('method')),
                 'header'  => $headers,
                 'content' => $content
             ]
         ]));
-
-        return $this->init($url, $http_response_header, $raw);
+        */
+        return $this->init($url, $response_headers, $raw);
     }
 
     public function headers($headers = []) {
@@ -154,17 +180,28 @@ class Form {
         }
         $lines = [];
         foreach($send_headers as $name => $value)
-            $lines[] = "$name: $value\r\n";
-        return implode('', $lines);
+            $lines[] = "$name: $value";
+        return $lines;
     }
 
     public function go($url) {
+        $curl = curl_init($this->origin() . $url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_HEADER, true);
+        $response_headers = [];
+        curl_setopt($curl, CURLOPT_HEADERFUNCTION, function($curl, $line) use ($response_headers) {
+            $response_headers[] = $line;
+        });
+        $raw = curl_exec($curl);
+        curl_close($curl);
+        /*
         $raw = file_get_contents($this->origin() . $url, false, stream_context_create([
             'http' => [
                 'method' => 'GET',
                 'header' => $this->headers(),
             ]
         ]));
-        return $this->init($url, $http_response_header, $raw);
+        */
+        return $this->init($url, $response_headers, $raw);
     }
 }
