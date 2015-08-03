@@ -95,6 +95,11 @@ class Node extends ActiveRecord
 
         $i = count($nodes);
         foreach($nodes as $node) {
+            if ($node->type->isTornado()) {
+                if ($tornado = Node::getTornadoExpectant()) {
+                    $node = $tornado;
+                }
+            }
             $node->up();
         }
 
@@ -115,7 +120,7 @@ class Node extends ActiveRecord
             }
         }
         else {
-//            $this->isTorna
+            $this->reinvest();
             $this->delete();
         }
     }
@@ -126,6 +131,9 @@ class Node extends ActiveRecord
             $this->time = $_SERVER['REQUEST_TIME'];
         }
         $expectant = static::getExpectant($this->type_id);
+        if ($expectant && $expectant->type->isTornado()) {
+            $expectant = static::getTornadoExpectant();
+        }
         if ($expectant) {
             $expectant->decrement();
             if (Type::LEVEL2 == $expectant->type_id && 1 == $expectant->count) {
@@ -147,8 +155,9 @@ class Node extends ActiveRecord
                 'user_name' => $this->user_name,
                 'type_id' => $this->getType()->reinvest
             ]);
-            $reinvest->save();
+            return $reinvest->invest();
         }
+        return false;
     }
 
     /**
