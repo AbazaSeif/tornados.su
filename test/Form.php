@@ -25,8 +25,8 @@ class Form {
         'Accept' => '*/*',
         'User-Agent' => 'wget/1.16',
         'Origin' => 'http://localhost',
-//        'Connection' => 'close',
-//        'Cache-Control' => 'max-age=0',
+        'Connection' => 'close',
+        'Cache-Control' => 'max-age=0',
     ];
 
     public function __construct($url, $name = null) {
@@ -36,10 +36,6 @@ class Form {
 
     public function init($url, $headers = null, $raw = null) {
         echo $url . "\n";
-//        if (is_null($headers)) {
-//            $raw = file_get_contents($this->origin() . $url);
-//            $headers = $http_response_header;
-//        }
         $this->url = $url;
         $this->raw = $raw;
         foreach($headers as $header) {
@@ -57,14 +53,14 @@ class Form {
             }
         }
 
-
-        if (is_string($this->headers['set-cookie'])) {
-            $this->headers['set-cookie'] = [$this->headers['set-cookie']];
-        }
-
-        foreach($this->headers['set-cookie'] as $cookie) {
-            if (preg_match('|^([^=]+)=([^;]+)|', $cookie, $kv)) {
-                $this->cookies[$kv[1]] = $kv[2];
+        if (isset($this->headers['set-cookie'])) {
+            if (is_string($this->headers['set-cookie'])) {
+                $this->headers['set-cookie'] = [$this->headers['set-cookie']];
+            }
+            foreach ($this->headers['set-cookie'] as $cookie) {
+                if (preg_match('|^([^=]+)=([^;]+)|', $cookie, $kv)) {
+                    $this->cookies[$kv[1]] = $kv[2];
+                }
             }
         }
 
@@ -160,15 +156,6 @@ class Form {
         }
         $raw = curl_exec($curl);
         curl_close($curl);
-        /*
-        $raw = file_get_contents($url, false, stream_context_create([
-            'http' => [
-                'method' => strtoupper($form->getAttribute('method')),
-                'header'  => $headers,
-                'content' => $content
-            ]
-        ]));
-        */
         return $this->init($url, $response_headers, $raw);
     }
 
@@ -194,14 +181,6 @@ class Form {
         });
         $raw = curl_exec($curl);
         curl_close($curl);
-        /*
-        $raw = file_get_contents($this->origin() . $url, false, stream_context_create([
-            'http' => [
-                'method' => 'GET',
-                'header' => $this->headers(),
-            ]
-        ]));
-        */
         return $this->init($url, $response_headers, $raw);
     }
 }
