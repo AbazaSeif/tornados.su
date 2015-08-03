@@ -175,6 +175,15 @@ CREATE TABLE "feedback" (
 );
 CREATE UNIQUE INDEX feedback_id ON "feedback" USING btree ("id");
 
+
+
+CREATE TABLE "faq" (
+  "id" SERIAL PRIMARY KEY,
+  "question" VARCHAR(256) NOT NULL,
+  "answer" TEXT NOT NULL
+);
+
+
 /* see web/visit.php */
 /* Visitors list */
 CREATE TABLE "visit_agent" (

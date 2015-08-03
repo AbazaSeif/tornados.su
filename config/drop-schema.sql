@@ -1,6 +1,7 @@
 DROP VIEW IF EXISTS "visit";
 DROP TABLE IF EXISTS "visit_path";
 DROP TABLE IF EXISTS "visit_agent";
+DROP TABLE IF EXISTS "faq";
 DROP TABLE IF EXISTS "feedback";
 DROP TABLE IF EXISTS "income";
 DROP TABLE IF EXISTS "gift";

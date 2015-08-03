@@ -20,7 +20,7 @@ class Access extends Behavior {
     public $admin;
     public $manager;
     public $plain;
-    public $command;
+    public $team;
     public $guest;
 
     public function events() {
@@ -38,7 +38,7 @@ class Access extends Behavior {
 
     public function check($action) {
         $user = Yii::$app->user;
-        $roles = ['admin', 'manager', 'plain', 'command', 'guest'];
+        $roles = ['admin', 'manager', 'plain', 'team', 'guest'];
         $role = null;
         foreach($roles as $role) {
             $actions = $this->$role;
@@ -50,20 +50,19 @@ class Access extends Behavior {
             return true;
         }
         if ($user->isGuest) {
+            $action->result = Yii::$app->getResponse()->redirect(['/user/login']);
             return false;
         }
         if ('plain' == $role) {
             return true;
         }
-        if ('command' == $role && $user->identity->isCommand()) {
-            return true;
-        }
-        if ('manager' == $role && $user->identity->isManager()) {
-            return true;
-        }
-        if ($user->identity->isAdmin()) {
-            return true;
-        }
-        return false;
+
+        /**
+         * @var $identity \app\models\User
+         */
+        $identity = $user->identity;
+        return ('team' == $role && $identity->isTeam())
+            || ('manager' == $role && $identity->isManager())
+            || ($identity->isAdmin());
     }
 }

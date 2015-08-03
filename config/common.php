@@ -65,6 +65,7 @@ $config = [
                 'translations' => 'lang/lang/index',
                 'gifts' => 'pyramid/node/gift',
                 'contact-us' => 'feedback/feedback/create',
+                'faq' => 'faq/faq/index',
                 '/' => 'home/index',
             ],
         ],
