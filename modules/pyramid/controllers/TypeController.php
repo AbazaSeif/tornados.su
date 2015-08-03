@@ -42,10 +42,7 @@ class TypeController extends Controller {
     public function actionIndex() {
         return $this->render('index', [
             'dataProvider' => new ArrayDataProvider([
-                'allModels' => Type::all(),
-//                'sort' => [
-//                    'defaultOrder' => ['id' => SORT_ASC]
-//                ]
+                'allModels' => Type::all()
             ]),
         ]);
     }
@@ -80,6 +77,11 @@ class TypeController extends Controller {
                 $sum = (int) Node::find()->where(['user_name' => $me->name])->count();
                 $sum += (int) Income::find()->where(['user_name' => $me->name])->count();
                 if ($me->update(true, ['account']) && $node->invest()) {
+                    do {
+                        $i = $node->rise();
+                    }
+                    while($i > 0);
+                    
                     if (0 == $sum && $me->canChargeBonus()) {
                         $referral = $me->referral;
                         $referral->account += $type->bonus;

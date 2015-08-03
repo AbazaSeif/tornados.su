@@ -84,6 +84,45 @@ class Node extends ActiveRecord
         return $this->update(false, ['count']);
     }
 
+    public static function rise() {
+        /**
+         * @var $nodes Node[]
+         */
+        $nodes = static::find()
+            ->where('count <= 0')
+            ->orderBy(['time' => SORT_ASC, 'id' => SORT_ASC])
+            ->all();
+
+        $i = count($nodes);
+        foreach($nodes as $node) {
+            $node->up();
+        }
+
+        return $i;
+    }
+
+    public function up() {
+        Income::makeFromNode($this);
+        $type = $this->getType();
+
+        if ($type->income) {
+            $this->user->account = (float) $type->income;
+            if (!$this->user->update(false, ['account'])) {
+                throw new Exception($this->dump());
+            }
+        }
+
+        if ($type->next_id) {
+            $this->type_id = $type->next_id;
+            if (!$this->invest()) {
+                throw new Exception($this->dump());
+            }
+        }
+        else {
+            $this->delete();
+        }
+    }
+
     public function invest() {
         $this->count = $this->getType()->degree;
         $this->time = $_SERVER['REQUEST_TIME'];
@@ -94,30 +133,15 @@ class Node extends ActiveRecord
                     Income::makeFromNode($expectant);
                 }
                 $expectant->decrement();
-            } else {
-                $type = $this->getType();
-
-                if ($type->income) {
-                    Income::makeFromNode($expectant);
-                }
-
-                if ($type->next_id) {
-                    $expectant->type_id = $type->next_id;
-                    if (!$expectant->invest()) {
-                        throw new Exception();
-                    }
-                }
-                else {
-                    $expectant->delete();
-                }
-                $expectant->reinvest();
             }
         }
         if ($this->save()) {
             Account::set('profit', $this->getType()->getProfit());
             return true;
         }
-        return false;
+        else {
+            throw new Exception($this->dump());
+        }
     }
 
     public function reinvest() {
