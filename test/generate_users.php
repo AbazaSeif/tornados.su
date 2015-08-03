@@ -12,9 +12,10 @@ $length = (int) $argv[1];
 $transaction = Yii::$app->db->beginTransaction();
 for($i = 2; $i < $length; $i++) {
     $name = 'user' . $i;
-    $app->db->createCommand('INSERT INTO "user"("name", email) VALUES (:name, :email)', [
+    $app->db->createCommand('INSERT INTO "user"("name", email, ref_name) VALUES (:name, :email, :ref_name)', [
         ':name' => $name,
-        ':email' => $name . '@yopmail.com'
+        ':email' => $name . '@yopmail.com',
+        ':ref_name' => 'admin'
     ])->execute();
     $names[] = $name;
 }

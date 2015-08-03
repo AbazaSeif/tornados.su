@@ -81,7 +81,7 @@ class TypeController extends Controller {
                         $i = $node->rise();
                     }
                     while($i > 0);
-                    
+
                     if (0 == $sum && $me->canChargeBonus()) {
                         $referral = $me->referral;
                         $referral->account += $type->bonus;

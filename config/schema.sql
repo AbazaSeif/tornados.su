@@ -57,7 +57,7 @@ CREATE VIEW "translation" AS
 /* User account, , see app\models\User */
 CREATE TABLE "user" (
   id SERIAL PRIMARY KEY NOT NULL,
-  name VARCHAR(24) NOT NULL,
+  name VARCHAR(24) NOT NULL UNIQUE,
   account DECIMAL(8,2) NOT NULL DEFAULT '0.00',
   email VARCHAR(48) NOT NULL,
   hash CHAR(60),
@@ -73,7 +73,10 @@ CREATE TABLE "user" (
   surname VARCHAR(24),
   phone VARCHAR(16),
   ref_name VARCHAR(24),
-  data BYTEA
+  data BYTEA,
+  CONSTRAINT referral FOREIGN KEY (name)
+  REFERENCES "user"(name)
+  ON DELETE NO ACTION ON UPDATE CASCADE
 );
 CREATE UNIQUE INDEX user_id ON "user" USING btree ("id");
 CREATE UNIQUE INDEX user_name ON "user" USING btree ("name");
@@ -93,7 +96,7 @@ CREATE TABLE "journal" (
   ip INET,
   CONSTRAINT journal_user FOREIGN KEY (user_name)
   REFERENCES "user"(name)
-  ON DELETE CASCADE ON UPDATE CASCADE
+  ON DELETE NO ACTION ON UPDATE CASCADE
 );
 
 
@@ -106,7 +109,7 @@ CREATE TABLE "invoice" (
   status VARCHAR(16) DEFAULT 'create',
   CONSTRAINT invoice_user FOREIGN KEY (user_name)
   REFERENCES "user"(name)
-  ON DELETE CASCADE ON UPDATE CASCADE,
+  ON DELETE NO ACTION ON UPDATE CASCADE,
   CONSTRAINT amount CHECK (amount <> 0)
 );
 CREATE UNIQUE INDEX invoice_id ON "invoice" USING btree ("id");
@@ -128,7 +131,7 @@ CREATE TABLE "node" (
   time INT NOT NULL,
   CONSTRAINT node_user FOREIGN KEY (user_name)
   REFERENCES "user"(name)
-  ON DELETE CASCADE ON UPDATE CASCADE,
+  ON DELETE NO ACTION ON UPDATE CASCADE,
   CONSTRAINT "count" CHECK (count >= 0)
 );
 CREATE UNIQUE INDEX node_id ON "node" USING btree ("id");
@@ -143,7 +146,7 @@ CREATE TABLE "income" (
   time INT NOT NULL,
   CONSTRAINT income_user FOREIGN KEY (user_name)
   REFERENCES "user"(name)
-  ON DELETE CASCADE ON UPDATE CASCADE
+  ON DELETE NO ACTION ON UPDATE CASCADE
 );
 CREATE UNIQUE INDEX income_id ON "income" USING btree ("id");
 
@@ -155,7 +158,10 @@ CREATE TABLE "gift" (
   time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT gift_user FOREIGN KEY (user_name)
   REFERENCES "user"(name)
-  ON DELETE CASCADE ON UPDATE CASCADE
+  ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT gift_node FOREIGN KEY (node_id)
+  REFERENCES "node"(id)
+  ON DELETE NO ACTION ON UPDATE CASCADE
 );
 
 

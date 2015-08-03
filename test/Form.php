@@ -8,6 +8,9 @@ namespace tests;
 use DOMDocument;
 use DOMXPath;
 
+/**
+ * @property \DOMDocument $dom
+ */
 class Form {
     public $name;
     public $url;
@@ -18,12 +21,11 @@ class Form {
     public $headers = [];
     public $send_headers = [
         'Accept-Language' => 'ru,en-US;q=0.8,en;q=0.6',
-        'Accept' => 'text/html',
+        'Accept' => '*/*',
         'User-Agent' => 'wget/1.16',
         'Origin' => 'http://localhost',
-        'Connection' => 'close',
-        'Cache-Control' => 'max-age=0',
-        'Content-Type' => 'application/x-www-form-urlencoded',
+//        'Connection' => 'close',
+//        'Cache-Control' => 'max-age=0',
     ];
 
     public function __construct($url, $name = null) {
@@ -40,7 +42,6 @@ class Form {
         $this->url = $url;
         $this->raw = $raw;
         foreach($headers as $header) {
-//            echo "$header\n";
             if (preg_match('|^([^:]+):\s+(.*)$|', $header, $kv)) {
                 $name = strtolower($kv[1]);
                 $value = $kv[2];
@@ -53,11 +54,7 @@ class Form {
                     $this->headers[$name] = $value;
                 }
             }
-            else {
-//                echo 'Wrong header: ' . $header;
-            }
         }
-//        echo "\n";
 
         if ($this->headers['set-cookie']) {
             $cookies = $this->headers['set-cookie'];
@@ -111,6 +108,9 @@ class Form {
      * @return array
      */
     public function fields() {
+        /**
+         * @var $inputs \DOMElement[]
+         */
         $inputs = $this->query('//input[@name]');
         $fields = [];
         foreach($inputs as $input) {
@@ -129,12 +129,12 @@ class Form {
     public function send() {
         $content = http_build_query($this->fields());
         $headers = $this->headers([
-            'Content-Length' => strlen($content),
+            'Content-Type' => 'application/x-www-form-urlencoded',
+//            'Content-Length' => strlen($content),
         ]);
-//        echo "$content\n\n";
         $form = $this->form();
         $url = $form->getAttribute('action');
-        print_r($headers);
+        print($headers);
         $raw = file_get_contents($this->origin() . $url, false, stream_context_create([
             'http' => [
                 'method' => strtoupper($form->getAttribute('method')),
@@ -142,18 +142,20 @@ class Form {
                 'content' => $content
             ]
         ]));
+
         return $this->init($url, $http_response_header, $raw);
     }
 
     public function headers($headers = []) {
         $headers['Referer'] = $this->origin() . $this->url;
-        $send_headers = array_merge($this->send_headers);
+        $send_headers = array_merge($this->send_headers, $headers);
         if (!empty($this->cookies)) {
             $send_headers['Cookie'] = http_build_query($this->cookies, null, '; ');
         }
+        $lines = [];
         foreach($send_headers as $name => $value)
-            $headers[] = "$name: $value\r\n";
-        return implode('', $headers);
+            $lines[] = "$name: $value\r\n";
+        return implode('', $lines);
     }
 
     public function go($url) {

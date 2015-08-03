@@ -102,14 +102,10 @@ class Node extends ActiveRecord
     }
 
     public function up() {
-        Income::makeFromNode($this);
         $type = $this->getType();
 
         if ($type->income) {
-            $this->user->account = (float) $type->income;
-            if (!$this->user->update(false, ['account'])) {
-                throw new Exception($this->dump());
-            }
+            Income::makeFromNode($this);
         }
 
         if ($type->next_id) {
@@ -119,24 +115,25 @@ class Node extends ActiveRecord
             }
         }
         else {
+//            $this->isTorna
             $this->delete();
         }
     }
 
     public function invest() {
         $this->count = $this->getType()->degree;
-        $this->time = $_SERVER['REQUEST_TIME'];
+        if (!$this->time) {
+            $this->time = $_SERVER['REQUEST_TIME'];
+        }
         $expectant = static::getExpectant($this->type_id);
         if ($expectant) {
-            if ($expectant->count > 1) {
-                if (Type::LEVEL2 == $expectant->type_id && 1 == $expectant->count) {
-                    Income::makeFromNode($expectant);
-                }
-                $expectant->decrement();
+            $expectant->decrement();
+            if (Type::LEVEL2 == $expectant->type_id && 1 == $expectant->count) {
+                Income::makeFromNode($expectant);
             }
         }
         if ($this->save()) {
-            Account::set('profit', $this->getType()->getProfit());
+            Account::add('profit', $this->getType()->getProfit());
             return true;
         }
         else {
@@ -167,7 +164,7 @@ class Node extends ActiveRecord
      * @return Node
      */
     public static function getTornadoExpectant() {
-        return static::find()->where('type_id = 4 OR type_id = 5 OR type_id = 6')->andWhere('count > 0')
+        return static::find()->where('type_id = 5 OR type_id = 6')
             ->orderBy(['time' => SORT_ASC, 'id' => SORT_ASC])->limit(1)->one();
     }
 

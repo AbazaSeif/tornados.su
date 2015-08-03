@@ -112,6 +112,6 @@ class Type extends Model
     }
 
     public function isTornado() {
-        return in_array($this->id, [Type::LEVEL1, Type::LEVEL2, Type::LEVEL3]);
+        return in_array($this->id, [Type::LEVEL2, Type::LEVEL3]);
     }
 }

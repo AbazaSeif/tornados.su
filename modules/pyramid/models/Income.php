@@ -63,6 +63,9 @@ class Income extends ActiveRecord
     }
 
     public static function makeFromNode(Node $node) {
+        if ($node->type->isTornado()) {
+            $node = Node::getTornadoExpectant();
+        }
         return static::make($node->id, $node->user, $node->type_id, $node->time, $node->getType()->income);
     }
 

@@ -237,8 +237,8 @@ class UserController extends Controller
                                         return $this->redirect(['/pyramid/node/index', 'id' => $node_id]);
                                     }
                                 }
-                                return $this->redirect(['view']);
-
+//                                return $this->redirect(['view']);
+                                return $this->actionView($user->name);
                             }
                             else {
                                 Yii::$app->session->addFlash('error', Yii::t('app', 'Something wrong happened'));

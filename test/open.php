@@ -6,7 +6,12 @@ use app\models\User;
 use tests\Form;
 use yii\console\Application;
 
-require_once __DIR__ . '/../boot.php';
+/**
+ * @var $users User[]
+ * @var $config array
+ */
+
+require_once __DIR__ . '/../config/boot.php';
 
 $app = new Application($config);
 
@@ -14,14 +19,15 @@ require_once 'Form.php';
 
 function open_matrix($username)
 {
-    $form = new Form('/user/login', 'Login');
+    $form = new Form('/login', 'Login');
     $form->fill([
         'name' => $username,
         'password' => '1',
+        'remember' => '0'
     ]);
     $form->send();
 
-    $raw = $form->go('/matrix/open/1');
+    $raw = $form->go('/plan4/open');
     file_put_contents(__DIR__ . "/../web/out/$username.html", $raw);
     $form->go('/user/logout');
 }
