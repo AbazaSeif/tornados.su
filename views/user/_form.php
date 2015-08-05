@@ -71,12 +71,15 @@ else {
 
 echo Html::tag('div', '* ' . Yii::t('app', 'Required fields'), ['class' => 'form-group']);
 
-if ($model->isNewRecord) {
+if ($model->isNewRecord && 'signup' == $model->scenario) {
     echo Html::tag('div',
     Html::activeCheckbox($model, 'accept', ['label' => Yii::t('app', 'I accept the <a href="{url}">terms and conditions</a>', [
             'url' => Url::to(['/article/article/page', 'name' => 'offer'])
         ])]),
     ['class' => 'offer']);
+}
+else {
+    echo '<br />';
 }
 
 if (Yii::$app->user->isGuest) {

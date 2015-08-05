@@ -57,9 +57,9 @@ class User extends ActiveRecord implements IdentityInterface {
 
     public static function statuses() {
         return [
+            User::PLAIN => Yii::t('app', 'Registered'),
             User::BLOCKED => Yii::t('app', 'Blocked'),
             User::ADMIN => Yii::t('app', 'Admin'),
-            User::PLAIN => Yii::t('app', 'Registered'),
             User::MANAGER => Yii::t('app', 'Manager'),
             User::TEAM => Yii::t('app', 'Team')
         ];
@@ -82,7 +82,8 @@ class User extends ActiveRecord implements IdentityInterface {
     public function rules() {
         return [
             ['id', 'integer'],
-            [['name', 'email', 'perfect', 'skype', 'account', 'phone', 'forename', 'surname'], 'required',
+            [['name', 'email', 'account', 'status'], 'required'],
+            [['perfect', 'skype', 'account', 'phone', 'forename', 'surname'], 'required',
                 'on' => ['signup', 'default']],
             [['password', 'repeat'], 'required', 'on' => 'signup'],
             ['name', 'string', 'min' => 4, 'max' => 24],
@@ -98,6 +99,7 @@ class User extends ActiveRecord implements IdentityInterface {
                 'filter', 'filter' => 'trim'],
             [['skype', 'timezone', 'country', 'phone', 'forename', 'surname', 'name', 'email', 'perfect'],
                 'default', 'value' => null],
+            ['account', 'default', 'value' => 0],
             ['duration', 'integer', 'min' => 0, 'max' => 60 * 24 * 7],
             ['timezone', 'in', 'range' => timezone_identifiers_list()],
             ['repeat', 'compare', 'compareAttribute' => 'password'],

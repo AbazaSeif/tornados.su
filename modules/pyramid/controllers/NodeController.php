@@ -30,7 +30,7 @@ class NodeController extends Controller
                 'class' => 'yii\filters\HttpCache',
                 'cacheControlHeader' => 'must-revalidate, private',
                 'only' => ['index'],
-                'enabled' => false,
+                'enabled' => true,
                 'lastModified' => function ($action, $params) {
                     $query = Node::find();
                     if (isset($params['user'])) {
