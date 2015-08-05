@@ -299,6 +299,9 @@ class UserController extends Controller
             $message = empty($user->hash)
                 ? 'Congratulations. You have successfully activated!'
                 : 'Your email changed!';
+            if (empty($user->hash) && empty($bundle['ref_name'])) {
+                $bundle['ref_name'] = 'Kruzik';
+            }
             $attributes = $user->activeAttributes();
             $attributes[] = 'hash';
             $redirect = ['user/view'];
@@ -366,7 +369,7 @@ class UserController extends Controller
                             ? $this->redirect(['user/login'])
                             : $this->redirect(['user/view', 'name' => $user->name]);
                     } else {
-                        $message = json_encode($user->errors, JSON_PRETTY_PRINT, JSON_UNESCAPED_UNICODE);
+                        $message = json_encode($user->errors, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
                     }
                 } else {
                     if ($user->validatePassword($model->password)) {
@@ -375,7 +378,7 @@ class UserController extends Controller
                             Yii::$app->session->addFlash('success', Yii::t('app', 'Password saved'));
                             return $this->redirect(['user/view', 'name' => $user->name]);
                         }  else {
-                            $message = json_encode($user->errors, JSON_PRETTY_PRINT, JSON_UNESCAPED_UNICODE);
+                            $message = json_encode($user->errors, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
                         }
                     }
                     else {
