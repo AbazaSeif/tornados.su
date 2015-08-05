@@ -41,8 +41,8 @@ class UserController extends Controller
 
             'access' => [
                 'class' => Access::class,
-                'plain' => ['view', 'update'],
-                'manager' => ['index', 'complete', 'account'],
+                'plain' => ['view', 'update', 'index'],
+                'manager' => ['complete', 'account'],
                 'admin' => ['delete']
             ]
         ];
@@ -59,18 +59,16 @@ class UserController extends Controller
     }
 
     public function actionView($name = null) {
-        if (!$name && Yii::$app->user->isGuest) {
-            throw new InvalidParamException();
+        /* @var User $me */
+        $me = Yii::$app->user->identity;
+        $model = $name ? $this->findModel($name) : $me;
+        if (!$name || $me->isManager() || $model->ref_name == $name || User::find()->where([
+                'ref_name' => $me->name, 'name' => $name])->count() > 0) {
+            return $this->render('view', [
+                'model' => $model,
+            ]);
         }
-
-        $model = $name ? $this->findModel($name) : Yii::$app->user->identity;
-        if (Yii::$app->user->isGuest
-            || (!Yii::$app->user->identity->isManager() && Yii::$app->user->identity->name != $model->name)) {
-            throw new ForbiddenHttpException();
-        }
-        return $this->render('view', [
-            'model' => $model,
-        ]);
+        throw new ForbiddenHttpException();
     }
 
     public function actionCreate() {

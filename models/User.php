@@ -82,7 +82,8 @@ class User extends ActiveRecord implements IdentityInterface {
     public function rules() {
         return [
             ['id', 'integer'],
-            [['name', 'email', 'perfect', 'account', 'phone', 'forename', 'surname'], 'required'],
+            [['name', 'email', 'perfect', 'skype', 'account', 'phone', 'forename', 'surname'], 'required',
+                'on' => ['signup', 'default']],
             [['password', 'repeat'], 'required', 'on' => 'signup'],
             ['name', 'string', 'min' => 4, 'max' => 24],
             ['name', 'match', 'pattern' => '/^[a-z][a-z0-9_\-]+$/i', 'on' => 'signup'],
@@ -95,6 +96,8 @@ class User extends ActiveRecord implements IdentityInterface {
             ['skype', 'match', 'pattern' => '/^[a-zA-Z][a-zA-Z0-9\.,\-_]{5,31}$/'],
             [['skype', 'timezone', 'country', 'phone', 'forename', 'surname', 'name', 'email', 'perfect'],
                 'filter', 'filter' => 'trim'],
+            [['skype', 'timezone', 'country', 'phone', 'forename', 'surname', 'name', 'email', 'perfect'],
+                'default', 'value' => null],
             ['duration', 'integer', 'min' => 0, 'max' => 60 * 24 * 7],
             ['timezone', 'in', 'range' => timezone_identifiers_list()],
             ['repeat', 'compare', 'compareAttribute' => 'password'],

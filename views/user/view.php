@@ -57,9 +57,9 @@ if ($manager) {
             $buttons[] = Html::a(Yii::t('app', 'Journal'),
                 ['journal/index', 'user' => $model->name], ['class' => 'btn btn-primary']);
             $buttons[] = Html::a(Yii::t('app', 'Investment'),
-                ['matrix/invest', 'user' => $model->name], ['class' => 'btn btn-primary']);
+                ['pyramid/node/index', 'user' => $model->name], ['class' => 'btn btn-primary']);
             $buttons[] = Html::a(Yii::t('app', 'Income'),
-                ['matrix/income', 'user' => $model->name], ['class' => 'btn btn-primary']);
+                ['pyramid/income/index', 'user' => $model->name], ['class' => 'btn btn-primary']);
             if ($model->name == Yii::$app->user->identity->name || Yii::$app->user->identity->isAdmin()) {
                 $buttons[] = Html::a(Yii::t('app', 'Change Password'),
                     ['password', 'name' => $model->name], ['class' => 'btn btn-warning']);

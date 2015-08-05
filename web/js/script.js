@@ -218,7 +218,7 @@ if (window.localStorage) {
             this.remove();
         };
         if (browser('Ubuntu')) {
-            $linux.querySelector('img').setAttribute('src', '/img/ubuntu.png');
+            $linux.querySelector('img').setAttribute('src', '/images/ubuntu.png');
             var $welcome = $linux.querySelector('.welcome');
             $welcome.innerHTML = $welcome.innerHTML.replace('Linux', 'Ubuntu');
         }

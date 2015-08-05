@@ -58,7 +58,7 @@ class User extends UserModel
         }
 
 
-        if (Yii::$app->user->isGuest || !Yii::$app->user->identity->isManager()) {
+        if (!Yii::$app->user->identity->isManager()) {
             $query->andWhere(['status' => UserModel::PLAIN]);
         }
 
