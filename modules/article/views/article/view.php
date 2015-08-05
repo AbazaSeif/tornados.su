@@ -27,10 +27,10 @@ if (!$model->name) {
 
     <p class="form-group">
         <?php if (!Yii::$app->user->isGuest && Yii::$app->user->identity->isManager()): ?>
-            <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id],
+            <?= Html::a(Yii::t('app', 'Update'), ['/article/article/update', 'id' => $model->id],
                 ['class' => 'btn btn-primary']); ?>
 
-            <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
+            <?= Html::a(Yii::t('app', 'Delete'), ['/article/article/delete', 'id' => $model->id], [
                 'class' => 'btn btn-danger',
                 'data' => [
                     'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),

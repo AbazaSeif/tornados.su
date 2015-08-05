@@ -193,6 +193,7 @@ CREATE TABLE "article" (
 CREATE UNIQUE INDEX article_id ON "article" USING btree ("id");
 
 INSERT INTO "article"("name", "title", "content") VALUES ('offer', 'Публичная оферта', '');
+INSERT INTO "article"("name", "title", "content") VALUES ('important', 'Важно', '');
 
 
 /* see web/visit.php */

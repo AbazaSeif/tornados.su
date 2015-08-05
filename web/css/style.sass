@@ -128,7 +128,7 @@ footer > *
     width: inherit !important
     padding-top: 0 !important
   li
-    height: 800px
+    height: 600px
     background: no-repeat top
     background-size: cover
   @for $i from 1 through 5
@@ -136,26 +136,37 @@ footer > *
       background-image: url("/images/slides/" + $i + ".jpg")
 
   li:nth-child(5)
-    background-position: center
+    background-position: 0 -140px
 
 
 .video
   height: 620px
+  .exchangers
+    vertical-align: middle
+    a
+      display: block
+      margin-left: 2em
   .ipad
     width: 660px
     height: 552px
     background: $ipad center no-repeat
     text-align: center
     iframe
+      position: relative
+      display: block
       margin-left: 90px
-      margin-top: 28px
+      margin-top: 70px
       margin-bottom: 80px
       width: 480px
       height: 362px
 
+  article
+    display: table-cell
+    vertical-align: top
+
 
 .pussy
-  height: 840px
+  height: 600px
   background: $pussy center no-repeat
 
 
@@ -218,10 +229,6 @@ section
     border-bottom-left-radius: 1cm
     border-bottom-right-radius: 1cm
 
-.exchangers div
-  text-align: center
-  width: inherit !important
-
 section ul
   padding: 0
 
@@ -239,6 +246,9 @@ ul.ok li:before
 
 iframe
   display: block
+
+.login .hideable
+  display: none
 
 #skype
   position: absolute
@@ -300,6 +310,7 @@ iframe
 @media (min-width: 768px)
   .middle
     display: inline-block
+    max-width: 92%
 
   .contain
     width: 92%

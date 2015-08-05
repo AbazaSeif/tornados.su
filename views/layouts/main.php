@@ -32,7 +32,7 @@ $manager = !Yii::$app->user->isGuest && Yii::$app->user->identity->isManager();
 <body>
 <?php $this->beginBody() ?>
 <a id="skype" href="skype:?chat&blob=o3EBwqOq_nG09j5Hdx1Y63yGzMdHlpRO4IABdAuD6qoNB3MwbEq7yMf1VcI1YnWpD1PoCZGQC39R1MUcPU4">
-    <img src="/images/skype.png" />
+    <img src="/images/skype.png" title="<?= Yii::t('app', 'Skype chat') ?>" />
 </a>
 <div class="wrap <?= $login ?>">
     <?php
@@ -49,7 +49,6 @@ $manager = !Yii::$app->user->isGuest && Yii::$app->user->identity->isManager();
 
     $items = [
         ['label' => Yii::t('app', 'Home'), 'url' => ['/home/index'], 'options' => ['class' => 'hideable']],
-        ['label' => Yii::t('app', 'Marketing'), 'url' => ['/pyramid/type/index']],
         ['label' => Yii::t('app', 'Feedback'), 'url' => ['/feedback/feedback/' . ($manager ? 'index' : 'create')]],
         ['label' => Yii::t('app', 'FAQ'), 'url' => ['/faq/faq/index']],
         ['label' => Yii::t('app', 'News'), 'url' => ['/article/article/index']]

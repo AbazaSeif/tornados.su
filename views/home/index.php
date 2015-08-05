@@ -3,9 +3,10 @@
  * @link http://zenothing.com/
  * @var string $statistics
  * @var yii\web\View $this
- * @var \app\modules\article\models\Article[] $news
+ * @var Article[] $news
  */
 
+use app\modules\article\models\Article;
 use app\modules\pyramid\models\Type;
 use yii\helpers\Html;
 use yii\web\JqueryAsset;
@@ -37,9 +38,21 @@ $this->registerMetaTag([
         </ul>
     </section>
     <section class="video center">
-        <div class="ipad">
-            <iframe frameborder="0" src="//www.youtube.com/embed/s2tGLEd5x6M"></iframe>
-            <?= Html::a(Yii::t('app', 'Signup'), ['/user/signup'], ['class' => 'button']) ?>
+        <div class="row">
+            <div class="exchangers">
+                <a href="https://magneticexchange.com/?p=5301" title="Magnetic Exchange - сервис обмена Perfect
+                    Money, Neteller, Payza, Solid Trust Pay, Яндекс Денег, Payweb, RedPass и Paxum">
+                    <img src="http://ad.magneticexchange.com/ru_125_125.gif" alt="Magnetic Exchange - сервис обмена
+                        Perfect Money, Neteller, Payza, Solid Trust Pay, Яндекс Денег, Payweb, RedPass и Paxum" /></a>
+                <a href="https://xchange.cc/?R=13966463495285">
+                    <img src="https://xchange.cc/banner/black/125x125.gif"></a>
+            </div>
+            <div class="ipad">
+                <iframe frameborder="0" src="//www.youtube.com/embed/s2tGLEd5x6M"></iframe>
+            </div>
+            <?= $this->renderFile('@app/modules/article/views/article/view.php', [
+                'model' => Article::findOne(['name' => 'important'])
+            ]) ?>
         </div>
     </section>
     <section class="pussy">
@@ -72,7 +85,6 @@ $this->registerMetaTag([
             <p>2 - программа 1x3 переход 300 дол., после того как под него в одну очередь, встанет один человек,
                 он получает 250 дол. на вывод, 50 админу. Встал в тройку следующий, получает 250 дол. Встал третий
                 человек получает на вывод 200 дол., и 100 дол уходят реинвестом вниз очереди программы на сто.</p>
-            <?= Html::a(Yii::t('app', 'Signup'), ['/user/signup'], ['class' => 'button']) ?>
         </div>
     </section>
     <section class="news center">
@@ -127,13 +139,13 @@ $this->registerMetaTag([
                 if ($type->visibility) {
                     $names[] = Html::tag('div',
                         Html::tag('div', Html::tag('div', $type->name) . Html::tag('div', '$' . $type->stake), [
-                        'class' => 'inner'
-                    ]));
+                            'class' => 'inner'
+                        ]));
 
                     $signups[] = Html::tag('div',
                         Html::tag('div', Html::a(Yii::t('app', 'Signup'), ['/user/signup', 'type_id' => $type->id], ['class' => 'button']), [
-                        'class' => 'inner'
-                    ]));
+                            'class' => 'inner'
+                        ]));
                 }
             }
             ?>
@@ -145,12 +157,6 @@ $this->registerMetaTag([
                     <?= implode("\n", $signups) ?>
                 </div>
             </div>
-        </div>
-    </section>
-    <section class="exchangers">
-        <div>
-            <a href="https://magneticexchange.com/?p=5301" title="Magnetic Exchange - сервис обмена Perfect Money, Neteller, Payza, Solid Trust Pay, Яндекс Денег, Payweb, RedPass и Paxum"><img src="http://ad.magneticexchange.com/ru_125_125.gif" alt="Magnetic Exchange - сервис обмена Perfect Money, Neteller, Payza, Solid Trust Pay, Яндекс Денег, Payweb, RedPass и Paxum" /></a>
-            <a href="https://xchange.cc/?R=13966463495285"><img src="https://xchange.cc/banner/black/125x125.gif"></a>
         </div>
     </section>
 </article>
