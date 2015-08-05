@@ -82,7 +82,7 @@ class User extends ActiveRecord implements IdentityInterface {
     public function rules() {
         return [
             ['id', 'integer'],
-            [['name', 'email', 'perfect', 'account'], 'required'],
+            [['name', 'email', 'perfect', 'account', 'phone', 'forename', 'surname'], 'required'],
             [['password', 'repeat'], 'required', 'on' => 'signup'],
             ['name', 'string', 'min' => 4, 'max' => 24],
             ['name', 'match', 'pattern' => '/^[a-z][a-z0-9_\-]+$/i', 'on' => 'signup'],
@@ -107,7 +107,7 @@ class User extends ActiveRecord implements IdentityInterface {
     public function scenarios() {
         return [
             'default' => ['email', 'skype', 'duration', 'country', 'timezone', 'phone', 'forename', 'surname'],
-            'signup'  => ['name', 'email', 'skype', 'perfect', 'password', 'repeat', 'ref_name', 'accept'],
+            'signup'  => ['name', 'email', 'skype', 'perfect', 'password', 'repeat', 'ref_name', 'phone', 'forename', 'surname', 'accept'],
             'admin'   => ['name', 'email', 'skype', 'perfect', 'account', 'status',
                 'duration', 'country', 'timezone', 'phone', 'forename', 'surname', 'ref_name'],
         ];

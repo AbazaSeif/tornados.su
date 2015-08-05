@@ -13,7 +13,7 @@ $this->title = Yii::t('app', 'Create Translation');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Translations'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="translation-create">
+<div class="translation-create middle">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

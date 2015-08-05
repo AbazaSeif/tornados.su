@@ -93,6 +93,12 @@ body
   display: none
 
 footer
+  text-align: center
+
+footer > *
+  margin-top: 4mm
+
+#developer
   display: none
 
 .home-index
@@ -212,6 +218,10 @@ section
     border-bottom-left-radius: 1cm
     border-bottom-right-radius: 1cm
 
+.exchangers div
+  text-align: center
+  width: inherit !important
+
 section ul
   padding: 0
 
@@ -275,6 +285,9 @@ iframe
 .user-create .form-group,
 .user-update .form-group
   margin-bottom: 0
+
+.required label:after
+  content: ' *'
 
 @media (max-width: 768px)
   #skype

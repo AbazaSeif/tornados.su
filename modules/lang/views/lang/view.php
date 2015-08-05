@@ -29,7 +29,7 @@ else {
 }
 
 ?>
-<div class="translation-view">
+<div class="translation-view middle">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

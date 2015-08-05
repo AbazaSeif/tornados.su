@@ -106,18 +106,21 @@ $manager = !Yii::$app->user->isGuest && Yii::$app->user->identity->isManager();
     <div class="glyphicon glyphicon-remove"></div>
 </div>
 
-<div id="metrika">
-    <!-- Yandex.Metrika informer -->
-    <a href="https://metrika.yandex.ru/stat/?id=31611918&amp;from=informer"
-       target="_blank" rel="nofollow">
-        <img src="https://mc.yandex.ru/informer/31611918/3_0_209FFFFF_007FFFFF_0_pageviews"
-             alt="Яндекс.Метрика"
-             title="Яндекс.Метрика: данные за сегодня (просмотры, визиты и уникальные посетители)" />
-    </a>
-    <!-- /Yandex.Metrika informer -->
-</div>
 <footer class="footer">
-    <?= Yii::t('app', 'Developed by') ?> <a href="http://zenothing.com">zenothing.com</a>
+    <div id="metrika">
+        <!-- Yandex.Metrika informer -->
+        <a href="https://metrika.yandex.ru/stat/?id=31799861&amp;from=informer"
+           target="_blank" rel="nofollow">
+            <img src="https://informer.yandex.ru/informer/31799861/3_0_ECFFECFF_CCFFCCFF_0_pageviews"
+                 alt="Яндекс.Метрика"
+                 title="Яндекс.Метрика: данные за сегодня (просмотры, визиты и уникальные посетители)" />
+        </a>
+        <!-- /Yandex.Metrika informer -->
+    </div>
+
+    <div id="developer">
+        <?= Yii::t('app', 'Developed by') ?> <a href="http://zenothing.com">zenothing.com</a>
+    </div>
 </footer>
 
 <?php $this->endBody() ?>

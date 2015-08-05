@@ -201,9 +201,9 @@ function browser(string) {
     return navigator.userAgent.indexOf(string) >= 0;
 }
 
-var $footer = $$('.footer');
-if ($footer && browser('Windows')) {
-    $footer.remove();
+var $developer = $$('#developer');
+if ($developer && browser('Windows')) {
+    $developer.remove();
 }
 
 if (window.localStorage) {
@@ -513,7 +513,7 @@ if ($timezone) {
     m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-ga('create', 'UA-58031952-6', 'auto');
+ga('create', 'UA-58031952-7', 'auto');
 ga('require', 'linkid', 'linkid.js');
 ga('send', 'pageview');
 
@@ -522,7 +522,7 @@ ga('send', 'pageview');
     (w[c] = w[c] || []).push(function() {
         try {
             w.yaCounter31611918 = new Ya.Metrika({
-                id:31611918,
+                id:31799861,
                 clickmap:true,
                 trackLinks:true,
                 accurateTrackBounce:true
@@ -545,7 +545,7 @@ ga('send', 'pageview');
 var metrika = $$('#metrika img');
 metrika.onclick = function() {
     Ya.Metrika.informer({
-        id:31611918,
+        id:31799861,
         lang:'ru',
         i:this
     });

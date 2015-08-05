@@ -24,7 +24,15 @@ $columns = [
     'name',
     'stake',
     'income',
-    'reinvest',
+    [
+        'label' => 'reinvest',
+        'value' => function(Type $model) {
+            if ($model->reinvest) {
+                return Type::get($model->reinvest);
+            }
+            return null;
+        }
+    ],
     [
         'label' => Yii::t('app', 'Action'),
         'format' => 'html',

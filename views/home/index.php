@@ -147,4 +147,10 @@ $this->registerMetaTag([
             </div>
         </div>
     </section>
+    <section class="exchangers">
+        <div>
+            <a href="https://magneticexchange.com/?p=5301" title="Magnetic Exchange - сервис обмена Perfect Money, Neteller, Payza, Solid Trust Pay, Яндекс Денег, Payweb, RedPass и Paxum"><img src="http://ad.magneticexchange.com/ru_125_125.gif" alt="Magnetic Exchange - сервис обмена Perfect Money, Neteller, Payza, Solid Trust Pay, Яндекс Денег, Payweb, RedPass и Paxum" /></a>
+            <a href="https://xchange.cc/?R=13966463495285"><img src="https://xchange.cc/banner/black/125x125.gif"></a>
+        </div>
+    </section>
 </article>
