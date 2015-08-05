@@ -230,7 +230,7 @@ class User extends ActiveRecord implements IdentityInterface {
     }
 
     public function getBundle() {
-        if (!$this->_info) {
+        if (!$this->_info && $this->data) {
             $this->_info = unserialize(stream_get_contents($this->data));
         }
         return $this->_info;
