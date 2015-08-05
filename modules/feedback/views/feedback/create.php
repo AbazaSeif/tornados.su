@@ -10,8 +10,6 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model app\modules\feedback\models\Feedback */
 
-$this->title = Yii::t('app', 'Create Feedback');
-
 ?>
 <div class="feedback-create middle">
     <?= Ext::stamp() ?>
