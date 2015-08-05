@@ -67,4 +67,8 @@ class Feedback extends ActiveRecord
     public function __toString() {
         return $this->subject;
     }
+
+    public function url() {
+        return ['/feedback/feedback/view', 'id' => $this->id];
+    }
 }

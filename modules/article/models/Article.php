@@ -47,4 +47,8 @@ class Article extends ActiveRecord
     public function __toString() {
         return $this->title;
     }
+
+    public function url() {
+        return ['/article/article/view', 'id' => $this->id];
+    }
 }

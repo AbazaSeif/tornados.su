@@ -25,7 +25,6 @@ use yii\db\ActiveRecord;
  */
 class Invoice extends ActiveRecord
 {
-
     public static $statuses = [
         'create' => 'Created',
         'invalid_amount' => 'Invalid amount',
@@ -110,5 +109,9 @@ class Invoice extends ActiveRecord
 
     public function journalView() {
         return __DIR__ . '/../views/invoice/journal.php';
+    }
+
+    public function url() {
+        return ['/invoice/invoice/view', 'id' => $this->id];
     }
 }

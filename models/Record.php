@@ -28,6 +28,7 @@ class Record extends ActiveRecord
         'user' => 'app\models\User',
         'invoice' => 'app\modules\invoice\models\Invoice',
         'feedback' => 'app\modules\feedback\models\Feedback',
+        'article' => 'app\modules\article\models\Article',
     ];
 
     private static $_cache = [];
