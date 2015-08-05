@@ -76,7 +76,7 @@ if ($model->isNewRecord) {
     Html::activeCheckbox($model, 'accept', ['label' => Yii::t('app', 'I accept the <a href="{url}">terms and conditions</a>', [
             'url' => Url::to(['/article/article/page', 'name' => 'offer'])
         ])]),
-    ['class' => 'form-group']);
+    ['class' => 'offer']);
 }
 
 if (Yii::$app->user->isGuest) {

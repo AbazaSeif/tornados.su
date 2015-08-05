@@ -177,7 +177,10 @@ class UserController extends Controller
         }
 
         if ($model->load(Yii::$app->request->post())) {
-            $bundle = array_merge(Yii::$app->request->post('bundle'), $bundle);
+            $bundle_post = Yii::$app->request->post('bundle');
+            if ($bundle_post) {
+                $bundle = array_merge($bundle_post, $bundle);
+            }
 
             if (preg_match('|U\w{7}|', $model->name)) {
                 $model->addError('name', Yii::t('app', Yii::t('app', 'Username cannot be in the format of Perfect Money wallet')));

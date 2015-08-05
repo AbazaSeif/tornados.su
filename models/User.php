@@ -214,7 +214,7 @@ class User extends ActiveRecord implements IdentityInterface {
         $template = Yii::getAlias('@app') . "/views/mail.php";
         return Yii::$app->mailer->compose()
             ->setTo($this->email)
-            ->setFrom(['tornadoclub@bk.ru' => Yii::$app->name])
+            ->setFrom(['laskasevera@gmail.com' => Yii::$app->name])
             ->setSubject($params['subject'])
             ->setHtmlBody(Yii::$app->view->renderFile($template, $params))
             ->send();
