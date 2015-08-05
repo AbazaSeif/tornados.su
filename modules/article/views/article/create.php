@@ -13,7 +13,7 @@ $this->title = Yii::t('app', 'Create News');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Posts'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="article-create">
+<div class="article-create contain">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

@@ -15,7 +15,7 @@ $this->title = $model;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Invoices'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="invoice-view">
+<div class="invoice-view middle">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

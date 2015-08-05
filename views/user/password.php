@@ -28,7 +28,7 @@ if ($message):
     echo "<div class=\"alert alert-danger\">$message</div>";
 else:
     ?>
-    <div class="user-password">
+    <div class="user-password middle">
         <?= Ext::stamp() ?>
         <h1><?= $this->title ?></h1>
         <?php $form = ActiveForm::begin(); ?>

@@ -12,7 +12,7 @@ use yii\helpers\Html;
 
 $this->title = Yii::$app->user->isGuest ? Yii::t('app', 'Signup') : Yii::t('app', 'Create User');
 ?>
-<div class="user-create">
+<div class="user-create middle">
 
     <h1 class="bagatelle"><?= Html::encode($this->title) ?></h1>
 

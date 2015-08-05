@@ -15,7 +15,7 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Marketing'), 'url' =
 $this->params['breadcrumbs'][] = $this->title;
 $user = Yii::$app->user->identity;
 ?>
-<div class="type-view">
+<div class="type-view middle">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

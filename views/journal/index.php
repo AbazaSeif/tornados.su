@@ -14,7 +14,7 @@ use yii\grid\GridView;
 $this->title = Yii::t('app', 'Journal');
 //$this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="journal-index">
+<div class="journal-index contain">
 
     <h1 class="bagatelle"><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>

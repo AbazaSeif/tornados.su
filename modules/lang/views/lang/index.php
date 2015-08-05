@@ -12,7 +12,7 @@ use yii\grid\GridView;
 
 $this->title = Yii::t('app', 'Translations');
 ?>
-<div class="translation-index">
+<div class="translation-index contain">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>

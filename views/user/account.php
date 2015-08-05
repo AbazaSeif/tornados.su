@@ -5,7 +5,7 @@
 use yii\helpers\Html;
 
 ?>
-<div class="account">
+<div class="account middle">
     <h1><?= Yii::t('app', 'Accounts') ?></h1>
     <table class="table">
         <?php

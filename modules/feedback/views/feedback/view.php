@@ -12,7 +12,7 @@ $this->title = $model->subject;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Feedbacks'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $model->id;
 ?>
-<div class="feedback-view">
+<div class="feedback-view middle">
 
     <article>
         <h1><?= Html::encode($this->title) ?></h1>

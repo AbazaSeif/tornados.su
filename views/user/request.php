@@ -17,7 +17,7 @@ use yii\widgets\ActiveForm;
 $this->title = Yii::t('app', 'Request for password recovery');
 
 ?>
-<div class="user-password">
+<div class="user-password middle">
     <?= Ext::stamp() ?>
     <h1><?= $this->title ?></h1>
     <?php $form = ActiveForm::begin(); ?>

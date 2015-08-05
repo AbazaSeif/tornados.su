@@ -164,21 +164,20 @@ function translate_cabinet() {
     }
 }
 
-addEventListener('load', function() {
-    var $cloud = $$('.cloud ul');
-    if ($cloud) {
-        $($cloud).lightSlider({
-            item: 1,
-            loop: true,
-            auto: true,
-            pause: 3600,
-            gallery: false,
-            pager: false,
-            //mode: 'fade',
-            slideMargin: 0
-        });
-    }
-});
+
+var $cloud = $$('.cloud ul');
+if ($cloud) {
+    $($cloud).lightSlider({
+        item: 1,
+        loop: true,
+        auto: true,
+        pause: 3600,
+        gallery: false,
+        pager: false,
+        //mode: 'fade',
+        slideMargin: 0
+    });
+}
 
 addEventListener('beforeunload', function() {
     var request = new XMLHttpRequest();

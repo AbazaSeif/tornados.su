@@ -13,7 +13,7 @@ $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Feedbacks'), 'url' =
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>
-<div class="feedback-update">
+<div class="feedback-update middle">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

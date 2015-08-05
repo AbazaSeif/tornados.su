@@ -44,7 +44,7 @@ $columns[] = [
 ];
 $columns[] = $actions;
 ?>
-<div class="invoice-index">
+<div class="invoice-index middle">
 
     <h1 class="bagatelle"><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>

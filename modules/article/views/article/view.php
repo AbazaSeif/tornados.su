@@ -20,7 +20,7 @@ if (!$model->name) {
     $this->params['breadcrumbs'][] = $this->title;
 }
 ?>
-<article class="article-view" itemscope itemtype="//schema.org/Article">
+<article class="article-view middle" itemscope itemtype="//schema.org/Article">
     <?= Ext::stamp() ?>
 
     <h1 itemprop="name"><?= Html::encode($this->title) ?></h1>

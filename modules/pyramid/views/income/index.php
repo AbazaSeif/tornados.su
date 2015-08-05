@@ -15,7 +15,7 @@ use yii\grid\GridView;
 
 $this->title = Yii::t('app', 'Income');
 ?>
-<div class="archive-index">
+<div class="archive-index middle">
 
     <h1 class="bagatelle"><?= Html::encode($this->title) ?></h1>
 

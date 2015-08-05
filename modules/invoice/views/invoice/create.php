@@ -13,7 +13,7 @@ $this->title = Yii::t('app', 'payment' == $model->scenario ? 'Payment' : 'Withdr
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Invoices'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="invoice-create">
+<div class="invoice-create middle">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

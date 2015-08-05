@@ -38,6 +38,7 @@ class JournalController extends Controller
                 'class' => 'yii\filters\HttpCache',
                 'cacheControlHeader' => 'must-revalidate, private',
                 'only' => ['index'],
+                'enabled' => false,
                 'lastModified' => function ($action, $params) {
                     $query = Record::find();
                     if (isset($params['user'])) {

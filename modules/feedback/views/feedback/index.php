@@ -12,7 +12,7 @@ use yii\grid\GridView;
 
 $this->title = Yii::t('app', 'Feedbacks');
 ?>
-<div class="feedback-index">
+<div class="feedback-index contain">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>

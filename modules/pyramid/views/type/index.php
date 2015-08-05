@@ -29,26 +29,27 @@ $columns = [
         'label' => Yii::t('app', 'Action'),
         'format' => 'html',
         'value' => function(Type $model) {
-            if (Yii::$app->user->isGuest) {
-                return Html::a('Open', ['/user/signup', 'type_id' => $model->id], ['class' => 'btn btn-success btn-sm']);
-            }
-            else {
-                /** @var \app\models\User $user */
-                $user = Yii::$app->user->identity;
-                if ($user->account >= $model->stake) {
-                    return Html::a('Open', ['view', 'id' => $model->id], ['class' => 'btn btn-success btn-sm']);
+            if ($model->visibility) {
+                if (Yii::$app->user->isGuest) {
+                    return Html::a('Open', ['/user/signup', 'type_id' => $model->id], ['class' => 'btn btn-success btn-sm']);
                 } else {
-                    return Yii::t('app', 'Insufficient funds');
+                    /** @var \app\models\User $user */
+                    $user = Yii::$app->user->identity;
+                    if ($user->account >= $model->stake) {
+                        return Html::a('Open', ['view', 'id' => $model->id], ['class' => 'btn btn-success btn-sm']);
+                    } else {
+                        return Yii::t('app', 'Insufficient funds');
+                    }
                 }
             }
+            return Yii::t('app', 'After opening Tornado');
         }
     ]
 ];
 ?>
-<div class="type-index">
-    <h1 class="bagatelle"><?= Html::encode($this->title) ?></h1>
+<div class="type-index middle">
 
-    <?= Html::tag('div', $description, ['class' => 'form-group']) ?>
+    <h1 class="bagatelle"><?= Html::encode($this->title) ?></h1>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,

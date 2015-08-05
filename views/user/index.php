@@ -43,7 +43,7 @@ if (!Yii::$app->user->isGuest && Yii::$app->user->identity->isAdmin()) {
     ];
 }
 ?>
-<div class="user-index">
+<div class="user-index contain">
 
     <h1 class="bagatelle"><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>

@@ -13,7 +13,7 @@ use yii\grid\GridView;
 
 $this->title = Yii::t('app', 'Gifts');
 ?>
-<div class="archive-index">
+<div class="gift-index middle">
 
     <h1 class="bagatelle"><?= Html::encode($this->title) ?></h1>
 

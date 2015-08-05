@@ -14,7 +14,7 @@ use yii\widgets\ActiveForm;
 
 $this->title = Yii::t('app', 'Login');
 ?>
-<div class="user-login">
+<div class="user-login middle">
     <?= Ext::stamp() ?>
     <h1 class="bagatelle"><?= $this->title ?></h1>
     <?php $form = ActiveForm::begin(); ?>

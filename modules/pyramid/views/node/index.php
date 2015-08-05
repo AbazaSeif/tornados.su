@@ -69,7 +69,7 @@ else {
 }
 
 ?>
-<div class="invest">
+<div class="invest middle">
     <?= Ext::stamp() ?>
     <div>
         <h1><?= $title ?></h1>

@@ -12,7 +12,7 @@ use yii\helpers\Html;
 $this->title = Yii::t('app', 'FAQ');
 $manager = !Yii::$app->user->isGuest && Yii::$app->user->identity->isManager();
 ?>
-<div class="faq-index">
+<div class="faq-index middle">
     <?= Ext::stamp() ?>
     <h1 class="bagatelle"><?= Html::encode($this->title) ?></h1>
     <br/>

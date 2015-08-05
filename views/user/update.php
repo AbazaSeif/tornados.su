@@ -16,7 +16,7 @@ if (!Yii::$app->user->isGuest && Yii::$app->user->identity->isManager()) {
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['view', 'name' => $model->name]];
 $this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>
-<div class="user-update">
+<div class="user-update middle">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

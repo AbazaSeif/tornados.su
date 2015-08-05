@@ -13,7 +13,7 @@ use yii\widgets\ListView;
 
 $this->title = Yii::t('app', 'News');
 ?>
-<div class="article-index">
+<div class="article-index middle">
     <?= Ext::stamp() ?>
 
     <h1><?= Html::encode($this->title) ?></h1>

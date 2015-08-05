@@ -73,7 +73,7 @@ class TypeController extends Controller {
         if ($me->account >= $type->stake) {
             $me->account -= $type->stake;
             $transaction = Yii::$app->db->beginTransaction();
-//            try {
+            try {
                 $sum = (int) Node::find()->where(['user_name' => $me->name])->count();
                 $sum += (int) Income::find()->where(['user_name' => $me->name])->count();
                 if ($me->update(true, ['account']) && $node->invest()) {
@@ -101,11 +101,11 @@ class TypeController extends Controller {
                     $transaction->commit();
                     Yii::$app->session->setFlash('success', Yii::t('app', 'The plan is open'));
                 }
-//            }
-//            catch(\Exception $ex) {
-//                $transaction->rollBack();
-//                Yii::$app->session->setFlash('error', $ex->getMessage());
-//            }
+            }
+            catch(\Exception $ex) {
+                $transaction->rollBack();
+                Yii::$app->session->setFlash('error', $ex->getMessage());
+            }
         }
         else {
             Yii::$app->session->setFlash('error', Yii::t('app', 'Insufficient funds'));

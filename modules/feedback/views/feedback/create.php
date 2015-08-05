@@ -17,7 +17,7 @@ if (!Yii::$app->user->isGuest && Yii::$app->user->identity->isManager()) {
     $this->params['breadcrumbs'][] = Yii::t('app', 'Create');
 }
 ?>
-<div class="feedback-create">
+<div class="feedback-create middle">
     <?= Ext::stamp() ?>
 
     <h1 class="bagatelle"><?= Html::encode($this->title) ?></h1>

@@ -13,7 +13,7 @@ $this->title = Yii::t('app', 'Create Investment');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Queue'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="type-create">
+<div class="node-create middle">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

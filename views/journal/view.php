@@ -14,7 +14,7 @@ $this->title = "$model->type $event";
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Journal'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="journal-view">
+<div class="journal-view middle">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

@@ -263,6 +263,11 @@ iframe
     vertical-align: middle
 
 
+#cabinet-controls a
+  display: block
+  margin-right: 1em
+  margin-bottom: 2mm
+
 @media (max-width: 768px)
   #skype
     right: 80px
@@ -272,7 +277,25 @@ iframe
 
 
 @media (min-width: 768px)
-  .wrap > .container > :not(.home-index) > *
-    width: 800px
+  .middle
+    display: inline-block
+
+  .contain
+    width: 92%
+
+  .middle, .contain
     margin-left: auto
     margin-right: auto
+
+  .wrap > .container
+    text-align: center
+
+  .wrap > .container > *
+    text-align: left
+
+  form
+    min-width: 600px
+
+  .type-index td
+    min-width: 150px
+
