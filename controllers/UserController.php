@@ -292,6 +292,10 @@ class UserController extends Controller
         }
         if ($user) {
             $bundle = $user->getBundle();
+            if (!$bundle) {
+                Yii::$app->session->addFlash('error', Yii::t('app', 'The user can not be activated'));
+                return $this->redirect(Yii::$app->user->isGuest ? ['home/index'] : ['user/view', 'name' => $user->name]);
+            }
             $message = empty($user->hash)
                 ? 'Congratulations. You have successfully activated!'
                 : 'Your email changed!';

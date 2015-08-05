@@ -37,7 +37,7 @@ if ($model->isNewRecord) {
 echo $form->field($model, 'email');
 echo $form->field($model, 'skype');
 
-if ('signup' == $model->scenario) {
+if ('signup' == $model->scenario || 'admin' == $model->scenario) {
     echo $form->field($model, 'password')->passwordInput();
     echo $form->field($model, 'repeat')->passwordInput();
 }
