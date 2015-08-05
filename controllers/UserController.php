@@ -43,7 +43,7 @@ class UserController extends Controller
                 'class' => Access::class,
                 'plain' => ['view', 'update', 'index'],
                 'manager' => ['complete', 'account'],
-                'admin' => ['delete']
+                'admin' => ['create', 'delete']
             ]
         ];
     }
@@ -79,6 +79,7 @@ class UserController extends Controller
         } else {
             return $this->render('create', [
                 'model' => $model,
+                'bundle' => []
             ]);
         }
     }

@@ -132,11 +132,13 @@ footer > *
     height: 600px
     background: no-repeat top
     background-size: cover
-  @for $i from 1 through 5
+  @for $i from 2 through 6
     li:nth-child(#{$i})
       background-image: url("/images/slides/" + $i + ".jpg")
 
   li:nth-child(5)
+    background-position: 0 -140px
+  li:nth-child(6)
     background-position: 0 -140px
 
 
@@ -168,8 +170,14 @@ footer > *
       height: 362px
 
   article
+    //border-bottom: 1px solid #000000
+    padding-right: 2em
     display: table-cell
     vertical-align: top
+    [itemprop="articleBody"]
+      border-top: 3px double #000000
+      padding-top: 1em
+
 
 
 .pussy
