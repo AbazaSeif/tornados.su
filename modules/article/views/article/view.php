@@ -14,8 +14,11 @@ $this->registerMetaTag([
     'name' => 'description',
     'content' => substr(strip_tags($model->content), 0, 150) . '...'
 ]);
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'News'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+
+if (!$model->name) {
+    $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'News'), 'url' => ['index']];
+    $this->params['breadcrumbs'][] = $this->title;
+}
 ?>
 <article class="article-view" itemscope itemtype="//schema.org/Article">
     <?= Ext::stamp() ?>

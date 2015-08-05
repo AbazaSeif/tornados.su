@@ -1,7 +1,7 @@
 <?php
 /**
  * @link http://zenothing.com/
-*/
+ */
 
 use app\models\User;
 use yii\helpers\Html;

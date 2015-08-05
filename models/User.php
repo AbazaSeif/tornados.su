@@ -49,6 +49,7 @@ class User extends ActiveRecord implements IdentityInterface {
     private $_password;
     private $_info;
     public $repeat;
+    public $accept;
 
     public static function primaryKey() {
         return ['id'];
@@ -98,14 +99,15 @@ class User extends ActiveRecord implements IdentityInterface {
             ['timezone', 'in', 'range' => timezone_identifiers_list()],
             ['repeat', 'compare', 'compareAttribute' => 'password'],
             [['forename', 'surname'], 'string', 'min' => 2, 'max' => 24],
-            ['phone', 'match', 'pattern' => '/^\d{9,16}$/']
+            ['phone', 'match', 'pattern' => '/^\d{9,16}$/'],
+            ['accept', 'compare', 'compareValue' => true]
         ];
     }
 
     public function scenarios() {
         return [
             'default' => ['email', 'skype', 'duration', 'country', 'timezone', 'phone', 'forename', 'surname'],
-            'signup'  => ['name', 'email', 'skype', 'perfect', 'password', 'repeat', 'ref_name'],
+            'signup'  => ['name', 'email', 'skype', 'perfect', 'password', 'repeat', 'ref_name', 'accept'],
             'admin'   => ['name', 'email', 'skype', 'perfect', 'account', 'status',
                 'duration', 'country', 'timezone', 'phone', 'forename', 'surname', 'ref_name'],
         ];

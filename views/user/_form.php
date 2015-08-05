@@ -47,10 +47,11 @@ if (!Yii::$app->user->isGuest && Yii::$app->user->identity->isAdmin()) {
     echo $form->field($model, 'status')->dropDownList(User::statuses());
 }
 
-if (!$model->isNewRecord) {
     echo $form->field($model, 'phone');
     echo $form->field($model, 'forename');
     echo $form->field($model, 'surname');
+
+if (!$model->isNewRecord) {
     echo $form->field($model, 'duration')->textInput(['title' => Yii::t('app', 'Session duration')]);
     echo $form->field($model, 'country');
 
@@ -69,6 +70,14 @@ else {
 }
 
 echo Html::tag('div', '* ' . Yii::t('app', 'Required fields'), ['class' => 'form-group']);
+
+if ($model->isNewRecord) {
+    echo Html::tag('div',
+    Html::activeCheckbox($model, 'accept', ['label' => Yii::t('app', 'I accept the <a href="{url}">terms and conditions</a>', [
+            'url' => Url::to(['/article/article/page', 'name' => 'offer'])
+        ])]),
+    ['class' => 'form-group']);
+}
 
 if (Yii::$app->user->isGuest) {
     echo submit(Yii::t('app', 'Signup'));

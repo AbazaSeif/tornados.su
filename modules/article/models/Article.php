@@ -14,6 +14,7 @@ use yii\db\ActiveRecord;
  * This is the model class for table "article".
  *
  * @property integer $id
+ * @property string $name
  * @property string $title
  * @property string $content
  */
