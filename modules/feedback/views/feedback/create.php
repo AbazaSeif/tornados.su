@@ -12,10 +12,6 @@ use yii\helpers\Html;
 
 $this->title = Yii::t('app', 'Create Feedback');
 
-if (!Yii::$app->user->isGuest && Yii::$app->user->identity->isManager()) {
-    $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Feedbacks'), 'url' => ['index']];
-    $this->params['breadcrumbs'][] = Yii::t('app', 'Create');
-}
 ?>
 <div class="feedback-create middle">
     <?= Ext::stamp() ?>
