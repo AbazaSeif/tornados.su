@@ -211,6 +211,21 @@ if (window.localStorage) {
     }
 }
 
+
+
+addEventListener('load', function() {
+   $('.cloud ul').lightSlider({
+       item: 1,
+       loop: true,
+       auto: true,
+       pause: 3600,
+       gallery: false,
+       pager: false,
+       //mode: 'fade',
+       slideMargin: 0
+   });
+});
+
 var countries = {
 "AD":["Andorra","Андорра"],
 "AE":["United Arab Emirates","Объединенные Арабские Эмираты"],

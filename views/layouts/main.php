@@ -31,6 +31,9 @@ $manager = !Yii::$app->user->isGuest && Yii::$app->user->identity->isManager();
 </head>
 <body>
 <?php $this->beginBody() ?>
+<a id="skype" href="skype:?chat&blob=o3EBwqOq_nG09j5Hdx1Y63yGzMdHlpRO4IABdAuD6qoNB3MwbEq7yMf1VcI1YnWpD1PoCZGQC39R1MUcPU4">
+    <img src="/images/skype.png" />
+</a>
 <div class="wrap <?= $login ?>">
     <?php
     NavBar::begin([

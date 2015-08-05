@@ -2,21 +2,23 @@
 
 namespace app\helpers;
 
+use yii\bootstrap\BootstrapAsset;
 use yii\web\AssetBundle;
+use yii\web\YiiAsset;
 
 class AppAsset extends AssetBundle
 {
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-        'style.css'
+        '/css/style.css'
     ];
     public $js = [
-        'script.js',
-//        '//code.jivosite.com/script/widget/UfISoraQy5'
+        '/js/script.js',
+        '//code.jivosite.com/script/widget/L1XgNH0fPZ'
     ];
     public $depends = [
-        'yii\bootstrap\BootstrapAsset',
-        'yii\web\YiiAsset',
+        YiiAsset::class,
+        BootstrapAsset::class
     ];
 }

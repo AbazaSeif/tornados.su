@@ -7,8 +7,8 @@ $light_gray: #f2f2f2
 
 //urls
 $cloud: url(/images/cloud.jpg)
-$table: url(/images/tablet.png)
 $pussy: url(/images/pussy.jpg)
+$ipad: url(/images/ipad.jpg)
 
 @font-face
   font-family: 'FontAwesome'
@@ -119,13 +119,35 @@ footer
 
 
 .cloud
-  background: $cloud no-repeat center
-  height: 710px
-  color: $white
+  div
+    width: inherit !important
+    padding-top: 0 !important
+  li
+    height: 800px
+    background: no-repeat top
+    background-size: cover
+  @for $i from 1 through 5
+    li:nth-child(#{$i})
+      background-image: url("/images/slides/" + $i + ".jpg")
 
-.email-marketing
-  height: 665px
-  background: $table right bottom no-repeat
+  li:nth-child(5)
+    background-position: center
+
+
+.video
+  height: 620px
+  .ipad
+    width: 660px
+    height: 552px
+    background: $ipad center no-repeat
+    text-align: center
+    iframe
+      margin-left: 90px
+      margin-top: 28px
+      margin-bottom: 80px
+      width: 480px
+      height: 362px
+
 
 .pussy
   height: 840px
@@ -169,6 +191,10 @@ section
 .plans > div
   width: 92% !important
 
+  .block-table
+    width: 100%
+    margin-top: 2em
+
   .inner
     margin: 0 10px
     background-color: $light_gray
@@ -183,10 +209,6 @@ section
     padding-bottom: 2mm
     font-size: 2.4em
 
-  div:nth-child(2) > div > .inner
-    text-align: left
-    padding: 6mm
-
   div:last-child > div > .inner
     border-bottom-left-radius: 1cm
     border-bottom-right-radius: 1cm
@@ -194,10 +216,10 @@ section
 section ul
   padding: 0
 
-section li
+ul.ok li
   list-style: none
 
-section li:before
+ul.ok li:before
   content: '\f00c'
   color: $green_haze
   margin-right: 2mm
@@ -205,3 +227,17 @@ section li:before
   font-size: 15px
   left: 0
   top: 1px
+
+iframe
+  display: block
+
+#skype
+  position: absolute
+  top: 8px
+  right: 12px
+  z-index: 1
+
+
+@media (max-width: 768px)
+  #skype
+    right: 80px

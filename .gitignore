@@ -4,9 +4,6 @@ runtime/
 web/assets/
 web/out/
 web/images/
-web/page/
 composer.lock
 config/local.php
-web/info.php
-web/style.css
-
+web/css/style.css
