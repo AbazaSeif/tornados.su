@@ -7,6 +7,7 @@
  */
 
 use app\modules\article\models\Article;
+use app\modules\feedback\controllers\FeedbackController;
 use app\modules\pyramid\models\Type;
 use yii\helpers\Html;
 use yii\web\JqueryAsset;
@@ -158,5 +159,10 @@ $this->registerMetaTag([
                 </div>
             </div>
         </div>
+    </section>
+    <section class="center">
+        <?= $this->renderFile('@app/modules/feedback/views/feedback/create.php', [
+            'model' => FeedbackController::create()
+        ]) ?>
     </section>
 </article>

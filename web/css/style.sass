@@ -283,10 +283,12 @@ iframe
     vertical-align: middle
 
 
-#cabinet-controls a
-  display: block
-  margin-right: 1em
-  margin-bottom: 2mm
+#cabinet-controls
+  position: absolute
+  float: left
+  a
+    display: block
+    margin-bottom: 2mm
 
 .user-create .offer
   margin-top: 4mm
@@ -295,6 +297,21 @@ iframe
 .user-create .form-group,
 .user-update .form-group
   margin-bottom: 0
+
+.user-view
+  text-align: center !important
+  .btn
+    display: inline-block
+    color: $white
+    background-color: $green_haze
+    border: 1px solid transparent
+    text-decoration: none
+  .user-data
+    display: inline-block
+    margin: auto
+  td
+    text-align: left
+    min-width: 200px
 
 .required label:after
   content: ' *'

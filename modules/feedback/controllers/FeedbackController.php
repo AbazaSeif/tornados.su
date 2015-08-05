@@ -52,18 +52,27 @@ class FeedbackController extends Controller
     }
 
     public function actionCreate($template = null) {
-        $model = new Feedback(['scenario' => Yii::$app->user->isGuest ? 'guest' : 'default']);
+        $model = static::create($template);
 
-        if ($model->load(Yii::$app->request->post())) {
+        if (Yii::$app->request->isPost && $model->load(Yii::$app->request->post())) {
             if ('default' == $model->scenario) {
                 $model->username = Yii::$app->user->identity->name;
             }
             if ($model->save()) {
                 Yii::t('app', 'Your feedback will be reviewed soon');
-                return $this->redirect(['/home/index']);
+                return Yii::$app->response->redirect(['/home/index']);
             }
         }
-        elseif (!Yii::$app->user->isGuest && $template) {
+
+        return $this->render('create', [
+            'model' => $model,
+        ]);
+    }
+
+    public static function create($template = null) {
+        $model = new Feedback(['scenario' => Yii::$app->user->isGuest ? 'guest' : 'default']);
+
+        if (!Yii::$app->user->isGuest && $template) {
             switch($template) {
                 case 'wallet':
                     $model->subject = Yii::t('app', 'Change my wallet');
@@ -73,9 +82,7 @@ class FeedbackController extends Controller
                     break;
             }
         }
-        return $this->render('create', [
-            'model' => $model,
-        ]);
+        return $model;
     }
 
     public function actionUpdate($id) {

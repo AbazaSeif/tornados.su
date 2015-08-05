@@ -48,8 +48,7 @@ if ($manager) {
     ];
 }
 ?>
-<div class="user-view middle">
-    <div class="row">
+<div class="user-view contain">
         <div id="cabinet-controls">
             <h1><?= Html::encode($this->title) ?></h1>
             <?php
@@ -95,7 +94,7 @@ if ($manager) {
             ?>
         </div>
 
-        <div>
+        <div class="user-data">
             <div class="form-group">
                 <?php
                 $referral = ['user/signup', 'ref_name' => $model->name];
@@ -110,6 +109,5 @@ if ($manager) {
                 'attributes' => $columns,
             ]) ?>
         </div>
-    </div>
 
 </div>
