@@ -184,6 +184,17 @@ CREATE TABLE "faq" (
 );
 
 
+CREATE TABLE "article" (
+  "id" SERIAL PRIMARY KEY,
+  "name" VARCHAR(24),
+  "title" VARCHAR(256) NOT NULL,
+  "content" TEXT NOT NULL
+);
+CREATE UNIQUE INDEX article_id ON "article" USING btree ("id");
+
+INSERT INTO "article"("name", "title", "content") VALUES ('offer', 'Публичная оферта', '');
+
+
 /* see web/visit.php */
 /* Visitors list */
 CREATE TABLE "visit_agent" (

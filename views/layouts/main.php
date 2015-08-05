@@ -1,7 +1,7 @@
 <?php
 /**
  * @link http://zenothing.com/
-*/
+ */
 
 use app\widgets\Alert;
 use app\helpers\AppAsset;
@@ -36,19 +36,26 @@ $manager = !Yii::$app->user->isGuest && Yii::$app->user->identity->isManager();
 </a>
 <div class="wrap <?= $login ?>">
     <?php
+    $logo = [];
+    if (Yii::$app->user->getIsGuest() || !Yii::$app->user->identity->isManager()) {
+        $logo[] = Html::img('@web/images/logo.png', ['alt'=>Yii::$app->name]);
+        if (Yii::$app->user->getIsGuest()) {
+            $logo[] = Html::tag('span', Yii::$app->name);
+        }
+    }
     NavBar::begin([
-        'brandLabel' => Html::img('@web/images/logo.png', ['alt'=>Yii::$app->name])
-            . ' ' . Html::tag('span', Yii::$app->name)
+        'brandLabel' => implode(' ', $logo)
     ]);
 
     $items = [
         ['label' => Yii::t('app', 'Home'), 'url' => ['/home/index'], 'options' => ['class' => 'hideable']],
         ['label' => Yii::t('app', 'Marketing'), 'url' => ['/pyramid/type/index']],
         ['label' => Yii::t('app', 'Feedback'), 'url' => ['/feedback/feedback/' . ($manager ? 'index' : 'create')]],
-        ['label' => Yii::t('app', 'FAQ'), 'url' => ['/faq/faq/index']]
+        ['label' => Yii::t('app', 'FAQ'), 'url' => ['/faq/faq/index']],
+        ['label' => Yii::t('app', 'News'), 'url' => ['/article/article/index']]
     ];
 
-    if (Yii::$app->user->isGuest) {
+    if (Yii::$app->user->getIsGuest()) {
         $items[] = ['label' => Yii::t('app', 'Signup'), 'url' => ['/user/signup']];
         $items[] = ['label' => Yii::t('app', 'Login'), 'url' => ['/user/login']];
     }
@@ -66,7 +73,7 @@ $manager = !Yii::$app->user->isGuest && Yii::$app->user->identity->isManager();
         $items[] = ['label' => Yii::t('app', 'Logout'), 'url' => ['/user/logout']];
     }
 
-    if (Yii::$app->user->isGuest || !Yii::$app->user->identity->isManager()) {
+    if (Yii::$app->user->getIsGuest() || !Yii::$app->user->identity->isManager()) {
         $items[] = 'ru' == Yii::$app->language
             ? ['label' => 'EN', 'url' => ['/lang/lang/choice', 'code' => 'en'], 'options' => ['title' => 'English']]
             : ['label' => 'RU', 'url' => ['/lang/lang/choice', 'code' => 'ru'], 'options' => ['title' => 'Русский']];
@@ -78,7 +85,6 @@ $manager = !Yii::$app->user->isGuest && Yii::$app->user->identity->isManager();
     ]);
     NavBar::end();
     ?>
-
 
     <div class="container">
         <?= Breadcrumbs::widget([
@@ -93,7 +99,7 @@ $manager = !Yii::$app->user->isGuest && Yii::$app->user->identity->isManager();
 <div class="background"></div>
 <div id="linux">
     <div>
-        <img src="/img/linux.png" />
+        <img src="/images/linux.png" />
     </div>
     <?= Html::tag('div', Yii::t('app', 'Welcome, Linux user. We are glad you use open source software!'), [
         'class' => 'welcome'

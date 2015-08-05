@@ -237,7 +237,36 @@ iframe
   right: 12px
   z-index: 1
 
+#linux
+  position: fixed
+  display: none
+  vertical-align: top
+  top: 33%
+  width: 100vw
+  z-index: 1
+  border-top: 1px solid #999
+  border-bottom: 1px solid #999
+  background-color: white
+  text-align: center
+  margin: auto
+  cursor: pointer
+  > *
+    width: 30%
+    display: table-cell
+    vertical-align: top
+    padding: 1em
+    &:first-child
+      text-align: right
+    &:last-child
+      text-align: left
+  .welcome
+    font-size: 1.5em
+    vertical-align: middle
+
 
 @media (max-width: 768px)
   #skype
     right: 80px
+
+  #linux > *
+    width: auto

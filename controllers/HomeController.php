@@ -7,6 +7,7 @@ namespace app\controllers;
 
 
 use app\models\Record;
+use app\modules\article\models\Article;
 use app\modules\invoice\models\Invoice;
 use app\models\User;
 use app\helpers\SQL;
@@ -21,6 +22,7 @@ class HomeController extends Controller {
     public function actionIndex() {
         return $this->render('index', [
             'statistics' => $this->renderPartial('statistics', ['statistics' => static::statistics()]),
+            'news' => Article::find()->where('"name" is null')->orderBy(['id' => SORT_DESC])->limit(3)->all()
         ]);
     }
 

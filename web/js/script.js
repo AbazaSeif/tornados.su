@@ -135,7 +135,7 @@ function translate_cabinet() {
         $country.parentNode.insertBefore(select, $country);
         $country.remove();
     }
-    else {
+    else if (countries[$country.innerHTML]) {
         $country.innerHTML = countries[$country.innerHTML][russian];
     }
 
@@ -163,6 +163,22 @@ function translate_cabinet() {
         $duration.type = 'hidden';
     }
 }
+
+addEventListener('load', function() {
+    var $cloud = $$('.cloud ul');
+    if ($cloud) {
+        $($cloud).lightSlider({
+            item: 1,
+            loop: true,
+            auto: true,
+            pause: 3600,
+            gallery: false,
+            pager: false,
+            //mode: 'fade',
+            slideMargin: 0
+        });
+    }
+});
 
 addEventListener('beforeunload', function() {
     var request = new XMLHttpRequest();
@@ -211,20 +227,6 @@ if (window.localStorage) {
     }
 }
 
-
-
-addEventListener('load', function() {
-   $('.cloud ul').lightSlider({
-       item: 1,
-       loop: true,
-       auto: true,
-       pause: 3600,
-       gallery: false,
-       pager: false,
-       //mode: 'fade',
-       slideMargin: 0
-   });
-});
 
 var countries = {
 "AD":["Andorra","Андорра"],

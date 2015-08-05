@@ -3,6 +3,7 @@
  * @link http://zenothing.com/
  * @var string $statistics
  * @var yii\web\View $this
+ * @var \app\modules\article\models\Article[] $news
  */
 
 use app\modules\pyramid\models\Type;
@@ -76,22 +77,25 @@ $this->registerMetaTag([
     </section>
     <section class="news center">
         <div class="block-table">
-            <h2>Resources</h2>
-            <div>
-                <div><h3>Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod.</h3></div>
-                <div><h3>Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod.</h3></div>
-                <div><h3>Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod.</h3></div>
-            </div>
-            <div>
-                <div>Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco labori.</div>
-                <div>Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco labori.</div>
-                <div>Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco labori.</div>
-            </div>
-            <div>
-                <div><a href="/" class="button">Read more</a></div>
-                <div><a href="/" class="button">Read more</a></div>
-                <div><a href="/" class="button">Read more</a></div>
-            </div>
+            <?php
+            echo Html::tag('h2', Yii::t('app', 'News'));
+
+            $titles = [];
+            $contents = [];
+            $links = [];
+            foreach($news as $article) {
+                $titles[] = Html::tag('div', Html::tag('h3', $article->title));
+                $contents[] = Html::tag('div', substr($article, 0, 200));
+                $links[] = Html::tag('div',
+                    Html::a(Yii::t('app', 'Read more'),
+                        ['/article/article/view', 'id' => $article->id],
+                        ['class' => 'button']));
+            }
+
+            echo Html::tag('div', implode('', $titles));
+            echo Html::tag('div', implode('', $contents));
+            echo Html::tag('div', implode('', $links));
+            ?>
         </div>
     </section>
     <section class="rubbish center">

@@ -43,11 +43,13 @@ $config['modules']['pyramid'] = 'app\modules\pyramid\Module';
 $config['modules']['feedback'] = 'app\modules\feedback\Module';
 $config['modules']['internal'] = 'app\modules\internal\Module';
 $config['modules']['faq'] = 'app\modules\faq\Module';
+$config['modules']['article'] = 'app\modules\article\Module';
 $config['bootstrap'][] = 'lang';
 $config['bootstrap'][] = 'invoice';
 $config['bootstrap'][] = 'pyramid';
 $config['bootstrap'][] = 'feedback';
 $config['bootstrap'][] = 'faq';
+$config['bootstrap'][] = 'article';
 
 
 if (YII_ENV_DEV) {
