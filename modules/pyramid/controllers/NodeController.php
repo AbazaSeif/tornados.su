@@ -69,6 +69,9 @@ class NodeController extends Controller
             $model->time = $base->time - 1;
             $model->type_id = $base->type_id;
         }
+        elseif (isset($_GET['type_id'])) {
+            $model->type_id = (int) $_GET['type_id'];
+        }
         else {
             $model->time = time();
         }
@@ -78,7 +81,7 @@ class NodeController extends Controller
             $model->count = $model->getType()->degree;
             if ($is_post && $model->validate()) {
                 if ($model->save(false)) {
-                    return $this->redirect(['invest', 'id' => $model->id]);
+                    return $this->redirect(['index', 'id' => $model->id]);
                 }
             }
             else {
@@ -95,7 +98,7 @@ class NodeController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['invest', 'id' => $model->id]);
+            return $this->redirect(['index', 'id' => $model->id]);
         } else {
             return $this->render('update', [
                 'model' => $model,

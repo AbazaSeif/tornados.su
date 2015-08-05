@@ -1,12 +1,12 @@
 <?php
 /**
  * @link http://zenothing.com/
-*/
+ */
 
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Type */
+/* @var $model app\modules\pyramid\models\Type */
 
 $this->title = Yii::t('app', 'Update');
 $this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['invest', 'id' => $model->id]];

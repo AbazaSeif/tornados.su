@@ -43,7 +43,10 @@ $columns = [
                 } else {
                     /** @var \app\models\User $user */
                     $user = Yii::$app->user->identity;
-                    if ($user->account >= $model->stake) {
+                    if (Yii::$app->user->identity->isManager()) {
+                        return Html::a('Create', ['/pyramid/node/create', 'type_id' => $model->id], ['class' => 'btn btn-success btn-sm']);
+                    }
+                    elseif ($user->account >= $model->stake) {
                         return Html::a('Open', ['view', 'id' => $model->id], ['class' => 'btn btn-success btn-sm']);
                     } else {
                         return Yii::t('app', 'Insufficient funds');

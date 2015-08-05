@@ -80,7 +80,9 @@ class Type extends Model
     public static function getItems() {
         $items = [];
         foreach(static::all() as $type) {
-            $items[$type->id] = Yii::t('app', $type->name);
+            if ($type->visibility) {
+                $items[$type->id] = Yii::t('app', $type->name);
+            }
         }
         return $items;
     }

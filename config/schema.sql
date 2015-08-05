@@ -93,10 +93,7 @@ CREATE TABLE "journal" (
   data TEXT,
   user_name VARCHAR(24),
   time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-  ip INET,
-  CONSTRAINT journal_user FOREIGN KEY (user_name)
-  REFERENCES "user"(name)
-  ON DELETE NO ACTION ON UPDATE CASCADE
+  ip INET
 );
 
 
@@ -107,9 +104,6 @@ CREATE TABLE "invoice" (
   amount DECIMAL(8,2) NOT NULL,
   batch BIGINT,
   status VARCHAR(16) DEFAULT 'create',
-  CONSTRAINT invoice_user FOREIGN KEY (user_name)
-  REFERENCES "user"(name)
-  ON DELETE NO ACTION ON UPDATE CASCADE,
   CONSTRAINT amount CHECK (amount <> 0)
 );
 CREATE UNIQUE INDEX invoice_id ON "invoice" USING btree ("id");
@@ -129,9 +123,6 @@ CREATE TABLE "node" (
   type_id SMALLINT NOT NULL,
   count SMALLINT NOT NULL,
   time INT NOT NULL,
-  CONSTRAINT node_user FOREIGN KEY (user_name)
-  REFERENCES "user"(name)
-  ON DELETE NO ACTION ON UPDATE CASCADE,
   CONSTRAINT "count" CHECK (count >= 0)
 );
 CREATE UNIQUE INDEX node_id ON "node" USING btree ("id");
@@ -143,10 +134,7 @@ CREATE TABLE "income" (
   node_id INT NOT NULL,
   user_name VARCHAR(24) NOT NULL,
   type_id SMALLINT NOT NULL,
-  time INT NOT NULL,
-  CONSTRAINT income_user FOREIGN KEY (user_name)
-  REFERENCES "user"(name)
-  ON DELETE NO ACTION ON UPDATE CASCADE
+  time INT NOT NULL
 );
 CREATE UNIQUE INDEX income_id ON "income" USING btree ("id");
 
@@ -155,13 +143,7 @@ CREATE TABLE "gift" (
   id SERIAL PRIMARY KEY NOT NULL,
   node_id INT,
   user_name VARCHAR(24) NOT NULL,
-  time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-  CONSTRAINT gift_user FOREIGN KEY (user_name)
-  REFERENCES "user"(name)
-  ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT gift_node FOREIGN KEY (node_id)
-  REFERENCES "node"(id)
-  ON DELETE NO ACTION ON UPDATE CASCADE
+  time TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
 

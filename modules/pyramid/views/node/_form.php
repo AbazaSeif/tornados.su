@@ -1,15 +1,15 @@
 <?php
 /**
  * @link http://zenothing.com/
-*/
+ */
 
-use app\models\Type;
+use app\modules\pyramid\models\Type;
 use app\widgets\AjaxComplete;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\Node */
+/* @var $model app\modules\pyramid\models\Node */
 /* @var $form yii\widgets\ActiveForm */
 
 $types = Type::getItems();
@@ -20,7 +20,7 @@ $types = Type::getItems();
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'user_name')->widget(AjaxComplete::class, [
-        'route' => ['user/complete']
+        'route' => ['/user/complete']
     ]) ?>
     <?= $form->field($model, 'type_id')->dropDownList($types) ?>
     <?php
@@ -31,7 +31,6 @@ $types = Type::getItems();
     <?php
     array_unshift($types, Yii::t('app', 'Investment'), 0);
     unset($types[1]);
-    echo $form->field($model, 'reinvest_from')->dropDownList($types);
     echo Html::activeHiddenInput($model, 'time');
     ?>
 

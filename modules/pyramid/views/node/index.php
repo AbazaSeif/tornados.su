@@ -15,6 +15,7 @@ use yii\grid\GridView;
 
 $user = isset($_GET['user']) ? $_GET['user'] : null;
 $mine = !Yii::$app->user->isGuest && (Yii::$app->user->identity->isManager() || Yii::$app->user->identity->name == $user);
+$manager = !Yii::$app->user->isGuest && Yii::$app->user->identity->isManager();
 $title = $this->title = Yii::t('app', 'Investments');
 $columns = [
     'id',
@@ -77,17 +78,20 @@ else {
         <div class="form-group">
             <?php
             if (empty($parent)) {
-                echo Html::a(Yii::t('app', 'Open'), ['/pyramid/type/index'], ['class' => 'btn btn-success']);
+                if ($manager) {
+                    echo Html::a(Yii::t('app', 'Create'), ['create'], ['class' => 'btn btn-primary']);
+                }
+                else {
+                    echo Html::a(Yii::t('app', 'Open'), ['/pyramid/type/index'], ['class' => 'btn btn-success']);
+                }
             }
-            else {
-                if (!Yii::$app->user->isGuest && Yii::$app->user->identity->isManager()) {
+            elseif ($manager) {
                     echo implode(' ', [
                         Html::a(Yii::t('app', 'Update'), ['update', 'id' => $parent->id], ['class' => 'btn btn-primary']),
                         Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $parent->id], ['class' => 'btn btn-danger']),
                         Html::a(Yii::t('app', 'Up'), ['up', 'id' => $parent->id], ['class' => 'btn btn-warning'])
                     ]);
                 }
-            }
             ?>
         </div>
 

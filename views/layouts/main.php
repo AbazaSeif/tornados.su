@@ -64,6 +64,7 @@ $manager = !Yii::$app->user->isGuest && Yii::$app->user->identity->isManager();
         $items[] = ['label' => Yii::t('app', 'Payments') , 'url' =>['/invoice/invoice/index']];
         $items[] = ['label' => Yii::t('app', 'Journal') , 'url' =>['/journal/index']];
         if ($manager) {
+            $items[] = ['label' => Yii::t('app', 'Marketing'), 'url' => ['/pyramid/type/index']];
             $items[] = ['label' => Yii::t('app', 'Gifts'), 'url' => ['/pyramid/node/gift']];
             $items[] = ['label' => Yii::t('app', 'Translation') , 'url' => ['/lang/lang/index']];
         }
