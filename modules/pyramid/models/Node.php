@@ -10,6 +10,7 @@ use app\models\User;
 use Exception;
 use Yii;
 use yii\db\ActiveRecord;
+use yii\db\Transaction;
 
 /**
  * @author Taras Labiak <kissarat@gmail.com>
@@ -197,5 +198,46 @@ class Node extends ActiveRecord
 
     public function __toString() {
         return $this->id . ' ' . Type::get($this->type_id);
+    }
+
+    public function open(Transaction $transaction) {
+        try {
+            $sum = (int) Node::find()->where(['user_name' => $this->user_name])->count();
+            $sum += (int) Income::find()->where(['user_name' => $this->user_name])->count();
+            if ($this->invest()) {
+                do {
+                    $i = $this->rise();
+                }
+                while($i > 0);
+
+                if (0 == $sum && $this->user->canChargeBonus()) {
+                    $referral = $this->user->referral;
+                    $referral->account += $this->type->bonus;
+                    $referral->update(true, ['account']);
+                    if (4 == $this->type->id) {
+                        $count = $referral->getSponsors()
+                            ->select('user_name')
+                            ->joinWith('nodes')
+                            ->groupBy('user_name')->count();
+                        if ($count > 0 && 0 == $count % 10) {
+                            $gift = new Gift(['user_name' => $referral->name]);
+                            $gift->save();
+                            Yii::$app->session->setFlash('success', Yii::t('app', 'Your referral may receive a gift'));
+                        }
+                    }
+                }
+                $transaction->commit();
+                Yii::$app->session->setFlash('success', Yii::t('app', 'The plan is open'));
+                return true;
+            }
+            else {
+                Yii::$app->session->setFlash('error', $this->dump());
+            }
+        }
+        catch(\Exception $ex) {
+            $transaction->rollBack();
+            Yii::$app->session->setFlash('error', $ex->getMessage());
+        }
+        return false;
     }
 }

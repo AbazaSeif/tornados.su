@@ -88,8 +88,13 @@ else {
             elseif ($manager) {
                     echo implode(' ', [
                         Html::a(Yii::t('app', 'Update'), ['update', 'id' => $parent->id], ['class' => 'btn btn-primary']),
-                        Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $parent->id], ['class' => 'btn btn-danger']),
-                        Html::a(Yii::t('app', 'Up'), ['up', 'id' => $parent->id], ['class' => 'btn btn-warning'])
+                        Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $parent->id], ['class' => 'btn btn-danger',
+                            'data' => [
+                                'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
+                                'method' => 'post',
+                            ]]),
+                        Html::a(Yii::t('app', 'Compute'), ['compute', 'id' => $parent->id], ['class' => 'btn btn-warning',
+                            'data' => ['method' => 'post']])
                     ]);
                 }
             ?>

@@ -25,12 +25,12 @@ class TypeController extends Controller {
 
     public function behaviors() {
         return [
-//            'verbs' => [
-//                'class' => VerbFilter::class,
-//                'actions' => [
-//                    'open' => ['post'],
-//                ]
-//            ],
+            'verbs' => [
+                'class' => VerbFilter::class,
+                'actions' => [
+                    'open' => ['post'],
+                ]
+            ],
 
             'access' => [
                 'class' => Access::class,
@@ -73,38 +73,11 @@ class TypeController extends Controller {
         if ($me->account >= $type->stake) {
             $me->account -= $type->stake;
             $transaction = Yii::$app->db->beginTransaction();
-            try {
-                $sum = (int) Node::find()->where(['user_name' => $me->name])->count();
-                $sum += (int) Income::find()->where(['user_name' => $me->name])->count();
-                if ($me->update(true, ['account']) && $node->invest()) {
-                    do {
-                        $i = $node->rise();
-                    }
-                    while($i > 0);
-
-                    if (0 == $sum && $me->canChargeBonus()) {
-                        $referral = $me->referral;
-                        $referral->account += $type->bonus;
-                        $referral->update(true, ['account']);
-                        if (4 == $type->id) {
-                            $count = $referral->getSponsors()
-                                ->select('user_name')
-                                ->joinWith('nodes')
-                                ->groupBy('user_name')->count();
-                            if ($count > 0 && 0 == $count % 10) {
-                                $gift = new Gift(['user_name' => $referral->name]);
-                                $gift->save();
-                                Yii::$app->session->setFlash('success', Yii::t('app', 'Your referral may receive a gift'));
-                            }
-                        }
-                    }
-                    $transaction->commit();
-                    Yii::$app->session->setFlash('success', Yii::t('app', 'The plan is open'));
-                }
+            if ($me->update(true, ['account'])) {
+                $node->open($transaction);
             }
-            catch(\Exception $ex) {
-                $transaction->rollBack();
-                Yii::$app->session->setFlash('error', $ex->getMessage());
+            else {
+                Yii::$app->session->setFlash('error', json_encode($me, JSON_UNESCAPED_UNICODE));
             }
         }
         else {

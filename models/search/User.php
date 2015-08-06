@@ -59,7 +59,7 @@ class User extends UserModel
 
 
         if (!Yii::$app->user->identity->isManager()) {
-            $query->andWhere(['status' => UserModel::PLAIN]);
+            $query->andWhere(['ref_name' => Yii::$app->user->identity->name]);
         }
 
         $query->andFilterWhere(['like', 'name', $this->name])

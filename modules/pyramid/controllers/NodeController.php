@@ -11,6 +11,7 @@ use app\modules\pyramid\models\Gift;
 use app\modules\pyramid\models\Node;
 use Yii;
 use yii\data\ActiveDataProvider;
+use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
@@ -21,16 +22,24 @@ class NodeController extends Controller
 {
     public function behaviors() {
         return [
+            'verbs' => [
+                'class' => VerbFilter::class,
+                'actions' => [
+                    'delete' => ['post'],
+                    'compute' => ['post'],
+                ],
+            ],
+
             'access' => [
                 'class' => Access::class,
-                'manager' => ['create', 'update', 'delete']
+                'manager' => ['create', 'update', 'delete', 'up']
             ],
 
             'cache' => [
                 'class' => 'yii\filters\HttpCache',
                 'cacheControlHeader' => 'must-revalidate, private',
                 'only' => ['index'],
-                'enabled' => true,
+                'enabled' => false,
                 'lastModified' => function ($action, $params) {
                     $query = Node::find();
                     if (isset($params['user'])) {
@@ -92,6 +101,13 @@ class NodeController extends Controller
         return $this->render('create', [
             'model' => $model,
         ]);
+    }
+
+    public function actionCompute($id) {
+        $transaction = Yii::$app->db->beginTransaction();
+        $model = $this->findModel($id);
+        $model->open($transaction);
+        return $this->redirect(['index']);
     }
 
     public function actionUpdate($id) {
