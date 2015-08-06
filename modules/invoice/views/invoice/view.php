@@ -64,7 +64,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'user_name',
                 'format' => 'html',
-                'value' => Html::a($model->user_name, ['user/view', 'name' => $model->user_name])
+                'value' => Html::a($model->user_name, ['/user/view', 'name' => $model->user_name])
             ],
             [
                 'attribute' => 'amount',

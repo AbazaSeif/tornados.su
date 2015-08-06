@@ -23,7 +23,7 @@ $columns = [
         'attribute' => 'user_name',
         'format' => 'html',
         'value' => function(Node $model) {
-            return Html::a($model->user_name, ['user/view', 'name' => $model->user_name]);
+            return Html::a($model->user_name, ['/user/view', 'name' => $model->user_name]);
         }
     ],
     'time:datetime',
@@ -43,7 +43,7 @@ if (isset($parent)) {
     $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Investments'), 'url' => ['index']];
     $this->params['breadcrumbs'][] = $title;
     $this->title = $title;
-    $title .= $mine ? Html::a($parent->user_name, ['user/view', 'name' => $parent->user_name]) : $parent->user_name;
+    $title .= $mine ? Html::a($parent->user_name, ['/user/view', 'name' => $parent->user_name]) : $parent->user_name;
 
 }
 else {

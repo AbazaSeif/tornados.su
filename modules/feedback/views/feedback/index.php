@@ -37,7 +37,7 @@ $this->title = Yii::t('app', 'Feedbacks');
                         return $model->username;
                     }
                     else {
-                        return Html::a($model->username, ['user/view', 'name' => $model->username]);
+                        return Html::a($model->username, ['/user/view', 'name' => $model->username]);
                     }
                 }
             ],

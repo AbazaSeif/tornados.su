@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = $model->id;
                 echo ' ' . Html::a($model->email, 'mailto:' . $model->email);
             }
             else {
-                echo Html::a($model->username, ['user/view', 'name' => $model->username]);
+                echo Html::a($model->username, ['/user/view', 'name' => $model->username]);
             }
             ?>
             <?= Html::tag('i', $model->time) ?>
