@@ -4,7 +4,6 @@
  */
 
 use app\modules\pyramid\models\Node;
-use app\widgets\Ext;
 use yii\helpers\Html;
 use yii\grid\GridView;
 
@@ -71,7 +70,6 @@ else {
 
 ?>
 <div class="invest middle">
-    <?= Ext::stamp() ?>
     <div>
         <h1><?= $title ?></h1>
 

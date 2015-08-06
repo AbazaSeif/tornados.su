@@ -1,6 +1,7 @@
 .idea/
 vendor
 runtime/
+dump/
 web/assets/
 web/out/
 web/images/

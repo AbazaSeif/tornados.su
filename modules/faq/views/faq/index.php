@@ -24,12 +24,6 @@ $manager = !Yii::$app->user->isGuest && Yii::$app->user->identity->isManager();
         </p>
     <?php endif ?>
 
-    <div class="contents">
-        <?php foreach($models as $model): ?>
-            <a href="#<?= $model->id ?>"><?= $model->question ?></a>
-        <?php endforeach ?>
-    </div>
-
     <dl>
         <?php foreach($models as $model): ?>
             <dt id="<?= $model->id ?>">
