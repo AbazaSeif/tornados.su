@@ -28,6 +28,7 @@ class IncomeController extends Controller {
                 'class' => 'yii\filters\HttpCache',
                 'cacheControlHeader' => 'must-revalidate, private',
                 'only' => ['index'],
+                'enabled' => false,
                 'lastModified' => function ($action, $params) {
                     $query = Income::find();
                     if (isset($params['user'])) {

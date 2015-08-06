@@ -109,7 +109,6 @@ else {
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'summary' => '',
         'emptyText' => '',
         'showOnEmpty' => false,
         'columns' => $columns,
