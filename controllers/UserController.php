@@ -129,7 +129,12 @@ class UserController extends Controller
             }
 
             if ($model->save()) {
-                return $this->redirect(['view', 'name' => $model->name]);
+                if (Yii::$app->user->identity->isAdmin()) {
+                    return $this->redirect(['view', 'name' => $model->name]);
+                }
+                else {
+                    return $this->redirect(['view']);
+                }
             }
         }
 

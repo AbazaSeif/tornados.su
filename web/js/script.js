@@ -56,7 +56,7 @@ function choice_continent(continent) {
         var city = region.replace(/_/g, ' ');
         if (russian && city in cities) {
             city = cities[city];
-            option.style.color = 'white';
+            option.style.color = 'green';
         }
         option.innerHTML = city;
         option.value = region;
@@ -82,7 +82,8 @@ var russian = /lang=en/.test(document.cookie) ? 0 : 1;
 
 function translate_cabinet() {
     var zone, parent, option;
-    if ('INPUT' == $country.tagName) {
+    var update = 'SELECT' == $timezone.tagName;
+    if (update) {
         $continent = $new('select');
         $region = $new('select');
         options($timezone, function(option) {
@@ -100,7 +101,7 @@ function translate_cabinet() {
 
         $continent.onchange = choice_continent;
         $region.onchange = assign_timezone;
-        var old_zone = ($timezone.value || 'Europe/Moscow').split('/');
+        var old_zone = $timezone.value.split('/');
         choice_continent(old_zone[0]);
         $region.value = old_zone[1];
         parent = $timezone.parentNode;
@@ -118,7 +119,7 @@ function translate_cabinet() {
         $timezone.innerHTML = zone.join('/');
     }
 
-    if ('INPUT' == $country.tagName) {
+    if (update) {
         var select = document.createElement('select');
         select.appendChild(document.createElement('option'));
         for (var code in countries) {
@@ -135,7 +136,7 @@ function translate_cabinet() {
         $country.parentNode.insertBefore(select, $country);
         $country.remove();
     }
-    else if (countries[$country.innerHTML]) {
+    else if ($country && countries[$country.innerHTML]) {
         $country.innerHTML = countries[$country.innerHTML][russian];
     }
 

@@ -45,7 +45,7 @@ $this->title = Yii::t('app', 'Income');
                 'label' => Yii::t('app', 'Plan'),
                 'format' => 'html',
                 'value' => function(Income $model) {
-                    return Html::a($model->type, ['view', 'id' => $model->type_id]);
+                    return Html::a($model->type, ['view', 'id' => $model->type_id < 4 ? $model->type_id : 4]);
                 }
             ],
             [

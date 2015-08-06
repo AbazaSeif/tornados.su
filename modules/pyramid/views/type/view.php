@@ -22,10 +22,15 @@ $user = Yii::$app->user->identity;
     <div class="form-group">
         <?php
         if ($user->account >= $model->stake) {
-            echo Html::a(Yii::t('app', 'Open'), ['open', 'id' => $model->id], [
-                'class' => 'btn btn-success',
-                'data' => ['method' => 'post']
-            ]);
+            if ($user->isManager()) {
+                echo Html::a(Yii::t('app', 'Create'), ['node/create', 'id' => $model->id], ['class' => 'btn btn-primary']);
+            }
+            else {
+                echo Html::a(Yii::t('app', 'Open'), ['open', 'id' => $model->id], [
+                    'class' => 'btn btn-success',
+                    'data' => ['method' => 'post']
+                ]);
+            }
         }
         ?>
     </div>

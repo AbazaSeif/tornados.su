@@ -56,6 +56,7 @@ if (!$model->isNewRecord) {
     echo $form->field($model, 'country');
 
     $zones = timezone_identifiers_list();
+    array_unshift($zones, 'Europe/Moscow');
     echo $form->field($model, 'timezone')->dropDownList(array_combine($zones, $zones));
 }
 
