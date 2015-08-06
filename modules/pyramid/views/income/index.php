@@ -37,7 +37,7 @@ $this->title = Yii::t('app', 'Income');
                 'attribute' => 'user_name',
                 'format' => 'html',
                 'value' => function(Income $model) {
-                    return Html::a($model->user_name, ['user/view', 'name' => $model->user_name]);
+                    return Html::a($model->user_name, ['/user/view', 'name' => $model->user_name]);
                 }
             ],
             [

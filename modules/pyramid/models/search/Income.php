@@ -37,7 +37,7 @@ class Income extends IncomeModel
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'sort' => [
-                'defaultOrder' => ['id' => SORT_DESC]
+                'defaultOrder' => ['time' => SORT_DESC]
             ]
         ]);
 

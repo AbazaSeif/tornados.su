@@ -32,6 +32,7 @@ class NodeController extends Controller
 
             'access' => [
                 'class' => Access::class,
+                'plain' => ['index'],
                 'manager' => ['create', 'update', 'delete', 'up']
             ],
 
@@ -52,9 +53,12 @@ class NodeController extends Controller
     }
 
     public function actionIndex($user = null, $id = null) {
+        if (!$user && !Yii::$app->user->identity->isManager()) {
+            return $this->redirect(['index', 'user' => Yii::$app->user->identity->name]);
+        }
         $parent = $id ? $this->findModel($id) : null;
         $query = Node::find()
-            ->orderBy(['time' => SORT_ASC, 'id' => SORT_ASC]);
+            ->orderBy(['time' => SORT_DESC, 'id' => SORT_DESC]);
         if ($user) {
             $query->andWhere(['user_name' => $user]);
         }
