@@ -25,6 +25,7 @@ $heap = isset($_GET['heap']) ? (int) $_GET['heap'] : null;
 
 require CONFIG . '/common.php';
 require CONFIG . '/web.php';
+require CONFIG . '/local.php';
 
 $db = $config['components']['db'];
 $pdo = new PDO($db['dsn'], $db['username'], $db['password'], [

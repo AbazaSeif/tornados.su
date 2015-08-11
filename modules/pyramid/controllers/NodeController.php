@@ -53,10 +53,11 @@ class NodeController extends Controller
     }
 
     public function actionIndex($user = null, $id = null) {
-        if (!$user && !Yii::$app->user->identity->isManager()) {
+        $parent = $id ? $this->findModel($id) : null;
+        if (!Yii::$app->user->identity->isManager() && (!$parent && !$user)) {
+            //(!$user && $parent && $parent->user_name != Yii::$app->user->identity->name)) {
             return $this->redirect(['index', 'user' => Yii::$app->user->identity->name]);
         }
-        $parent = $id ? $this->findModel($id) : null;
         $query = Node::find()
             ->orderBy(['time' => SORT_DESC, 'id' => SORT_DESC]);
         if ($user) {
