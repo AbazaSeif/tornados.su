@@ -9,8 +9,8 @@ define('YII_ENV_DEV', 'prod');
 
 $ip = $_SERVER['REMOTE_ADDR'];
 $path = $_SERVER['HTTP_REFERER'];
-if (0 === strpos($path, 'http://diamond-rush.ru/')) {
-    $path = str_replace('http://diamond-rush.ru/', '', $path);
+if (0 === strpos($path, 'http://tornados.su/')) {
+    $path = str_replace('http://tornados.su/', '', $path);
 }
 if ('GET' != $_SERVER['REQUEST_METHOD']
     || !isset($_GET['spend'])
