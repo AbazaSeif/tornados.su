@@ -194,7 +194,7 @@ addEventListener('beforeunload', function() {
     for(var key in params) {
         strparams.push(key + '=' + params[key]);
     }
-    request.open('GET', '/visit.php?' + strparams.join('&'), false);
+    request.open('GET', '/visit.php?' + strparams.join('&'), true);
     request.send(null);
 });
 

@@ -3,6 +3,10 @@
  * @link http://zenothing.com/
  */
 
+define('CONFIG', __DIR__ . '/../config');
+define('YII_DEBUG', false);
+define('YII_ENV_DEV', 'prod');
+
 $ip = $_SERVER['REMOTE_ADDR'];
 $path = $_SERVER['HTTP_REFERER'];
 if (0 === strpos($path, 'http://diamond-rush.ru/')) {
@@ -18,8 +22,6 @@ $spend = (int) $_GET['spend'];
 $width = (int) $_GET['width'];
 $height = (int) $_GET['height'];
 $heap = isset($_GET['heap']) ? (int) $_GET['heap'] : null;
-
-define('CONFIG', __DIR__ . '/../config');
 
 require CONFIG . '/common.php';
 require CONFIG . '/web.php';

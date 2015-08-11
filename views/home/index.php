@@ -12,8 +12,6 @@ use app\modules\pyramid\models\Type;
 use yii\helpers\Html;
 use yii\web\JqueryAsset;
 
-$this->title = Yii::$app->name;
-
 $this->registerJsFile('/js/lightslider.js', ['depends' => [JqueryAsset::class]]);
 $this->registerCssFile('/css/lightslider.css');
 
@@ -168,3 +166,6 @@ $this->registerMetaTag([
         ]) ?>
     </section>
 </article>
+<?php
+$this->title = Yii::$app->name;
+?>
